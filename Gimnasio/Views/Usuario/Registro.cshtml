@@ -1,0 +1,74 @@
+﻿@model Gimnasio.Models.Usuario
+
+@{
+    ViewData["Title"] = "Nuevo Usuario";
+}
+
+<h1 class="my-3 text-center">Registrarse como nuevo usuario</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+     
+        <form asp-action="Registro" method="post" class="row g-3 align-items-center" id="FormularioUsuario">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="col-md-6">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Apellidos" class="control-label"></label>
+                <input asp-for="Apellidos" class="form-control" placeholder="Apellidos"/>
+                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DNI" class="control-label"></label>
+                <input asp-for="DNI" class="form-control" placeholder="DNI" />
+                <span asp-validation-for="DNI" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="FechaNacimiento" class="control-label"></label>
+                <input type="date" asp-for="FechaNacimiento" class="form-control"/>
+                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+            </div>
+            <div class="col-md-8">
+                <label asp-for="Direccion" class="control-label"></label>
+                <input asp-for="Direccion" class="form-control" placeholder="Dirección"/>
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Poblacion" class="control-label"></label>
+                <input asp-for="Poblacion" class="form-control" placeholder="Población"/>
+                <span asp-validation-for="Poblacion" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Telefono" class="control-label"></label>
+                <input asp-for="Telefono" class="form-control" placeholder="Teléfono"/>
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="Correo electrónico"/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" placeholder="Contraseña"/>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Repetir contraseña"/>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mt-4">
+                <input type="submit" value="Darse de alta" class="btn btn-primary" />
+            </div>
+            <div class="text-center">
+                <p>Ya tienes cuenta? <a asp-controller="Login" asp-action="Index">Inicia sesión</a></p>
+            </div>
+        </form>
+      
+    </div>
+</div>

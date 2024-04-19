@@ -1,0 +1,31 @@
+﻿@model Gimnasio.Models.Usuario
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Inicio de sesión";
+}
+
+<h1 class="my-3 text-center">Inicio de sesión</h1>
+
+<form method="post" asp-controller="Login" asp-action="IniciarSesion" id="FormularioUsuario">
+    <div class="row justify-content-center my-2">
+        <div class=" col-md-4">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" placeholder="Correo electrónico" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row justify-content-center my-2">
+        <div class="col-md-4">
+            <label asp-for="Password" class="control-label"></label>
+            <input asp-for="Password" class="form-control" placeholder="Contraseña" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <input type="submit" value="Inciar sesión" class="btn btn-success" />
+        <p class="mt-3">Aún no tienes cuenta? <a asp-controller="Usuario" asp-action="Registro">Regístrate</a></p>
+    </div>
+
+</form>

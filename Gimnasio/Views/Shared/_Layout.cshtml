@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Gimnasio Bergondo</title>
+    <link rel="icon" href="~/images/logo-black.svg" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Gimnasio.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css" />
+</head>
+<!-- Logo : https://www.svgrepo.com/svg/51431/gym-medal-necklace-->
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-dark navbar-expand-sm navbar-toggleable-sm mb-3 box-shadow">
+            <div class="container-fluid">
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand">
+                    <img src="~/images/logo-white.svg" width="50" height="50" alt="Logo del Gimnasio Bergondo" class="m-2" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon text-white"></span>
+                </button>
+
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item mx-2 my-1">
+                            <a class="nav-link text-white fs-4" asp-controller="Tarifa" asp-action="Index">Tarifas</a>
+                        </li>
+                        <li class="nav-item mx-2 my-1">
+                            <a class="nav-link text-white fs-4" asp-controller="Actividad" asp-action="Index">Actividades</a>
+                        </li>
+                    </ul>
+                    <div class="text-end">
+                        <ul class="navbar-nav">
+                            <li class="nav-item mx-2 my-1">
+                                <a class="btn btn-primary text-white" asp-controller="Usuario" asp-action="Registro">Registrarme</a>
+                            </li>
+                            <li class="nav-item mx-2 my-1">
+                                <a class="btn btn-success text-white" asp-controller="Login" asp-action="Index">Iniciar sesión</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    
+    <footer class="border-top footer text-muted bg-black">
+        <div class="container text-center">
+            <span class="text-white">&copy; 2024 - Gimnasio Bergondo - <a asp-controller="Home" asp-action="Privacy" class="link text-white">Ver privacidad</a></span>
+        </div>
+    </footer>
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

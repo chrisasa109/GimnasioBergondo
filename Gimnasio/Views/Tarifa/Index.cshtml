@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Gimnasio.Models.Tarifa>
+
+@{
+    ViewData["Title"] = "Tarifas";
+}
+
+<h2 class="text-center my-3">Tarifas</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card m-1">
+                <div class="card-body">
+                    <h4 class="card-title">@Html.DisplayFor(m => item.Nombre)</h4>
+                    <h5 class="card-subtitle my-2">@Html.DisplayFor(m => item.Precio)</h5>
+                    <p class="card-text">@Html.DisplayFor(m => item.Descripcion)</p>
+                    <div class="text-center">
+                    <button class="btn btn-success text-center">Contratar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

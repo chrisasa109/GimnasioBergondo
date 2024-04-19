@@ -19,6 +19,11 @@ namespace Gimnasio.Models
         public TimeOnly Duracion { get; set; }
 
         [Required(ErrorMessage = "El campo no puede quedar vacío.")]
+        [Display(Name = "Fecha y hora")]
+        [DataType(DataType.DateTime)]
+        public DateTime FechaHora { get; set; }
+
+        [Required(ErrorMessage = "El campo no puede quedar vacío.")]
         [Display(Name = "Capacidad máxima")]
         public int CapacidadMaxima { get; set; }
     }

@@ -41,6 +41,9 @@ namespace Gimnasio.Migrations
                     b.Property<TimeOnly>("Duracion")
                         .HasColumnType("time");
 
+                    b.Property<DateTime>("FechaHora")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Actividad");

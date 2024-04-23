@@ -1,14 +1,32 @@
-﻿@model Gimnasio.Models.Usuario
+﻿@model Gimnasio.Models.Login
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     ViewData["Title"] = "Inicio de sesión";
 }
+@if (TempData["errorUsuario"] != null || TempData["errorPassword"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-danger alert-dismissible fade show col-md-5 text-center">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>
+                @if (TempData["errorUsuario"] != null)
+                {
+                    @TempData["errorUsuario"]
+                }
+                else if (TempData["errorPassword"] != null)
+                {
+                    @TempData["errorPassword"]
+                }
+            </strong>
+        </div>
+    </div>
+}
 
 <h1 class="my-3 text-center">Inicio de sesión</h1>
 
-<form method="post" asp-controller="Login" asp-action="IniciarSesion" id="FormularioUsuario">
+<form method="post" asp-controller="Login" asp-action="IniciarSesion" id="FormularioInicioSesion">
     <div class="row justify-content-center my-2">
         <div class=" col-md-4">
             <label asp-for="Email" class="control-label"></label>
@@ -24,8 +42,9 @@
         </div>
     </div>
     <div class="text-center mt-3">
-        <input type="submit" value="Inciar sesión" class="btn btn-success" />
+        <input type="submit" value="Inciar sesión" class="btn btn-success" asp-action="IniciarSesion" />
         <p class="mt-3">Aún no tienes cuenta? <a asp-controller="Usuario" asp-action="Registro">Regístrate</a></p>
     </div>
-
 </form>
+
+<script src="~/js/IniciarSesionForm.js"></script>

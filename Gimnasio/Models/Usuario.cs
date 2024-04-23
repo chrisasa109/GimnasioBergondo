@@ -15,7 +15,7 @@ namespace Gimnasio.Models
         public string DNI { get; set; }
 
         [Required(ErrorMessage = "El campo no puede quedar vacío.")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Debe tener un mínimo de 6 caracter y un máximo de 50.")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Debe tener un mínimo de 3 caracteres y un máximo de 50.")]
         [Display(Name = "Nombre")]
         [DataType(DataType.Text)]
         public string Nombre { get; set; }

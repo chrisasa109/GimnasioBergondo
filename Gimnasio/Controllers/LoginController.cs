@@ -1,20 +1,1 @@
-﻿using Gimnasio.Dates;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
-
-namespace Gimnasio.Controllers
-{
-    public class LoginController : Controller
-    {
-        private readonly ApplicationDbContext _context;
-
-        public LoginController(ApplicationDbContext context) { _context = context; }
-
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-    }
-}
+﻿using Gimnasio.Dates;using Gimnasio.Models;using Microsoft.AspNetCore.Authentication;using Microsoft.AspNetCore.Authentication.Cookies;using Microsoft.AspNetCore.Identity;using Microsoft.AspNetCore.Mvc;using Microsoft.EntityFrameworkCore;using System.Security.Claims;namespace Gimnasio.Controllers{    public class LoginController : Controller    {        private readonly ApplicationDbContext _context;        public LoginController(ApplicationDbContext context) { _context = context; }        [HttpGet]        public IActionResult Index()        {            return View();        }        [HttpPost]        [ValidateAntiForgeryToken]        public async Task<IActionResult> IniciarSesion([Bind("Email,Password")] Login _login)        {            if (ModelState.IsValid)            {                var usuarioF = await _context.Usuario.FirstOrDefaultAsync(u => u.Email == _login.Email);                if (usuarioF == null)                {                    TempData["errorUsuario"] = "No existe ninguna cuenta con el email introducido.";                }                else                {                    var passHasher = new PasswordHasher<Usuario>();                    if (passHasher.VerifyHashedPassword(usuarioF, usuarioF.Password, _login.Password) == PasswordVerificationResult.Success)                    {                        const string idCliente = "_idCliente";                        HttpContext.Session.SetInt32(idCliente, usuarioF.Id);                        var claims = new List<Claim>                        {                            new(ClaimTypes.Name, usuarioF.Nombre),                            new(ClaimTypes.Role, usuarioF.Rol.ToString())                        };                        var claimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));                        return RedirectToAction("Index", "Home");                    }                    else                    {                        TempData["errorPassword"] = "La contraseña introducida no corresponde con el usuario.";                    }                }            }            return View(nameof(Index));        }        public async Task<IActionResult> Salir()        {            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);            return RedirectToAction("Index", "Home");        }    }}

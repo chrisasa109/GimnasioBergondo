@@ -13,9 +13,8 @@ namespace Gimnasio.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var actividades = _context.Actividad.ToListAsync();
+            var actividades = _context.Actividad.ToList();
             return View(actividades);
         }
-
     }
 }

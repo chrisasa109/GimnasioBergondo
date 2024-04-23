@@ -2,24 +2,30 @@
 @{
     ViewData["Title"] = "Actividades";
 }
-<script type="text/javascript" src="~/js/DataTable.js"></script>
 
-<table id="tblListaProductos" class="table-bordered">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Duración</th>
-            <th>Capacidad</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(m => item.Descripcion)</td>
-                <td>@Html.DisplayFor(m => item.Duracion)</td>
-                <td>@Html.DisplayFor(m => item.CapacidadMaxima)</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h2 class="text-center my-3">Listado de actividades</h2>
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <table class="table table-bordered" id="formatDataTable">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Duración</th>
+                    <th>Capacidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(m => item.Descripcion)</td>
+                        <td>@Html.DisplayFor(m => item.Duracion)</td>
+                        <td>@Html.DisplayFor(m => item.CapacidadMaxima)</td>
+                        <td class="text-center"><i class="bi bi-person-fill-add fs-4"></i></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

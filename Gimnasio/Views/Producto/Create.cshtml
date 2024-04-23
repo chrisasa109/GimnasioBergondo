@@ -1,0 +1,44 @@
+﻿@model Gimnasio.Models.Producto
+
+@{
+    ViewData["Title"] = "Nuevo Producto";
+}
+
+<h1 class="my-3 text-center">Registrar nuevo producto</h1>
+<div class="row justify-content-md-center my-md-2">
+    <div class="col-md-4">
+        <form asp-action="Create" id="FormularioNuevoProducto" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Precio" class="control-label"></label>
+                    <input asp-for="Precio" class="form-control" placeholder="Precio" />
+                    <span asp-validation-for="Precio" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Stock" class="control-label"></label>
+                    <input asp-for="Stock" class="form-control" placeholder="Stock" />
+                    <span asp-validation-for="Stock" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Foto del producto</label>
+                <label asp-for="Foto" class="control-label drop-container" id="dropcontainter">
+                    <span class="drop-title">Arrastrar imagen aquí</span> o
+                    <input type="file" asp-for="Foto" class="form-control" id="images" />
+                </label>
+                <span asp-validation-for="Foto" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center my-3">
+                <input type="submit" value="Crear producto" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/ProductoForm.js"></script>

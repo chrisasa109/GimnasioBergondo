@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gimnasio.Models
 {
@@ -27,5 +29,6 @@ namespace Gimnasio.Models
 
         [Required(ErrorMessage = "La imagen es obligatoria.")]
         public byte[] Foto { get; set; }
+
     }
 }

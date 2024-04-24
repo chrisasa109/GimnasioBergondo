@@ -13,8 +13,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option =>
     {
-        option.LoginPath = "";
-        option.ExpireTimeSpan = TimeSpan.Zero;
+        option.LoginPath = "/Login/Index";
+        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        option.AccessDeniedPath = "/Home/Privacy";
     });
 
 // Add services to the container.
@@ -41,11 +42,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.UseSession();
-
-app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",

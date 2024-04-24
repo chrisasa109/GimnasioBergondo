@@ -1,5 +1,6 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +12,12 @@ namespace Gimnasio.Controllers
         public ProductoController(ApplicationDbContext context) { _context = context; }
 
         [HttpGet]
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         public IActionResult Create()
         {
             return View();
         }
-
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         [HttpPost]
         public async Task<IActionResult> Create(string nombre, double precio, int stock, IFormFile foto)
         {

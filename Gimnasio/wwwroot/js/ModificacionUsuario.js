@@ -1,12 +1,13 @@
 ﻿window.addEventListener("DOMContentLoaded", () => {
-    document.forms[0].addEventListener("submit", validarFormularioNuevoUsuario);
+    document.forms[0].addEventListener("submit", validarFormulario);
 });
-function validarFormularioNuevoUsuario(evento) {
+function validarFormulario(evento) {
     evento.preventDefault();
     var arrayElementos = Array.from(this.elements);
+    arrayElementos.splice(0, 1);
     arrayElementos.splice(4, 1);
-    arrayElementos.splice(10, 2);
-
+    arrayElementos.splice(8, 2);
+    console.log(arrayElementos)
     let resultadosValidacion = [];
 
     arrayElementos.forEach(elemento => {
@@ -23,6 +24,6 @@ function validarFormularioNuevoUsuario(evento) {
     const todosValidos = resultadosValidacion.every(resultado => resultado === true);
 
     if (todosValidos) {
-        document.getElementById('FormularioUsuario').submit();
+        document.forms[0].submit();
     }
 }

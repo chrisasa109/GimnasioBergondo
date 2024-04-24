@@ -13,7 +13,7 @@ namespace Gimnasio.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var actividades = _context.Actividad.ToList();
+            var actividades = _context.Actividad.Where(x => x.CapacidadMaxima>0).ToList();
             return View(actividades);
         }
     }

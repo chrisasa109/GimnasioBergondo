@@ -2,16 +2,17 @@
 @{
     ViewData["Title"] = "Actividades";
 }
+<script src="~/js/DataTableJS.js"></script>
 
 <h2 class="text-center my-3">Listado de actividades</h2>
-<div class="row justify-content-center">
-    <div class="col-md-7">
-        <table class="table table-bordered" id="formatDataTable">
+<div class="row justify-content-center mb-3">
+    <div class="col-md-8">
+        <table class="table table-striped" id="formatDataTable">
             <thead>
                 <tr>
                     <th>Nombre</th>
+                    <th>Fecha</th>
                     <th>Duración</th>
-                    <th>Capacidad</th>
                     <th></th>
                 </tr>
             </thead>
@@ -20,8 +21,8 @@
                 {
                     <tr>
                         <td>@Html.DisplayFor(m => item.Descripcion)</td>
-                        <td>@Html.DisplayFor(m => item.Duracion)</td>
-                        <td>@Html.DisplayFor(m => item.CapacidadMaxima)</td>
+                        <td>@Html.DisplayFor(m => item.FechaHora)</td>
+                        <td class="text-center">@Html.DisplayFor(m => item.Duracion)</td>
                         <td class="text-center"><i class="bi bi-person-fill-add fs-4"></i></td>
                     </tr>
                 }
@@ -29,3 +30,4 @@
         </table>
     </div>
 </div>
+

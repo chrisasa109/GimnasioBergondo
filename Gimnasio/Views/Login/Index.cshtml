@@ -5,12 +5,13 @@
 @{
     ViewData["Title"] = "Inicio de sesión";
 }
+
 @if (TempData["errorUsuario"] != null || TempData["errorPassword"] != null)
 {
     <div class="row justify-content-center">
-        <div class="alert alert-danger alert-dismissible fade show col-md-5 text-center">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>
+        <div class="alert alert-danger alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">
                 @if (TempData["errorUsuario"] != null)
                 {
                     @TempData["errorUsuario"]
@@ -48,3 +49,4 @@
 </form>
 
 <script src="~/js/IniciarSesionForm.js"></script>
+<script src="~/js/ValidacionCamposUsuario.js"></script>

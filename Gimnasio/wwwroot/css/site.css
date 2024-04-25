@@ -71,3 +71,7 @@ body {
     text-align: center;
     transition: color .2s ease-in-out;
 }
+
+#linkCerrarSesion{
+    color: red;
+}

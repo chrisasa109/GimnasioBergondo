@@ -13,7 +13,7 @@ namespace Gimnasio.Models
 
         [ForeignKey("Usuario")]
         public int UsuarioId { get; set; }
-        public Usuario _usuario {  get; set; }
+        public virtual Usuario? _usuario {  get; set; }
 
         [Required(ErrorMessage = "El campo no puede quedar vacío.")]
         [Display(Name = "Fecha de inicio")]
@@ -28,7 +28,7 @@ namespace Gimnasio.Models
         [Display(Name = "Comentarios")]
         [DataType(DataType.MultilineText)]
         [StringLength(500, ErrorMessage = "Los comentarios no pueden superar los 500 caracteres.")]
-        public string Comentarios {  get; set; }
+        public string? Comentarios {  get; set; }
 
         [Required(ErrorMessage = "El campo no puede quedar vacío.")]
         [EnumDataType(typeof(Metodo))]
@@ -43,6 +43,6 @@ namespace Gimnasio.Models
 
         [ForeignKey("Tarifa")]
         public int TarifaID { get; set; }
-        public Tarifa _tarifa { get; set; }
+        public virtual Tarifa? _tarifa { get; set; }
     }
 }

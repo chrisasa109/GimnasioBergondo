@@ -1,0 +1,100 @@
+﻿@model Gimnasio.Models.Contrato
+@{
+    ViewData["Title"] = "Borrador de contrato";
+}
+<h2 class="text-center my-3">Contrato: @Html.DisplayFor(m => m._tarifa.Nombre)</h2>
+
+<div class="row justify-content-md-center my-4">
+    <div class="col-md-4">
+        <h4 class="text-center">Datos de facturación</h4>
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Nombre)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Nombre)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Apellidos)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Apellidos)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.DNI)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.DNI)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.FechaNacimiento)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.FechaNacimiento)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Direccion)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Direccion)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Poblacion)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Poblacion)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Telefono)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Telefono)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Email)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Email)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-4">
+        <form asp-action="Contratar">
+            <h4 class="text-center">Detalles contractuales</h4>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TarifaID" value="@Model.TarifaID" />
+            <input type="hidden" asp-for="UsuarioId" value="@Model.UsuarioId" />
+            <div class="form-group">
+                <label asp-for="FechaInicio" class="control-label"></label>
+                <input asp-for="FechaInicio" class="form-control" readonly />
+                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaFin" class="control-label"></label>
+                <input asp-for="FechaFin" class="form-control" readonly />
+                <span asp-validation-for="FechaFin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comentarios" class="control-label"></label>
+                <textarea asp-for="Comentarios" class="form-control"></textarea>
+                <span asp-validation-for="Comentarios" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FormaPago" class="control-label"></label>
+                <select asp-for="FormaPago" class="form-select">
+                    <option value="EFECTIVO">Efectivo</option>
+                    <option value="TARJETA">Tarjeta</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
+                </select>
+                <span asp-validation-for="FormaPago" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <input type="submit" value="Contratar" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+    <h3 class="text-center my-3">Total: @Html.DisplayFor(m => m._tarifa.Precio)</h3>
+</div>
+
+<script src="~/js/ValidacionCamposContrato.js"></script>
+<script src="~/js/ContratoForm.js"></script>

@@ -1,7 +1,18 @@
-﻿@model IEnumerable<Gimnasio.Models.Tarifa>
+﻿@using System.Security.Policy
+@model IEnumerable<Gimnasio.Models.Tarifa>
 
 @{
     ViewData["Title"] = "Tarifas";
+}
+
+@if (TempData["ContratoNoVigente"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-warning alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["ContratoNoVigente"]</strong>
+        </div>
+    </div>
 }
 
 <h2 class="text-center my-3">Tarifas</h2>
@@ -16,7 +27,8 @@
                     <h5 class="card-subtitle my-2">@Html.DisplayFor(m => item.Precio)</h5>
                     <p class="card-text">@Html.DisplayFor(m => item.Descripcion)</p>
                     <div class="text-center">
-                    <button class="btn btn-success text-center">Contratar</button>
+                        <a class="btn btn-success text-center contratar-btn"
+                           href="@Url.Action("Index", "Contrato", new { tarifaId = item.Id })">Contratar</a>
                     </div>
                 </div>
             </div>

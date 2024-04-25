@@ -1,18 +1,30 @@
 ﻿@model Gimnasio.Models.Usuario
-
+@{
+    ViewData["Title"] = "Editar datos";
+}
 <h1 class="text-center">Modificación de datos</h1>
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <form asp-action="Modificacion" class="row g-3 align-items-center">
+    <div class="row justify-content-center">
+<form asp-action="Modificacion" class="row g-3 align-items-center" enctype="multipart/form-data">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Foto">Foto de perfil</label>
+                <label asp-for="Foto" class="control-label drop-container" id="dropcontainer">
+                    <span class="drop-title">Arrastrar imagen aquí</span> o
+                    <input type="file" asp-for="Foto" class="form-control" id="images" />
+                </label>
+                <span asp-validation-for="Foto" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-8">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label asp-for="Apellidos" class="control-label"></label>
                 <input asp-for="Apellidos" class="form-control" />
                 <span asp-validation-for="Apellidos" class="text-danger"></span>
@@ -47,12 +59,12 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group text-center mt-4">
+            <div class="form-group text-center mt-2">
                 <input type="submit" value="Modificar" class="btn btn-primary" />
             </div>
-        </form>
+        </div>
+</form>
     </div>
-</div>
 
 <script src="~/js/ModificacionUsuario.js"></script>
 <script src="~/js/ValidacionCamposUsuario.js"></script>

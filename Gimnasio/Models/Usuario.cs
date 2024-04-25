@@ -71,6 +71,8 @@ namespace Gimnasio.Models
         [Display(Name = "Rol del usuario")]
         public Role Rol {  get; set; } = Role.CLIENTE;
 
+        [Display(Name = "Foto de perfil")]
+        public byte[] ? Foto { get; set; }
         public enum Role
         {
             ADMINISTRADOR,

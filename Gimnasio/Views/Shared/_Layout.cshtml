@@ -64,16 +64,19 @@
                             {
                                 <li class="nav-item dropdown mx-5">
                                     <a class="nav-link dropdown-toggle text-white fs-4" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        @User.Identity.Name  <i class="bi bi-person-fill text-white fs-4"></i>
+                                        @User.Identity.Name  <i class="bi bi-person-lines-fill text-white fs-4"></i>
                                     </a>
                                     <div class="dropdown-menu drop-down-menu-right" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item text-black" href="#"><i class="bi bi-cart-dash fs-4 mx-md-1"></i>Mi carrito</a>
                                         <a class="dropdown-item text-black" href="#"><i class="bi bi-bag-check fs-4 mx-md-1"></i>Ver pedidos</a>
                                         <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-black" asp-controller="Contrato" asp-action="Detalles"><i class="bi bi-folder-fill fs-4 mx-md-1"></i>Mi contrato</a>
+                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item text-black" href="#"><i class="bi bi-person-arms-up fs-4 mx-md-1"></i>Mis actividades</a>
                                         <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-black" asp-controller="Usuario" asp-action="Detalles"><i class="bi bi-person-fill fs-4 mx-md-1"></i>Ver perfil</a>
                                         <a class="dropdown-item text-black" asp-controller="Usuario" asp-action="Modificacion"><i class="bi bi-person-fill-gear fs-4 mx-md-1"></i>Modificar datos</a>
-                                        <a class="dropdown-item text-black" asp-controller="Login" asp-action="Salir"><i class="bi bi-person-fill-dash fs-4 mx-md-1"></i>Cerrar sesión</a>
+                                        <a class="dropdown-item" id="linkCerrarSesion" asp-controller="Login" asp-action="Salir"><i class="bi bi-person-fill-dash fs-4 mx-md-1"></i>Cerrar sesión</a>
                                     </div>
                                 </li>
                             }

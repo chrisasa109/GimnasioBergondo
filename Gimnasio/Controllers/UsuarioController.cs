@@ -36,28 +36,25 @@ namespace Gimnasio.Controllers
         [HttpGet]
         public IActionResult Modificacion()
         {
-            int.TryParse(User.FindFirst("Id")?.Value, out int userId);
-            var cliente = _context.Usuario.FirstOrDefault(x => x.Id == userId);
-            return View(cliente);
+            Usuario user = ObtenerDatosPorCookies();
+            return View(user);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Modificacion([Bind("Id,Nombre,DNI,Apellidos,FechaNacimiento,Direccion,Poblacion,Telefono,Email")] Usuario usuario)
         {
-            // Buscar el usuario existente en la base de datos
             var usuarioExistente = await _context.Usuario.FindAsync(usuario.Id);
 
             if (usuarioExistente == null)
             {
-                return NotFound(); // Manejar el caso en que el usuario no existe
+                return NotFound();
             }
 
-            // Excluir los campos "Rol" y "Password" del proceso de actualización
-            usuarioExistente.Rol = usuarioExistente.Rol; // Marcar como no modificado
-            usuarioExistente.Password = usuarioExistente.Password; // Marcar como no modificado
+            // Excluir estos dos campos de ser actualizados
+            usuarioExistente.Rol = usuarioExistente.Rol; 
+            usuarioExistente.Password = usuarioExistente.Password; 
 
-            // Actualizar el resto de los campos
             usuarioExistente.Nombre = usuario.Nombre;
             usuarioExistente.DNI = usuario.DNI;
             usuarioExistente.Apellidos = usuario.Apellidos;
@@ -67,12 +64,24 @@ namespace Gimnasio.Controllers
             usuarioExistente.Telefono = usuario.Telefono;
             usuarioExistente.Email = usuario.Email;
 
-            // Marcar la entidad como modificada y guardar los cambios en la base de datos
             _context.Update(usuarioExistente);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index"); // Otra acción después de la modificación
+            return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public IActionResult Detalles()
+        {
+            Usuario user = ObtenerDatosPorCookies();
+            return View(user);
+        }
+
+        private Usuario ObtenerDatosPorCookies()
+        {
+            int.TryParse(User.FindFirst("Id")?.Value, out int userId);
+            var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
+            return usuario;
+        }
     }
 }

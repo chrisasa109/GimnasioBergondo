@@ -1,0 +1,122 @@
+﻿@model Gimnasio.Models.Contrato
+@{
+    ViewData["Title"] = "Contrato";
+}
+@if (TempData["ContratoVigente"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-warning alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["ContratoVigente"]</strong>
+        </div>
+    </div>
+}
+@if (TempData["CommentSuccess"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-success alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["CommentSuccess"]</strong>
+        </div>
+    </div>
+}
+@if (TempData["CommentError"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-danger alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["CommentError"]</strong>
+        </div>
+    </div>
+}
+<h2 class="text-center my-3">Contrato</h2>
+<div class="row justify-content-md-center my-4">
+    <div class="col-md-5">
+        <h4 class="text-center">Datos de facturación</h4>
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Nombre)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Nombre)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Apellidos)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Apellidos)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.DNI)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.DNI)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.FechaNacimiento)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.FechaNacimiento)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Direccion)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Direccion)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Poblacion)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Poblacion)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Telefono)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Telefono)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model._usuario.Email)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model._usuario.Email)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-5">
+        <h4 class="text-center">Datos del contrato</h4>
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FechaInicio)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.FechaInicio)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FechaFin)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.FechaFin)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FormaPago)
+            </dt>
+            <dd class="col-sm-6">
+                @{
+                    string formaPago = Model.FormaPago.ToString();
+                    string resultado = formaPago != null ? char.ToUpper(formaPago[0]) + formaPago.Substring(1).ToLower() : "";
+                }
+                @Html.DisplayFor(model => resultado)
+            </dd>
+            <form asp-action="GuardarCambios">
+            <div class="form-group">
+                <label asp-for="Comentarios" class="control-label font-weight-bold"></label>
+                <textarea asp-for="Comentarios" class="form-control"></textarea>
+                <span asp-validation-for="Comentarios" class="text-danger"></span>
+            </div>
+            <input class="btn btn-success" type="submit" value="Guardar cambios" />
+            </form>
+        </dl>
+    </div>
+</div>

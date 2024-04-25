@@ -1,5 +1,4 @@
-﻿//Cargar el siguiente script después de todo el documento
-//Los links de referencia van en el layout
+﻿//Los links de referencia van en el layout
 window.addEventListener("DOMContentLoaded", () => {
     new DataTable('#formatDataTable', {
         responsive: true,
@@ -13,7 +12,7 @@ window.addEventListener("DOMContentLoaded", () => {
             "infoEmpty": "Mostrando 0 de 0",
             "infoFiltered": "(Filtrando de _MAX_ Entradas)",
             "infoPostFix": "",
-            "thousands": ",",
+            "thousands": 000",",
             "lengthMenu": "Mostrar _MENU_",
             "loadingRecords": "Cargando...",
             "processing": "Procesando...",

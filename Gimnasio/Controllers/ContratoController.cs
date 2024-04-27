@@ -1,9 +1,11 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gimnasio.Controllers
 {
+    [Authorize]
     public class ContratoController : Controller
     {
         private readonly ApplicationDbContext _context;

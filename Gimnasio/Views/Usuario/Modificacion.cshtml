@@ -2,69 +2,75 @@
 @{
     ViewData["Title"] = "Editar datos";
 }
-<h1 class="text-center">Modificación de datos</h1>
-
-    <div class="row justify-content-center">
-<form asp-action="Modificacion" class="row g-3 align-items-center" enctype="multipart/form-data">
-        <div class="col-md-4">
-            <div class="form-group">
-                <label asp-for="Foto">Foto de perfil</label>
-                <label asp-for="Foto" class="control-label drop-container" id="dropcontainer">
-                    <span class="drop-title">Arrastrar imagen aquí</span> o
-                    <input type="file" asp-for="Foto" class="form-control" id="images" />
-                </label>
-                <span asp-validation-for="Foto" class="text-danger"></span>
+<h1 class="text-center my-3">Modificación de datos</h1>
+<div class="alert alert-info" role="alert">
+    En caso de no cargar ninguna foto de perfil, permanecería la que ya está cargada.
+</div>
+<div class="row justify-content-center">
+    <form asp-action="Modificacion" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="FotoFronted">Foto de perfil</label>
+                    <label asp-for="FotoFronted" class="control-label drop-container" id="dropcontainer">
+                        <span class="drop-title">Arrastrar imagen aquí</span> o
+                        <input type="file" asp-for="FotoFronted" class="form-control" id="images" />
+                    </label>
+                    <span asp-validation-for="FotoFronted" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row g-3 align-items-center">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group col-md-6">
+                        <label asp-for="Nombre" class="control-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Apellidos" class="control-label"></label>
+                        <input asp-for="Apellidos" class="form-control" />
+                        <span asp-validation-for="Apellidos" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="DNI" class="control-label"></label>
+                        <input asp-for="DNI" class="form-control" />
+                        <span asp-validation-for="DNI" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="FechaNacimiento" class="control-label"></label>
+                        <input asp-for="FechaNacimiento" class="form-control" />
+                        <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-7">
+                        <label asp-for="Direccion" class="control-label"></label>
+                        <input asp-for="Direccion" class="form-control" />
+                        <span asp-validation-for="Direccion" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label asp-for="Poblacion" class="control-label"></label>
+                        <input asp-for="Poblacion" class="form-control" />
+                        <span asp-validation-for="Poblacion" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Telefono" class="control-label"></label>
+                        <input asp-for="Telefono" class="form-control" />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center mb-5">
+                        <input type="submit" value="Modificar" class="btn btn-primary" />
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-8">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group col-md-4">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-4">
-                <label asp-for="Apellidos" class="control-label"></label>
-                <input asp-for="Apellidos" class="form-control" />
-                <span asp-validation-for="Apellidos" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-6">
-                <label asp-for="DNI" class="control-label"></label>
-                <input asp-for="DNI" class="form-control" />
-                <span asp-validation-for="DNI" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-6">
-                <label asp-for="FechaNacimiento" class="control-label"></label>
-                <input asp-for="FechaNacimiento" class="form-control" />
-                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-7">
-                <label asp-for="Direccion" class="control-label"></label>
-                <input asp-for="Direccion" class="form-control" />
-                <span asp-validation-for="Direccion" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-5">
-                <label asp-for="Poblacion" class="control-label"></label>
-                <input asp-for="Poblacion" class="form-control" />
-                <span asp-validation-for="Poblacion" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-6">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-6">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group text-center mt-2">
-                <input type="submit" value="Modificar" class="btn btn-primary" />
-            </div>
-        </div>
-</form>
-    </div>
+    </form>
+</div>
 
 <script src="~/js/ModificacionUsuario.js"></script>
 <script src="~/js/ValidacionCamposUsuario.js"></script>

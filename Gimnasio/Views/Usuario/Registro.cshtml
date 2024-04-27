@@ -8,7 +8,7 @@
 
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <form asp-action="Registro" method="post" class="row g-3 align-items-center" id="FormularioUsuario">
+        <form asp-action="Registro" method="post" class="row g-3 align-items-center" id="FormularioUsuario" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="col-md-6">
@@ -61,7 +61,15 @@
                 <input asp-for="ConfirmPassword" class="form-control" placeholder="Repetir contraseña"/>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-group text-center mt-4">
+            <div col-md-12>
+                    <label asp-for="FotoFronted" style="font-size: 18px;">Foto de perfil</label>
+                    <label asp-for="FotoFronted" class="control-label drop-container" id="dropcontainer">
+                        <span class="drop-title">Arrastrar imagen aquí</span> o
+                        <input type="file" asp-for="FotoFronted" class="form-control" id="images" />
+                    </label>
+                    <span asp-validation-for="FotoFronted" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center my-3">
                 <input type="submit" value="Darse de alta" class="btn btn-primary" />
             </div>
         </form>

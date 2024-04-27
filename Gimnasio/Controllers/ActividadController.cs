@@ -16,5 +16,7 @@ namespace Gimnasio.Controllers
             var actividades = _context.Actividad.Where(x => x.CapacidadMaxima>0).ToList();
             return View(actividades);
         }
+
+
     }
 }

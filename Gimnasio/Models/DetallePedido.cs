@@ -16,7 +16,7 @@ namespace Gimnasio.Models
         
         [ForeignKey("Producto")]
         public int ProductoId { get; set; }
-        public Producto _produto { get; set; }
+        public Producto _producto { get; set; }
         
         [Required(ErrorMessage ="El campo no puede quedar vacío.")]
         [Display(Name = "Cantidad")]

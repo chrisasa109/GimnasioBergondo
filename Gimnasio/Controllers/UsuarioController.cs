@@ -20,16 +20,21 @@ namespace Gimnasio.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registro([Bind("Nombre,DNI,Apellidos,FechaNacimiento,Direccion,Poblacion,Telefono,Email,Password,ConfirmPassword")] Usuario usuario)
+        public async Task<IActionResult> Registro([Bind("Nombre,DNI,Apellidos,FechaNacimiento,Direccion,Poblacion,Telefono,Email,Password,ConfirmPassword,FotoFronted")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
                 usuario.Password = new PasswordHasher<Usuario>().HashPassword(usuario, usuario.Password);
+                if (usuario.FotoFronted != null && usuario.FotoFronted.Length > 0)
+                {
+                    using var memoryStream = new MemoryStream();
+                    await usuario.FotoFronted.CopyToAsync(memoryStream);
+                    usuario.Foto = memoryStream.ToArray();
+                }
                 _context.Usuario.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Home");
             }
-            
             return View();
         }
 
@@ -42,7 +47,7 @@ namespace Gimnasio.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Modificacion([Bind("Id,Nombre,DNI,Apellidos,FechaNacimiento,Direccion,Poblacion,Telefono,Email")] Usuario usuario)
+        public async Task<IActionResult> Modificacion([Bind("Id,Nombre,DNI,Apellidos,FechaNacimiento,Direccion,Poblacion,Telefono,Email,FotoFronted")] Usuario usuario)
         {
             var usuarioExistente = await _context.Usuario.FindAsync(usuario.Id);
 
@@ -50,7 +55,15 @@ namespace Gimnasio.Controllers
             {
                 return NotFound();
             }
-
+            if (usuario.FotoFronted != null && usuario.FotoFronted.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await usuario.FotoFronted.CopyToAsync(memoryStream);
+                    usuario.Foto = memoryStream.ToArray();
+                    usuarioExistente.Foto = usuario.Foto;
+                }
+            }
             // Excluir estos dos campos de ser actualizados
             usuarioExistente.Rol = usuarioExistente.Rol; 
             usuarioExistente.Password = usuarioExistente.Password; 
@@ -63,6 +76,7 @@ namespace Gimnasio.Controllers
             usuarioExistente.Poblacion = usuario.Poblacion;
             usuarioExistente.Telefono = usuario.Telefono;
             usuarioExistente.Email = usuario.Email;
+            
 
             _context.Update(usuarioExistente);
             await _context.SaveChangesAsync();

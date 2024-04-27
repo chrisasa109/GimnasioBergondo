@@ -12,8 +12,9 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Fecha</th>
-                    <th>Duración</th>
-                    <th></th>
+                    <th>Hora</th>
+                    <th>Duración(min)</th>
+                    <th>Apuntarse</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,13 +22,18 @@
                 {
                     <tr>
                         <td>@Html.DisplayFor(m => item.Descripcion)</td>
-                        <td>@Html.DisplayFor(m => item.FechaHora)</td>
-                        <td class="text-center">@Html.DisplayFor(m => item.Duracion)</td>
-                        <td class="text-center"><i class="bi bi-person-fill-add fs-4"></i></td>
+                        @{var fecha = DateOnly.FromDateTime(item.FechaHora);}
+                        <td>@fecha</td>
+                        @{var hora = TimeOnly.FromDateTime(item.FechaHora);}
+                        <td>@hora</td>
+                        @{var tiempo = item.Duracion.Hour * 60 + item.Duracion.Minute;}
+                        <td class="text-center">@tiempo</td>
+                        <td class="text-center"><a class="btn btn-primary"
+                               href="@Url.Action("Index", "Contrato", new { tarifaId = item.Id })"><i class="bi bi-person-fill-add fs-4"></i></a>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
-

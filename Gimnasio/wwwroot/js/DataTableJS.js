@@ -12,7 +12,7 @@ window.addEventListener("DOMContentLoaded", () => {
             "infoEmpty": "Mostrando 0 de 0",
             "infoFiltered": "(Filtrando de _MAX_ Entradas)",
             "infoPostFix": "",
-            "thousands": 000",",
+            "thousands": ",",
             "lengthMenu": "Mostrar _MENU_",
             "loadingRecords": "Cargando...",
             "processing": "Procesando...",

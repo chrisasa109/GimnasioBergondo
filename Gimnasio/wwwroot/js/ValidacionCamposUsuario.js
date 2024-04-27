@@ -17,6 +17,8 @@
             return validarPassword(elemento);
         case "ConfirmPassword":
             return validarConfirmarPassword(elemento);
+        case "images":
+            return validarImagen(elemento);
         default:
             return true;
     }
@@ -69,6 +71,35 @@ function validarCamposTexto(input) {
             break;
     }
     return val;
+}
+function validarImagen(input) {
+    var val = false;
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    if (input.files.length > 0) {
+        var file = input.files[0];
+        if (!allowedExtensions.exec(file.name)) {
+            mensajeErrorImagen(input, 'Por favor, seleccione un archivo de imagen con formato JPEG o PNG.');
+            input.value = '';
+        } else if (file.size > 5 * 1024 * 1024) {
+            mensajeErrorImagen(input, 'El tamaño del archivo no puede ser mayor a 5 MB.');
+            input.value = '';
+        } else {
+            mensajeErrorImagen(input, null);
+            validacionCorrecta(input);
+            val = true;
+        }
+    } else {
+        val = true;
+    }
+    return val;
+}
+function mensajeErrorImagen(input, mensaje) {
+    input.parentNode.nextElementSibling.textContent = mensaje;
+    if (mensaje != null) {
+        input.classList.add('is-invalid');
+    } else {
+        input.classList.remove('is-invalid');
+    }
 }
 function validarFechaNacimiento(input) {
     var fecha = new Date(input.value);

@@ -73,6 +73,9 @@ namespace Gimnasio.Models
 
         [Display(Name = "Foto de perfil")]
         public byte[] ? Foto { get; set; }
+        
+        [NotMapped]
+        public IFormFile ? FotoFronted { get; set; }
         public enum Role
         {
             ADMINISTRADOR,

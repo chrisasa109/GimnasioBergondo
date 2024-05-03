@@ -1,0 +1,73 @@
+﻿@model List<Gimnasio.Models.UsuarioActividad>
+
+@{
+    ViewData["Title"] = "Mis actividades";
+}
+
+<h1 class="text-center my-3">Mis actividades</h1>
+
+@if (TempData["exitoCambios"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-success alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["exitoCambios"]</strong>
+        </div>
+    </div>
+}
+@if (TempData["errorCambios"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-danger alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["errorCambios"]</strong>
+        </div>
+    </div>
+}
+
+<div class="row justify-content-center">
+    @if (Model.Count > 0)
+    {
+        <table class="table table-striped" id="formatDataTable">
+            <thead>
+                <tr>
+                    <th>Actividad</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Detalles</th>
+                    <th>Desapuntarse</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Actividad.Descripcion</td>
+                        <td>@DateOnly.FromDateTime(item.Actividad.FechaHora)</td>
+                        <td>@TimeOnly.FromDateTime(item.Actividad.FechaHora)</td>
+                        <td><a class="btn btn-info text-white" data-Id="@item.Id" href="@Url.Action("Detalles", "UsuarioActividad", new { Id = item.Id })"><i class="bi bi-eye mx-1"></i>Ver detalles</a></td>
+
+                        <td>
+                            <form asp-controller="UsuarioActividad" asp-action="Delete" method="post">
+                                <input type="hidden" name="eliminar" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger text-white eliminar-btn"><i class="bi bi-trash mx-1"></i>Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <div>
+            <p>No te apuntaste a ninguna actividad.</p>
+            <a asp-controller="Actividad" asp-action="Index">Apúntate!</a>
+        </div>
+    }
+
+</div>
+@section scripts {
+    <script src="~/js/DataTableJS.js"></script>
+}

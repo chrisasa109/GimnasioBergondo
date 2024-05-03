@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Gimnasio.Migrations
 {
     /// <inheritdoc />
-    public partial class MigracionInicial : Migration
+    public partial class NewDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ namespace Gimnasio.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descripcion = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Duracion = table.Column<TimeOnly>(type: "time", nullable: false),
-                    CapacidadMaxima = table.Column<int>(type: "int", nullable: false)
+                    CapacidadMaxima = table.Column<int>(type: "int", nullable: false),
+                    FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,9 +71,10 @@ namespace Gimnasio.Migrations
                     Direccion = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Poblacion = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Rol = table.Column<int>(type: "int", nullable: false),
+                    Foto = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -83,22 +85,29 @@ namespace Gimnasio.Migrations
                 name: "UsuarioActividad",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    ActividadId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FechaRealizacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Notas = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                    ActividadId = table.Column<int>(type: "int", nullable: false),
+                    Notas = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UsuarioActividad", x => new { x.Id, x.ActividadId, x.UsuarioId });
+                    table.ForeignKey(
+                        name: "FK_UsuarioActividad_Actividad_ActividadId",
+                        column: x => x.ActividadId,
+                        principalTable: "Actividad",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Carrito",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
                     ProductoId = table.Column<int>(type: "int", nullable: false),
                     Cantidad = table.Column<int>(type: "int", nullable: false)
@@ -118,11 +127,12 @@ namespace Gimnasio.Migrations
                 name: "Contrato",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
                     FechaInicio = table.Column<DateOnly>(type: "date", nullable: false),
                     FechaFin = table.Column<DateOnly>(type: "date", nullable: false),
-                    Comentarios = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Comentarios = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     FormaPago = table.Column<int>(type: "int", nullable: false),
                     TarifaID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -168,7 +178,8 @@ namespace Gimnasio.Migrations
                 name: "DetallePedido",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     PedidoId = table.Column<int>(type: "int", nullable: false),
                     ProductoId = table.Column<int>(type: "int", nullable: false),
                     Cantidad = table.Column<int>(type: "int", nullable: false)
@@ -219,14 +230,22 @@ namespace Gimnasio.Migrations
                 name: "IX_Pedido_UsuarioID",
                 table: "Pedido",
                 column: "UsuarioID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuario_Email",
+                table: "Usuario",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsuarioActividad_ActividadId",
+                table: "UsuarioActividad",
+                column: "ActividadId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Actividad");
-
             migrationBuilder.DropTable(
                 name: "Carrito");
 
@@ -247,6 +266,9 @@ namespace Gimnasio.Migrations
 
             migrationBuilder.DropTable(
                 name: "Producto");
+
+            migrationBuilder.DropTable(
+                name: "Actividad");
 
             migrationBuilder.DropTable(
                 name: "Usuario");

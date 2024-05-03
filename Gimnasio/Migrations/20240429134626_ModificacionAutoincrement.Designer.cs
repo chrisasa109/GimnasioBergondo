@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gimnasio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240418113005_MigracionInicial")]
-    partial class MigracionInicial
+    [Migration("20240429134626_ModificacionAutoincrement")]
+    partial class ModificacionAutoincrement
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,9 @@ namespace Gimnasio.Migrations
                     b.Property<TimeOnly>("Duracion")
                         .HasColumnType("time");
 
+                    b.Property<DateTime>("FechaHora")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Actividad");
@@ -52,7 +55,10 @@ namespace Gimnasio.Migrations
             modelBuilder.Entity("Gimnasio.Models.Carrito", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -73,13 +79,15 @@ namespace Gimnasio.Migrations
             modelBuilder.Entity("Gimnasio.Models.Contrato", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.Property<string>("Comentarios")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -107,7 +115,10 @@ namespace Gimnasio.Migrations
             modelBuilder.Entity("Gimnasio.Models.DetallePedido", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("PedidoId")
                         .HasColumnType("int");
@@ -228,10 +239,13 @@ namespace Gimnasio.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("FechaNacimiento")
                         .HasColumnType("date");
+
+                    b.Property<byte[]>("Foto")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -247,9 +261,8 @@ namespace Gimnasio.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Rol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Rol")
+                        .HasColumnType("int");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
@@ -257,29 +270,33 @@ namespace Gimnasio.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Usuario");
                 });
 
             modelBuilder.Entity("Gimnasio.Models.UsuarioActividad", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("ActividadId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ActividadId")
+                        .HasColumnType("int");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FechaRealizacion")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Notas")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id", "ActividadId", "UsuarioId");
+
+                    b.HasIndex("ActividadId");
 
                     b.ToTable("UsuarioActividad");
                 });
@@ -322,7 +339,7 @@ namespace Gimnasio.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Gimnasio.Models.Producto", "_produto")
+                    b.HasOne("Gimnasio.Models.Producto", "_producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -330,7 +347,7 @@ namespace Gimnasio.Migrations
 
                     b.Navigation("_pedido");
 
-                    b.Navigation("_produto");
+                    b.Navigation("_producto");
                 });
 
             modelBuilder.Entity("Gimnasio.Models.Pedido", b =>
@@ -342,6 +359,17 @@ namespace Gimnasio.Migrations
                         .IsRequired();
 
                     b.Navigation("_usuario");
+                });
+
+            modelBuilder.Entity("Gimnasio.Models.UsuarioActividad", b =>
+                {
+                    b.HasOne("Gimnasio.Models.Actividad", "Actividad")
+                        .WithMany()
+                        .HasForeignKey("ActividadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actividad");
                 });
 #pragma warning restore 612, 618
         }

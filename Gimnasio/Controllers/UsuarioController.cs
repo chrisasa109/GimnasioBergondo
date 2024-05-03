@@ -2,6 +2,7 @@
 using Gimnasio.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gimnasio.Controllers
@@ -33,7 +34,8 @@ namespace Gimnasio.Controllers
                 }
                 _context.Usuario.Add(usuario);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                TempData["iniciarSesion"] = "Debes de iniciar sesión para acceder a la plataforma.";
+                return RedirectToAction("Index", "Login");
             }
             return View();
         }
@@ -81,7 +83,8 @@ namespace Gimnasio.Controllers
             _context.Update(usuarioExistente);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Home");
+            TempData["cambioCorrecto"] = "Los cambios se han guardado correctamente";
+            return RedirectToAction("Detalles", "Usuario");
         }
 
         [HttpGet]
@@ -91,11 +94,42 @@ namespace Gimnasio.Controllers
             return View(user);
         }
 
+        public async Task<IActionResult> Eliminar(int? id)
+        {
+            if (id == null)
+            {
+                int? userIdFromCookie = ObtenerDatosPorCookies().Id;
+                id = userIdFromCookie;
+            }
+            Usuario? usuario = await _context.Usuario.FirstOrDefaultAsync(m => m.Id == id);
+
+            return View(usuario);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EliminarUsuario(int? id)
+        {
+            if (id == null)
+            {
+                id = ObtenerDatosPorCookies().Id;
+            }
+            Usuario? us = await _context.Usuario.FindAsync(id);
+            if(us != null)
+            {
+                _context.Usuario.Remove(us);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Salir", "Login");
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        
         private Usuario ObtenerDatosPorCookies()
         {
             int.TryParse(User.FindFirst("Id")?.Value, out int userId);
             var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
             return usuario;
         }
+
     }
 }

@@ -1,0 +1,40 @@
+﻿@model List<Gimnasio.Models.Pedido>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Mis pedidos";
+}
+
+<h1 class="text-center my-3">Mis pedidos</h1>
+@if (Model.Count < 1)
+{
+    <p>Todavía no has realizado ningún pedido.</p>
+    <a asp-controller="Producto" asp-action="Index">Visita nuestra selección de productos.</a>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Fecha</th>
+                <th>Nº productos</th>
+                <th>Precio total</th>
+                <th>Detalles</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Pedido item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@DateOnly.FromDateTime(item.Fecha)</td>
+                    <td>@item.DetallesPedido.Count</td>
+                    <td>@item.PrecioTotal.ToString("0.00")</td>
+                    <td><a class="btn btn-info" asp-controller="Pedido" asp-action="Detalles" asp-route-IdPedido="@item.Id"><i class="bi bi-eye-fill fs-6"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Gimnasio.Models.Usuario;
 
 namespace Gimnasio.Models
 {
+    [Authorize]
     public class Pedido
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El campo no puede quedar vacío.")]
@@ -25,6 +27,11 @@ namespace Gimnasio.Models
             TARJETA,
             TRANSFERENCIA
         }
+
+        public List<DetallePedido> DetallesPedido { get; set; }
+
+        [NotMapped]
+        public double PrecioTotal { get; set; }
 
         [ForeignKey("Usuario")]
         public int UsuarioID { get; set; }

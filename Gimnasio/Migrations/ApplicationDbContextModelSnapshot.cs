@@ -52,7 +52,10 @@ namespace Gimnasio.Migrations
             modelBuilder.Entity("Gimnasio.Models.Carrito", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -73,7 +76,10 @@ namespace Gimnasio.Migrations
             modelBuilder.Entity("Gimnasio.Models.Contrato", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -106,7 +112,10 @@ namespace Gimnasio.Migrations
             modelBuilder.Entity("Gimnasio.Models.DetallePedido", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("PedidoId")
                         .HasColumnType("int");
@@ -267,23 +276,24 @@ namespace Gimnasio.Migrations
             modelBuilder.Entity("Gimnasio.Models.UsuarioActividad", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("ActividadId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ActividadId")
+                        .HasColumnType("int");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FechaRealizacion")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Notas")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id", "ActividadId", "UsuarioId");
+
+                    b.HasIndex("ActividadId");
 
                     b.ToTable("UsuarioActividad");
                 });
@@ -326,7 +336,7 @@ namespace Gimnasio.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Gimnasio.Models.Producto", "_produto")
+                    b.HasOne("Gimnasio.Models.Producto", "_producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -334,7 +344,7 @@ namespace Gimnasio.Migrations
 
                     b.Navigation("_pedido");
 
-                    b.Navigation("_produto");
+                    b.Navigation("_producto");
                 });
 
             modelBuilder.Entity("Gimnasio.Models.Pedido", b =>
@@ -346,6 +356,17 @@ namespace Gimnasio.Migrations
                         .IsRequired();
 
                     b.Navigation("_usuario");
+                });
+
+            modelBuilder.Entity("Gimnasio.Models.UsuarioActividad", b =>
+                {
+                    b.HasOne("Gimnasio.Models.Actividad", "Actividad")
+                        .WithMany()
+                        .HasForeignKey("ActividadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actividad");
                 });
 #pragma warning restore 612, 618
         }

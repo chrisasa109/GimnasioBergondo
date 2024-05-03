@@ -7,6 +7,7 @@ namespace Gimnasio.Models
     public class Producto
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El campo no puede quedar vacío.")]

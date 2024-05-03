@@ -28,8 +28,11 @@
                         <td>@hora</td>
                         @{var tiempo = item.Duracion.Hour * 60 + item.Duracion.Minute;}
                         <td class="text-center">@tiempo</td>
-                        <td class="text-center"><a class="btn btn-primary"
-                               href="@Url.Action("Index", "Contrato", new { tarifaId = item.Id })"><i class="bi bi-person-fill-add fs-4"></i></a>
+                        <td class="text-center">
+                            <form asp-controller="UsuarioActividad" asp-action="Agregar">
+                                <input asp-for="@item.Id" name="Id" type="hidden" />
+                                <button class="btn btn-primary" type="submit"><i class="bi bi-person-fill-add fs-6"></i></button>
+                            </form>
                         </td>
                     </tr>
                 }

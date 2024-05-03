@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 /*
  * Esta clase representa la relación entre el usuario y las actividades.
@@ -9,21 +10,20 @@ namespace Gimnasio.Models
     public class UsuarioActividad
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
         [ForeignKey("Usuario")]
         public int UsuarioId { get; set; }
         
         [ForeignKey("Actividad")]
-        public string ActividadId { get; set; }
-
-        [Required(ErrorMessage = "El campo no puede quedar vacío.")]
-        [Display(Name = "Fecha y hora de realización")]
-        public DateTime FechaRealizacion { get; set; }
+        public int ActividadId { get; set; }
+        public virtual Actividad? Actividad { get; set; }
 
         [Display(Name = "Notas")]
         [DataType(DataType.MultilineText)]
+        [AllowNull]
         [StringLength(500, ErrorMessage = "Las notas no pueden superar los 500 caracteres.")]
-        public string Notas {  get; set; }
+        public string? Notas {  get; set; }
     }
 }

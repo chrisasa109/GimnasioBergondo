@@ -5,6 +5,15 @@
 @{
     ViewData["Title"] = "Inicio de sesión";
 }
+@if (TempData["iniciarSesion"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-warning alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["iniciarSesion"]</strong>
+        </div>
+    </div>
+}
 
 @if (TempData["errorUsuario"] != null || TempData["errorPassword"] != null)
 {

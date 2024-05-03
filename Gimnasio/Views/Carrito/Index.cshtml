@@ -1,0 +1,114 @@
+﻿@model List<Carrito>
+
+@{
+    ViewData["Title"] = "Mi carrito";
+
+}
+
+<h1 class="text-center my-3">Mi carrito</h1>
+
+@if (TempData["eliminarProducto"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-info alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["eliminarProducto"]</strong>
+        </div>
+    </div>
+}
+
+@if (TempData["exitoGuardarCambios"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-success alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["exitoGuardarCambios"]</strong>
+        </div>
+    </div>
+}
+
+@if (TempData["errorGuardarCambios"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-info alert-danger fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["errorGuardarCambios"]</strong>
+        </div>
+    </div>
+}
+
+@if (Model.Count == 0)
+{
+    <p>Todavía no tienes productos en el carrito.</p>
+    <a asp-controller="Producto" asp-action="Index">Visita nuestra selección de productos.</a>
+}
+else
+{
+    <div class="d-flex justify-content-between">
+        <a asp-controller="Producto" asp-action="Index">Seguir comprando</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Procesar pedido</a>
+    </div>
+    <hr />
+
+    @foreach (Carrito item in Model)
+    {
+        <div class="row my-3 justify-content-center elemento-carrito" id="@item.Id">
+            <div class="col-md-1 col-2">
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(item._producto.Foto)" alt="@item._producto.Nombre" class="img-fluid" />
+            </div>
+            <div class="col-md-3 col-3 align-self-center">
+                <h5>@item._producto.Nombre</h5>
+                <p>Precio: <span class="precioProducto">@item._producto.Precio.ToString("0.00")</span> €</p>
+            </div>
+            <div class="col-md-3 col-2 align-self-center">
+                <input type="hidden" value="@item._producto.Precio" />
+                <input type="number" min="0" class="form-control iCantidad" value="@item.Cantidad" />
+            </div>
+            @{
+                double total = item.Cantidad * item._producto.Precio;
+            }
+            <div class="col-md-2 col-2 align-self-center">
+                <h5 class="precioTotalProducto">@total</h5>
+            </div>
+            <div class="col-md-1 col-1 align-self-center">
+                <a href="#" class="eliminar-carrito" data-carrito-id="@item.Id"><strong class="text-danger">Eliminar</strong></a>
+            </div>
+
+        </div>
+    }
+    <hr />
+    <div class="d-flex justify-content-between">
+        <a id="GuardarCambios" href="#">Guardar cambios</a>
+        <h3>Precio total: <span id="precioTotalCarrito"></span></h3>
+    </div>
+}
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Realizar pedido</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Antes de realizar el pedido, comprueba que hayas guardado los cambios. De lo contrario, el pedido se procesará con los últimos cambios almacenados.</p>
+                <p>En caso de querer realizar el pedido, selecciona un método de pago:</p>
+                <select class="form-select" id="metodoPago">
+                    <option value="" selected disabled>Selecciona una opción...</option>
+                    <option value="EFECTIVO">Efectivo</option>
+                    <option value="TARJETA">Tarjeta</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
+                </select>
+                <span class="text-danger fs-6" id="errorSelect"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary text-white btn-realizar-pedido" data-bs-dismiss="modal">Realizar mi pedido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/js/Carrito.js"></script>
+}

@@ -34,13 +34,17 @@ namespace Gimnasio.Dates
          */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Carrito>().HasKey(c => new {c.Id, c.UsuarioId});
+            modelBuilder.Entity<Carrito>().HasKey(c => new { c.Id, c.UsuarioId });
             modelBuilder.Entity<Contrato>().HasKey(c => new { c.Id, c.UsuarioId });
-            modelBuilder.Entity<UsuarioActividad>().HasKey(c => new { c.Id, c.ActividadId, c.UsuarioId});
-            modelBuilder.Entity<DetallePedido>().HasKey(c => new { c.Id, c.PedidoId, c.ProductoId});
-            modelBuilder.Entity<Usuario>().HasIndex(p => new {p.Email}).IsUnique();
-
+            modelBuilder.Entity<UsuarioActividad>().HasKey(c => new { c.Id, c.ActividadId, c.UsuarioId });
+            modelBuilder.Entity<DetallePedido>().HasKey(c => new { c.Id, c.PedidoId, c.ProductoId });
+            modelBuilder.Entity<Usuario>().HasIndex(p => new { p.Email }).IsUnique();
+            modelBuilder.Entity<Carrito>().Property(c => c.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Contrato>().Property(c => c.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<UsuarioActividad>().Property(c => c.Id).ValueGeneratedOnAdd(); 
+            modelBuilder.Entity<DetallePedido>().Property(c => c.Id).ValueGeneratedOnAdd();
             base.OnModelCreating(modelBuilder);
         }
+        /*Para que no dea fallo el autoincrement: IDENTITY(1,1)*/
     }
 }

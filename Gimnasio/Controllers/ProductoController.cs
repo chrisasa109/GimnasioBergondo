@@ -66,5 +66,10 @@ namespace Gimnasio.Controllers
                 return NotFound();
             }
         }
+        [HttpGet]
+        public IActionResult Detalles()
+        {
+            return View(_context.Producto.ToList());
+        }
     }
 }

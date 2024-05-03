@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gimnasio.Models
 {
     public class Tarifa
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -13,7 +15,7 @@ namespace Gimnasio.Models
 
         [Required(ErrorMessage = "El campo no puede quedar vacío.")]
         [Display(Name= "Descripción")]
-        [StringLength(500, ErrorMessage ="La descripción no puede superar los 500 caracteres.")]
+        [StringLength(1000, ErrorMessage ="La descripción no puede superar los 500 caracteres.")]
         public string Descripcion { get; set; }
         
         [Required(ErrorMessage = "El campo no puede quedar vacío.")]

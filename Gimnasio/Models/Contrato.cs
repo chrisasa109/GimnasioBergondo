@@ -9,6 +9,7 @@ namespace Gimnasio.Models
     public class Contrato
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [ForeignKey("Usuario")]

@@ -6,6 +6,7 @@ namespace Gimnasio.Models
     public class Carrito
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
         [ForeignKey("Usuario")]

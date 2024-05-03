@@ -4,6 +4,15 @@
 }
 
 <h2 class="text-center my-3">Datos personales</h2>
+@if (TempData["cambioCorrecto"] != null)
+{
+    <div class="row justify-content-center my-3">
+        <div class="alert alert-success alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["cambioCorrecto"]</strong>
+        </div>
+    </div>
+}
 <div class="row justify-content-md-center">
     <div class="col-md-10">
         <div class="row">
@@ -68,6 +77,10 @@
                         @Html.DisplayFor(model => model.Email)
                     </dd>
                 </dl>
+                <div class="mb-4">
+                    <a asp-controller="Usuario" asp-action="Modificacion" class="btn btn-info">Modificar cuenta</a>
+                    <a asp-controller="Usuario" asp-action="Eliminar" class="btn btn-danger">Eliminar cuenta</a>
+                </div>
             </div>
         </div>
     </div>

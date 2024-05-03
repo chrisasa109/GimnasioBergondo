@@ -1,0 +1,22 @@
+﻿@model Gimnasio.Models.UsuarioActividad
+@{
+    ViewData["title"] = "Detalle de la actividad";
+}
+
+<h1 class="text-center my-3">Detalle de la actividad</h1>
+<div class="card">
+    <div class="card-header">
+        @Model.Actividad.FechaHora
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">@Model.Actividad.Descripcion</h5>
+        <form asp-action="ActualizarNota" method="post">
+            <div class="card-text">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <textarea asp-for="Notas" name="notas" class="form-control"></textarea>
+                <span asp-validation-for="Notas" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-success mt-2 text-white">Guardar nota</button>
+        </form>
+    </div>
+</div>

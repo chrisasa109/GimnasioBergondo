@@ -25,7 +25,6 @@ namespace Gimnasio.Controllers
             int idUsuario =id ?? ObtenerDatosPorCookies().Id;
             //Si salta error de conversión es porque el id de actividad por algún motivo lo lee como string
             var UserAct = _context.UsuarioActividad.Where(x => x.UsuarioId == idUsuario).Include(a => a.Actividad).ToList();
-
             return View(UserAct);
         }
 

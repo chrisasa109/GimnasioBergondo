@@ -17,27 +17,42 @@ namespace Gimnasio.Controllers
             var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
             return usuario;
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Agregar(int productoId)
+
+        public class ProductoCarrito
         {
-            int idUsuario = ObtenerDatosPorCookies().Id;
-            Carrito carritoExiste = _context.Carrito.FirstOrDefault(c => c.UsuarioId == idUsuario && c.ProductoId == productoId);
-            if (carritoExiste != null)
+            public int idProducto { get; set; }
+            public int Cantidad { get; set; }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Agregar([FromBody] ProductoCarrito carro)
+        {
+            try
             {
-                carritoExiste.Cantidad += 1;
-            }else
-            {
-                Carrito carrito = new Carrito
+                int idUsuario = ObtenerDatosPorCookies().Id;
+                Carrito? carritoExiste = _context.Carrito.FirstOrDefault(c => c.UsuarioId == idUsuario && c.ProductoId == carro.idProducto);
+                if (carritoExiste != null)
                 {
-                    UsuarioId = idUsuario,
-                    ProductoId = productoId,
-                    Cantidad = 1
-                };
-                await _context.Carrito.AddAsync(carrito);
+                    carritoExiste.Cantidad += 1;
+                }
+                else
+                {
+                    Carrito carrito = new()
+                    {
+                        UsuarioId = idUsuario,
+                        ProductoId = carro.idProducto,
+                        Cantidad = carro.Cantidad
+                    };
+                    await _context.Carrito.AddAsync(carrito);
+                }
+                await _context.SaveChangesAsync();
+                return Ok();
             }
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Carrito");
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
+            
         }
 
         [HttpGet]

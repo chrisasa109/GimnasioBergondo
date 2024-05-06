@@ -52,8 +52,8 @@ namespace Gimnasio.Controllers
                 {
                     _context.Contrato.Add(contratoFronted);
                     await _context.SaveChangesAsync();
+                    TempData["nuevoContrato"] = "Tu contrato está activado";
                 }
-
                 return RedirectToAction("Detalles", "Contrato");
             }
             return View();

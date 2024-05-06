@@ -3,6 +3,7 @@ using Gimnasio.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Gimnasio.Controllers
 {
@@ -20,7 +21,7 @@ namespace Gimnasio.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<Pedido> lista = _context.Pedido.Where(p => p.UsuarioID == ObtenerDatosPorCookies().Id).Include(p => p.DetallesPedido).ToList();
+            List<Pedido> lista = _context.Pedido.OrderByDescending(x=>x.Id).Where(p => p.UsuarioID == ObtenerDatosPorCookies().Id).Include(p => p.DetallesPedido).ToList();
             foreach (Pedido item in lista)
             {
                 double precio = 0;

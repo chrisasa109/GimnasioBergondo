@@ -67,6 +67,7 @@ namespace Gimnasio.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         public IActionResult Detalles()
         {
             return View(_context.Producto.ToList());

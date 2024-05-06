@@ -32,9 +32,18 @@
                         <h5 class="card-title">@Html.DisplayFor(m => item.Nombre)</h5>
                         <h6>@Html.DisplayFor(m => item.Precio)</h6>
                     </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
                     <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-secondary text-center mx-3 mb-3 text-white btnAgregarProd" data-producto-id="@item.Id">
                         <i class="bi bi-cart-dash fs-4 mx-md-1"></i>Añadir al carrito
                     </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-secondary text-center mx-3 mb-3 text-white" asp-controller="Login" asp-action="Index">
+                            <i class="bi bi-cart-dash fs-4 mx-md-1"></i>Añadir al carrito
+                        </a>
+                    }
                 </div>
             </div>
         }

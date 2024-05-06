@@ -7,34 +7,26 @@
 
 <h1 class="text-center my-3">Mi carrito</h1>
 
-@if (TempData["eliminarProducto"] != null)
-{
-    <div class="row justify-content-center">
-        <div class="alert alert-info alert-dismissible fade show col-md-7 text-center">
-            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
-            <strong class="fs-5">@TempData["eliminarProducto"]</strong>
-        </div>
-    </div>
+@functions {
+    void RenderAlert(string message, string alertType)
+    {
+        if (!string.IsNullOrEmpty(message))
+        {
+            <div class="row justify-content-center">
+                <div class="alert alert-@alertType alert-dismissible fade show col-md-7 text-center">
+                    <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+                    <strong class="fs-5">@message</strong>
+                </div>
+            </div>
+        }
+    }
 }
 
-@if (TempData["exitoGuardarCambios"] != null)
-{
-    <div class="row justify-content-center">
-        <div class="alert alert-success alert-dismissible fade show col-md-7 text-center">
-            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
-            <strong class="fs-5">@TempData["exitoGuardarCambios"]</strong>
-        </div>
-    </div>
-}
-
-@if (TempData["errorGuardarCambios"] != null)
-{
-    <div class="row justify-content-center">
-        <div class="alert alert-info alert-danger fade show col-md-7 text-center">
-            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
-            <strong class="fs-5">@TempData["errorGuardarCambios"]</strong>
-        </div>
-    </div>
+@{
+    RenderAlert(TempData["eliminarProducto"] as string, "info");
+    RenderAlert(TempData["exitoGuardarCambios"] as string, "success");
+    RenderAlert(TempData["errorGuardarCambios"] as string, "danger");
+    RenderAlert(TempData["agregadoCorrectamente"] as string, "success");
 }
 
 @if (Model.Count == 0)

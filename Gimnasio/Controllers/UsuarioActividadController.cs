@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Gimnasio.Controllers
@@ -19,29 +20,46 @@ namespace Gimnasio.Controllers
             var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
             return usuario;
         }
-        
-        public ActionResult Index(int? id) 
+
+        public ActionResult Index(int? id)
         {
-            int idUsuario =id ?? ObtenerDatosPorCookies().Id;
+            int idUsuario = id ?? ObtenerDatosPorCookies().Id;
             //Si salta error de conversión es porque el id de actividad por algún motivo lo lee como string
             var UserAct = _context.UsuarioActividad.Where(x => x.UsuarioId == idUsuario).Include(a => a.Actividad).ToList();
+
             return View(UserAct);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Agregar(int Id) 
+        public class ModeloUserAct
         {
-            int idUsuario = ObtenerDatosPorCookies().Id;
-            UsuarioActividad UsAc = new UsuarioActividad
-            {
-                ActividadId = Id,
-                UsuarioId = idUsuario
-            };
-            await _context.UsuarioActividad.AddAsync(UsAc);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), new { id = idUsuario });
+            public int ActividadId { get; set; }
+            [AllowNull]
+            public string? Notas { get; set; }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Agregar([FromBody] ModeloUserAct modelo)
+        {
+            try
+            {
+                int idUsuario = ObtenerDatosPorCookies().Id;
+                UsuarioActividad UsAc = new()
+                {
+                    ActividadId = modelo.ActividadId,
+                    Notas = modelo.Notas,
+                    UsuarioId = idUsuario
+                };
+                
+                await _context.UsuarioActividad.AddAsync(UsAc);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult Detalles(int Id)
         {
@@ -65,7 +83,7 @@ namespace Gimnasio.Controllers
         {
             if (ModelState.IsValid)
             {
-            var fila = _context.UsuarioActividad.FirstOrDefault(a => a.Id == UsAc.Id);
+                var fila = _context.UsuarioActividad.FirstOrDefault(a => a.Id == UsAc.Id);
                 if (fila != null)
                 {
                     fila.Notas = UsAc.Notas;
@@ -76,7 +94,7 @@ namespace Gimnasio.Controllers
                 {
                     TempData["errorCambios"] = "Los cambios no se han podido guardar.";
                 }
-            
+
             }
             return RedirectToAction("Index", "UsuarioActividad");
         }

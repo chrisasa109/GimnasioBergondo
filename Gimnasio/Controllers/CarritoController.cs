@@ -17,7 +17,6 @@ namespace Gimnasio.Controllers
             var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
             return usuario;
         }
-
         public class ProductoCarrito
         {
             public int idProducto { get; set; }
@@ -46,13 +45,13 @@ namespace Gimnasio.Controllers
                     await _context.Carrito.AddAsync(carrito);
                 }
                 await _context.SaveChangesAsync();
+                TempData["agregadoCorrectamente"] = "El producto se ha agregado correctamente al carrito.";
                 return Ok();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest();
             }
-            
         }
 
         [HttpGet]
@@ -85,16 +84,16 @@ namespace Gimnasio.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GuardarCambios([FromBody]  EnvioCambios modelo)
+        public async Task<IActionResult> GuardarCambios([FromBody] EnvioCambios modelo)
         {
-            if(modelo != null && modelo.IdsCarrito!=null && modelo.Cantidades!=null && modelo.IdsCarrito.Count == modelo.Cantidades.Count)
+            if (modelo != null && modelo.IdsCarrito != null && modelo.Cantidades != null && modelo.IdsCarrito.Count == modelo.Cantidades.Count)
             {
-                for(int i = 0; i < modelo.IdsCarrito.Count; i++)
+                for (int i = 0; i < modelo.IdsCarrito.Count; i++)
                 {
                     int carritoId = modelo.IdsCarrito[i];
                     int cantidad = modelo.Cantidades[i];
                     Carrito carrito = _context.Carrito.FirstOrDefault(a => a.Id == carritoId);
-                    if(carrito != null)
+                    if (carrito != null)
                     {
                         carrito.Cantidad = cantidad;
                         _context.Update(carrito);

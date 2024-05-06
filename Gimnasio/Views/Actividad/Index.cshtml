@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Actividades";
 }
-<script src="~/js/DataTableJS.js"></script>
 
 <h2 class="text-center my-3">Listado de actividades</h2>
 <div class="row justify-content-center mb-3">
@@ -10,6 +9,7 @@
         <table class="table table-striped" id="formatDataTable">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Nombre</th>
                     <th>Fecha</th>
                     <th>Hora</th>
@@ -21,18 +21,24 @@
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <td>@item.Id</td>
                         <td>@Html.DisplayFor(m => item.Descripcion)</td>
-                        @{var fecha = DateOnly.FromDateTime(item.FechaHora);}
+                        @{
+                            var fecha = DateOnly.FromDateTime(item.FechaHora);
+                        }
                         <td>@fecha</td>
-                        @{var hora = TimeOnly.FromDateTime(item.FechaHora);}
+                        @{
+                            var hora = TimeOnly.FromDateTime(item.FechaHora);
+                        }
                         <td>@hora</td>
-                        @{var tiempo = item.Duracion.Hour * 60 + item.Duracion.Minute;}
+                        @{
+                            var tiempo = item.Duracion.Hour * 60 + item.Duracion.Minute;
+                        }
                         <td class="text-center">@tiempo</td>
                         <td class="text-center">
-                            <form asp-controller="UsuarioActividad" asp-action="Agregar">
-                                <input asp-for="@item.Id" name="Id" type="hidden" />
-                                <button class="btn btn-primary" type="submit"><i class="bi bi-person-fill-add fs-6"></i></button>
-                            </form>
+                            <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary text-white btn-nuevaAct" data-IdActividad="@item.Id">
+                                <i class="bi bi-person-fill-add mr-2 fs-6"></i>Apuntarme
+                            </a>
                         </td>
                     </tr>
                 }
@@ -40,3 +46,28 @@
         </table>
     </div>
 </div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Apuntarse a la actividad</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Si lo deseas, puedes escribir una nota en referencia a la actividad que te vas a apuntar:</p>
+                <div class="form-floating">
+                    <textarea class="form-control" id="notaNuevaActividad" placeholder="Escribe una nota..." style="height: 100px;"></textarea>
+                    <label for="notaNuevaActividad">Nota</label>
+                </div>
+                <input type="hidden" id="actividad-id-modal" />
+                <span class="text-danger fs-6" id="errorNota"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary text-white btn-agregar-actividad-usuario" data-bs-dismiss="modal">Apuntarme</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/DataTableJS.js"></script>
+<script src="~/js/AgregarActividad.js"></script>

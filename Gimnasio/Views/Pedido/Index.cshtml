@@ -6,6 +6,16 @@
     ViewData["Title"] = "Mis pedidos";
 }
 
+@if (TempData["pedidoCompletado"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="alert alert-success alert-dismissible fade show col-md-7 text-center">
+            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+            <strong class="fs-5">@TempData["pedidoCompletado"]</strong>
+        </div>
+    </div>
+}
+
 <h1 class="text-center my-3">Mis pedidos</h1>
 @if (Model.Count < 1)
 {

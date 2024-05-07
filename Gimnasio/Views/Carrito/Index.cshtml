@@ -37,8 +37,8 @@
 else
 {
     <div class="d-flex justify-content-between">
-        <a asp-controller="Producto" asp-action="Index">Seguir comprando</a>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Procesar pedido</a>
+        <a class="btn btn-secondary" asp-controller="Producto" asp-action="Index">Seguir comprando</a>
+        <a href="#" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">REALIZAR PEDIDO</a>
     </div>
     <hr />
 
@@ -63,14 +63,14 @@ else
                 <h5 class="precioTotalProducto">@total</h5>
             </div>
             <div class="col-md-1 col-1 align-self-center">
-                <a href="#" class="eliminar-carrito" data-carrito-id="@item.Id"><strong class="text-danger">Eliminar</strong></a>
+                <a href="#" class="eliminar-carrito btn btn-outline-danger" data-carrito-id="@item.Id"><strong>Eliminar</strong></a>
             </div>
 
         </div>
     }
     <hr />
     <div class="d-flex justify-content-between">
-        <a id="GuardarCambios" href="#">Guardar cambios</a>
+        <a class="btn btn-primary" id="GuardarCambios" href="#">Guardar cambios</a>
         <h3>Precio total: <span id="precioTotalCarrito"></span></h3>
     </div>
 }
@@ -83,8 +83,12 @@ else
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Antes de realizar el pedido, comprueba que hayas guardado los cambios. De lo contrario, el pedido se procesará con los últimos cambios almacenados.</p>
-                <p>En caso de querer realizar el pedido, selecciona un método de pago:</p>
+                <div class="row justify-content-center m-2">
+                    <div class="alert alert-warning fade show text-center mx-3">
+                        <strong class="fs-6 p-2">Antes de realizar el pedido, comprueba que hayas guardado los cambios. De lo contrario, el pedido se procesará con los últimos cambios almacenados.</strong>
+                    </div>
+                </div>
+                <p>Selecciona un método de pago:</p>
                 <select class="form-select" id="metodoPago">
                     <option value="" selected disabled>Selecciona una opción...</option>
                     <option value="EFECTIVO">Efectivo</option>

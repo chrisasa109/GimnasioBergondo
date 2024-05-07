@@ -3,11 +3,7 @@
 @{
     ViewData["Title"] = "Listado de productos";
 }
-@if (User.IsInRole("ADMINISTRADOR") || User.IsInRole("TRABAJADOR"))
-{
-    <a class="btn btn-primary" asp-controller="Producto" asp-action="Create">Nuevo producto</a>
-    <a class="btn btn-info" asp-controller="Producto" asp-action="Detalles">Detalles de los productos</a>
-}
+
 @if (TempData["productoCreado"] != null)
 {
     <div class="row justify-content-center my-2">
@@ -24,7 +20,7 @@
         @foreach (var item in Model)
         {
             <div class="col-6 col-lg-3 my-3">
-                <div class="card h-100 d-flex flex-column">
+                <div class="card h-100 d-flex flex-column border-dark border-2 rounded-2">
                     <div class="row align-items-center" style="height: 60%;">
                         <img class="cad-img-top img-fluid col p-4" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Foto)" alt="@item.Nombre" />
                     </div>

@@ -59,6 +59,8 @@ namespace Gimnasio.Controllers
 
                     await transaction.CommitAsync();
 
+                    TempData["pedidoCompletado"] = "El pedido ha sido realizado correctamente.";
+
                     return Ok("Pedido procesado correctamente");
                 }
                 else

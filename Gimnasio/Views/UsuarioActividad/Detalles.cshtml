@@ -13,8 +13,11 @@
         <form asp-action="ActualizarNota" method="post">
             <div class="card-text">
                 <input type="hidden" name="Id" value="@Model.Id" />
-                <textarea asp-for="Notas" name="notas" class="form-control"></textarea>
-                <span asp-validation-for="Notas" class="text-danger"></span>
+                <div class="form-floating">
+                    <textarea asp-for="Notas" name="notas" id="notaActividad" class="form-control"></textarea>
+                    <label for="notaActividad">Nota</label>
+                    <span asp-validation-for="Notas" class="text-danger"></span>
+                </div>
             </div>
             <button type="submit" class="btn btn-success mt-2 text-white">Guardar nota</button>
         </form>

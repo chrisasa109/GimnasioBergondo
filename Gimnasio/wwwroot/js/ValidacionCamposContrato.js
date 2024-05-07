@@ -18,6 +18,13 @@ function validarCampos(elemento) {
             var op = Array("TRANSFERENCIA", "TARJETA", "EFECTIVO");
             return op.includes(elemento.value);
             break;
+        case "condiciones-contrato":
+            if (!elemento.checked) { document.getElementById('errorCheckbox').textContent = "Debes de aceptar los términos y condiciones." }
+            return elemento.checked;
+            break;
+        default:
+            return false;
+            break;
     }
 }
 function valFechaInicio(elemento) {

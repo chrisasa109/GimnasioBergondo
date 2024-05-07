@@ -48,7 +48,7 @@
                 });
 
                 if (response.ok) {
-                    location.reload();
+                    window.location.href="Pedido";
                 } else {
                     console.error("Error al procesar el pedido:", response.statusText);
                 }

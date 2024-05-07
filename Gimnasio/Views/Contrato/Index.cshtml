@@ -58,7 +58,7 @@
             </dd>
         </dl>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-5">
         <form asp-action="Contratar">
             <h4 class="text-center">Detalles contractuales</h4>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -88,12 +88,56 @@
                 </select>
                 <span asp-validation-for="FormaPago" class="text-danger"></span>
             </div>
+            <div class="form-check form-switch ml-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="condiciones-contrato" />
+                <label class="form-check-label">
+                    He leído y aceptado los <a href="#" data-bs-toggle="modal" data-bs-target="#modalContrato">términos y condiciones</a>.
+                </label>
+                <p class="text-danger" id="errorCheckbox"></p>
+            </div>
             <div class="form-group text-center">
                 <input type="submit" value="Contratar" class="btn btn-success" />
             </div>
         </form>
     </div>
     <h3 class="text-center my-3">Total: @Html.DisplayFor(m => m._tarifa.Precio)</h3>
+</div>
+
+<div class="modal fade" id="modalContrato" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Términos y condiciones del contrato</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Al aceptar estos términos y condiciones, te comprometes a cumplir con las siguientes disposiciones durante tu membresía en nuestro gimnasio:</p>
+
+                <h6>1. Uso de Instalaciones</h6>
+                <p>Los miembros tienen acceso a todas las áreas de entrenamiento y equipamiento del gimnasio durante el horario de operación establecido. El uso de las instalaciones debe realizarse de manera responsable y respetuosa hacia otros miembros y el personal del gimnasio.</p>
+
+                <h6>2. Cuotas y Pagos</h6>
+                <p>Los miembros deben pagar las cuotas de membresía de acuerdo con el plan seleccionado al momento de la inscripción. Los pagos deben efectuarse de forma puntual y se aplicarán políticas de cancelación y reembolso según lo establecido por el gimnasio.</p>
+
+                <h6>3. Responsabilidades del Miembro</h6>
+                <p>Es responsabilidad del miembro seguir las reglas y regulaciones del gimnasio. Se espera un comportamiento adecuado y respetuoso en todas las interacciones dentro de las instalaciones. El incumplimiento de las normas puede resultar en la suspensión o revocación de la membresía.</p>
+
+                <h6>4. Seguridad y Lesiones</h6>
+                <p>El gimnasio no se hace responsable de lesiones personales que ocurran durante el uso de las instalaciones. Se recomienda a los miembros asegurar su propia cobertura de seguro médico para cualquier eventualidad.</p>
+
+                <h6>5. Privacidad de los Datos</h6>
+                <p>La información personal proporcionada al gimnasio será tratada con confidencialidad y utilizada únicamente para fines relacionados con la membresía.</p>
+
+                <h6>6. Modificaciones y Actualizaciones</h6>
+                <p>El gimnasio se reserva el derecho de modificar estos términos y condiciones en cualquier momento. Los miembros serán notificados sobre cualquier cambio importante que afecte su membresía.</p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary text-white btn-aceptar-condiciones" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="~/js/ValidacionCamposContrato.js"></script>

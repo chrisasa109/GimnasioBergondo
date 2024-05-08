@@ -1,25 +1,32 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+.nav-posicion {
+    margin-top: 100px;
+}
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
     margin-bottom: 60px;
+}
+
+.offcanvas {
+    background-color: black;
 }
 
 #FormularioUsuario > div > label {
@@ -30,11 +37,11 @@ body {
     font-size: 18px;
 }
 
-#FormularioNuevoProducto > div> label{
-    font-size:18px;
+#FormularioNuevoProducto > div > label {
+    font-size: 18px;
 }
 
-#FormularioNuevoProducto > div >div > label {
+#FormularioNuevoProducto > div > div > label {
     font-size: 18px;
 }
 
@@ -54,14 +61,14 @@ body {
     transition: background .2s ease-in-out, border .2s ease-in-out;
 }
 
-.drop-container:hover {
-    background: #eee;
-    border-color: #111;
-}
+    .drop-container:hover {
+        background: #eee;
+        border-color: #111;
+    }
 
-.drop-container:hover .drop-title {
-    color: #222;
-}
+        .drop-container:hover .drop-title {
+            color: #222;
+        }
 
 .drop-title {
     color: #444;
@@ -71,6 +78,24 @@ body {
     transition: color .2s ease-in-out;
 }
 
-#linkCerrarSesion{
+#linkCerrarSesion {
     color: red;
+}
+/*
+    Paleta:
+    - Negro: #0F1618
+    - Rojo: #DC191B
+    - Blanco: #FFFFFF
+    - Gris: EDEDED
+*/
+.fondo-web {
+    background-color: #EDEDED;
+}
+
+.fondo-headfoot {
+    background-color: #0F1618;
+}
+/*Cuando se pulsa un link de las opciones de perfil o de acciones el fondo se pone azul. ELIMINAR*/
+.he-dr-cl > li > a:active {
+    background-color: #EDEDED;
 }

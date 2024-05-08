@@ -14,7 +14,7 @@
     </div>
 }
 <div class="row justify-content-md-center">
-    <div class="col-md-10">
+    <div class="col-md-10 bg-white p-4">
         <div class="row">
             <div class="col-5 align-content-center text-center">
                 @if (Model.Foto == null)
@@ -77,8 +77,8 @@
                         @Html.DisplayFor(model => model.Email)
                     </dd>
                 </dl>
-                <div class="mb-4">
-                    <a asp-controller="Usuario" asp-action="Modificacion" class="btn btn-info">Modificar cuenta</a>
+                <div class="my-3">
+                    <a asp-controller="Usuario" asp-action="Modificacion" class="btn btn-info mr-2">Modificar cuenta</a>
                     <a asp-controller="Usuario" asp-action="Eliminar" class="btn btn-danger">Eliminar cuenta</a>
                 </div>
             </div>

@@ -99,9 +99,11 @@ namespace Gimnasio.Controllers
             return RedirectToAction("Index", "UsuarioActividad");
         }
 
-        /*
-         * Aquí hay que hacer un método que me liste todas las actividades que hay.
-         * Además, es importante que cuando se entra en una actividad saque una lista con todos los usuarios apuntados.
-         */
+        public IActionResult Listado()
+        {
+
+            return View();
+        }
+
     }
 }

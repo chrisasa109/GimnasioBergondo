@@ -19,12 +19,14 @@
 <h1 class="text-center my-3">Mis pedidos</h1>
 @if (Model.Count < 1)
 {
-    <p>Todavía no has realizado ningún pedido.</p>
-    <a asp-controller="Producto" asp-action="Index">Visita nuestra selección de productos.</a>
+    <div class="border border-2 p-4 bg-white">
+        <p>Todavía no has realizado ningún pedido.</p>
+        <a asp-controller="Producto" asp-action="Index">Visita nuestra selección de productos.</a>
+    </div>
 }
 else
 {
-    <table class="table table-striped">
+    <table class="table table-striped d-sm-table">
         <thead>
             <tr>
                 <th>Codigo</th>

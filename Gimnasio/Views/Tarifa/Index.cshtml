@@ -15,7 +15,7 @@
     </div>
 }
 
-<h2 class="text-center my-3">Tarifas</h2>
+<h1 class="text-center my-3">Tarifas</h1>
 
 <div class="container text-center">
     @foreach (var item in Model)
@@ -28,7 +28,7 @@
                         <h3 class="card-subtitle my-2">@Html.DisplayFor(m => item.Precio)</h3>
                         <p class="card-text">@Html.DisplayFor(m => item.Descripcion)</p>
                         <div class="text-center">
-                            <a class="btn btn-success text-center contratar-btn"
+                            <a class="btn btn-success text-center contratar-btn fw-bold border-dark border-1"
                                href="@Url.Action("Index", "Contrato", new { tarifaId = item.Id })">Contratar</a>
                         </div>
                     </div>

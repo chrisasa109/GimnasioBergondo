@@ -8,64 +8,66 @@
 
 <h1 class="text-center my-3">Pedido Nº @Model.Id</h1>
 
-<dl class="row">
-    <dt class="col-sm-2">
-        Cliente
-    </dt>
-    <dd class="col-sm-10">
-        @{
-            string nombrecompleto = Model._usuario.Nombre + " " + Model._usuario.Apellidos;
-        }
-        @nombrecompleto
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(m => m.Fecha)
-    </dt>
-    <dd class="col-sm-10">
-        @DateOnly.FromDateTime(Model.Fecha)
-    </dd>
-    <dt class="col-sm-2">
-        Hora de pedido
-    </dt>
-    <dd class="col-sm-10">
-        @TimeOnly.FromDateTime(Model.Fecha)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(m => m.FormaPago)
-    </dt>
-    <dd class="col-sm-10">
-        @{
-            string pago = Model.FormaPago.ToString().Substring(0, 1).ToUpper() + Model.FormaPago.ToString().Substring(1).ToLower();
-        }
-        @pago
-    </dd>
-</dl>
-<div class="my-3">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Nombre</th>
-                <th>Precio unitario</th>
-                <th>Cantidad</th>
-                <th>Precio total</th>
-            </tr>
-        </thead>
-        @foreach (DetallePedido item in Model.DetallesPedido)
-        {
-            <tr>
-                <td>@item.ProductoId</td>
-                <td>@item._producto.Nombre</td>
-                <td>@item._producto.Precio.ToString("0.00")</td>
-                <td>@item.Cantidad</td>
-                @{
-                    double precio = item._producto.Precio * item.Cantidad;
-                    string precioS = precio.ToString("0.00");
-                }
-                <td class="precioTotalProducto">@precioS</td>
-            </tr>
-        }
-    </table>
-    <h4 id="precioTotal"></h4>
+<div class="border border-2 border-dark p-3 bg-white">
+    <dl class="row">
+        <dt class="col-sm-2">
+            Cliente
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string nombrecompleto = Model._usuario.Nombre + " " + Model._usuario.Apellidos;
+            }
+            @nombrecompleto
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.Fecha)
+        </dt>
+        <dd class="col-sm-10">
+            @DateOnly.FromDateTime(Model.Fecha)
+        </dd>
+        <dt class="col-sm-2">
+            Hora de pedido
+        </dt>
+        <dd class="col-sm-10">
+            @TimeOnly.FromDateTime(Model.Fecha)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.FormaPago)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string pago = Model.FormaPago.ToString().Substring(0, 1).ToUpper() + Model.FormaPago.ToString().Substring(1).ToLower();
+            }
+            @pago
+        </dd>
+    </dl>
+    <div class="my-3">
+        <table class="table table-sm table-striped border border-1">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Precio unitario</th>
+                    <th>Cantidad</th>
+                    <th>Precio total</th>
+                </tr>
+            </thead>
+            @foreach (DetallePedido item in Model.DetallesPedido)
+            {
+                <tr>
+                    <td>@item.ProductoId</td>
+                    <td>@item._producto.Nombre</td>
+                    <td>@item._producto.Precio.ToString("0.00")</td>
+                    <td>@item.Cantidad</td>
+                    @{
+                        double precio = item._producto.Precio * item.Cantidad;
+                        string precioS = precio.ToString("0.00");
+                    }
+                    <td class="precioTotalProducto">@precioS</td>
+                </tr>
+            }
+        </table>
+        <h4 id="precioTotal"></h4>
+    </div>
 </div>
 <script src="~/js/DetallePedidoJS.js"></script>

@@ -8,7 +8,7 @@
 
 @if (TempData["exitoCambios"] != null)
 {
-    <div class="row justify-content-center border border-2 border-dark">
+    <div class="row justify-content-center">
         <div class="alert alert-success alert-dismissible fade show col-md-7 text-center">
             <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
             <strong class="fs-5">@TempData["exitoCambios"]</strong>
@@ -34,8 +34,8 @@
                     <th>Actividad</th>
                     <th>Fecha</th>
                     <th>Hora</th>
-                    <th>Detalles</th>
-                    <th>Desapuntarse</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -45,12 +45,12 @@
                         <td>@item.Actividad.Descripcion</td>
                         <td>@DateOnly.FromDateTime(item.Actividad.FechaHora)</td>
                         <td>@TimeOnly.FromDateTime(item.Actividad.FechaHora)</td>
-                        <td><a class="btn btn-info text-white" data-Id="@item.Id" href="@Url.Action("Detalles", "UsuarioActividad", new { Id = item.Id })"><i class="bi bi-eye mx-1"></i>Ver detalles</a></td>
+                        <td><a class="btn btn-info text-white" data-Id="@item.Id" href="@Url.Action("Detalles", "UsuarioActividad", new { Id = item.Id })"><i class="bi bi-eye"></i></a></td>
 
                         <td>
                             <form asp-controller="UsuarioActividad" asp-action="Delete" method="post">
                                 <input type="hidden" name="eliminar" value="@item.Id" />
-                                <button type="submit" class="btn btn-danger text-white eliminar-btn"><i class="bi bi-trash mx-1"></i>Eliminar</button>
+                                <button type="submit" class="btn btn-danger text-white eliminar-btn"><i class="bi bi-trash"></i></button>
                             </form>
                         </td>
                     </tr>

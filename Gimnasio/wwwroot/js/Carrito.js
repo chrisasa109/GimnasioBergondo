@@ -1,5 +1,4 @@
 ﻿document.addEventListener("DOMContentLoaded", () => {
-   
     document.querySelectorAll('.iCantidad').forEach(input => {
         precioProducto.call(input);
         input.addEventListener('input', precioProducto);
@@ -16,13 +15,13 @@
 
     document.getElementById('GuardarCambios').addEventListener('click', function (e) {
         e.preventDefault();
-        const idsCarrito = Array.from(document.querySelectorAll('.elemento-carrito')).map(a => a.id);
+        const idsCarrito = Array.from(document.querySelectorAll('.eliminar-carrito')).map(a => a.getAttribute('data-carrito-id'));
         const cantidadInputs = Array.from(document.querySelectorAll('.iCantidad')).map(a => a.value);
         const envio = {
             idsCarrito: idsCarrito,
             cantidades: cantidadInputs
         };
-
+        console.log(envio)
         fetch('/Carrito/GuardarCambios', {
             method: 'POST',
             headers: {
@@ -63,19 +62,20 @@
 });
 
 function precioProducto() {
-    const cantidad = parseInt(this.value);
-    const precioProductoElement = this.parentElement.previousElementSibling.querySelector('.precioProducto');
+    var cantidad = parseInt(this.value);
+    if (isNaN(cantidad)) {cantidad=1 }
+    const precioProductoElement = this.closest('.card-body').querySelector('.precioProducto');
     const precioFormateado = parseFloat(precioProductoElement.innerText.replace(',', '.'));
     const precioTotalProducto = cantidad * precioFormateado;
     const precioMostrar = precioTotalProducto.toFixed(2).replace('.', ',') + ' €';
-    const elementoPrecioTotalProducto = this.parentElement.nextElementSibling.querySelector('.precioTotalProducto');
+    const elementoPrecioTotalProducto = this.closest('.card-body').querySelector('.precioTotalProducto');
     elementoPrecioTotalProducto.innerText = precioMostrar;
     calcularPrecioTotalCarrito();
 }
 
 function precioProductoChange() {
     const cantidad = this.value;
-    if (cantidad == "" || cantidad<1) {
+    if (cantidad == "" || cantidad<1 || cantidad==null) {
         this.value = 1;
     } else{
         this.value = parseInt(cantidad)

@@ -49,7 +49,7 @@ namespace Gimnasio.Controllers
                     Notas = modelo.Notas,
                     UsuarioId = idUsuario
                 };
-                
+
                 await _context.UsuarioActividad.AddAsync(UsAc);
                 await _context.SaveChangesAsync();
                 return Ok();
@@ -78,7 +78,6 @@ namespace Gimnasio.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ActualizarNota([Bind("Id,Notas")] UsuarioActividad UsAc)
         {
             if (ModelState.IsValid)
@@ -98,12 +97,19 @@ namespace Gimnasio.Controllers
             }
             return RedirectToAction("Index", "UsuarioActividad");
         }
-
-        public IActionResult Listado()
+        
+        [HttpGet]
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
+        public ActionResult Listado()
         {
-
-            return View();
+            List<UsuarioActividad> lista = _context.UsuarioActividad.ToList();
+            foreach (UsuarioActividad item in lista)
+            {
+                item.Actividad = _context.Actividad.FirstOrDefault(a => a.Id == item.ActividadId);
+                item._usuario = _context.Usuario.FirstOrDefault(u => u.Id == item.UsuarioId);
+            }
+            return View(lista);
         }
-
+        
     }
 }

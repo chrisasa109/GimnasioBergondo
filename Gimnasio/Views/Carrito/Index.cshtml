@@ -32,50 +32,54 @@
 @if (Model.Count == 0)
 {
     <div class="border border-2 p-4 bg-white border-dark">
-    <p>Todavía no tienes productos en el carrito.</p>
-    <a asp-controller="Producto" asp-action="Index">Visita nuestra selección de productos.</a>
+        <p>Todavía no tienes productos en el carrito.</p>
+        <a asp-controller="Producto" asp-action="Index">Visita nuestra selección de productos.</a>
     </div>
 }
 else
 {
-    <div class="border border-2 border-dark p-4 bg-white">
+    <div class="border border-2 border-dark p-4 bg-white mb-4">
         <div class="d-flex justify-content-between">
             <a class="btn btn-secondary" asp-controller="Producto" asp-action="Index">Seguir comprando</a>
             <a href="#" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">REALIZAR PEDIDO</a>
         </div>
         <hr />
-
+        <div class="row justify-content-center">
         @foreach (Carrito item in Model)
         {
-            <div class="row my-3 justify-content-center elemento-carrito" id="@item.Id">
-                <div class="col-md-1 col-2">
-                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item._producto.Foto)" alt="@item._producto.Nombre" class="img-fluid" />
+            <div class="col-lg-6 col-8 my-3">
+            <div class="card" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(item._producto.Foto)" alt="@item._producto.Nombre" class="img-fluid rounded-start" />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">@item._producto.Nombre</h5>
+                                    <p class="card-text lh-1 text-muted"><small><span class="precioProducto">@item._producto.Precio.ToString("0.00")</span> € / unidad</small></p>
+                            <p class="card-text lh-1">
+                                <input type="hidden" value="@item._producto.Precio" />
+                                <div class="input-group">
+                                    <span class="input-group-text">Cantidad</span>
+                                    <input type="number" min="0" class="form-control iCantidad" value="@item.Cantidad" />
+                                </div>
+                            </p>
+                            @{
+                                double total = item.Cantidad * item._producto.Precio;
+                            }
+                            <p class="card-text lh-1 precioTotalProducto">Precio total: @total</p>
+                                    <a href="#" class="btn btn-outline-danger eliminar-carrito" data-carrito-id="@item.Id">
+                                <strong><i class="bi bi-trash3-fill mr-1"></i>Eliminar</strong>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-3 col-3 align-self-center">
-                    <h5>@item._producto.Nombre</h5>
-                    <p>Precio: <span class="precioProducto">@item._producto.Precio.ToString("0.00")</span> €</p>
-                </div>
-                <div class="col-md-3 col-2 align-self-center">
-                    <input type="hidden" value="@item._producto.Precio" />
-                    <input type="number" min="0" class="form-control iCantidad" value="@item.Cantidad" />
-                </div>
-                @{
-                    double total = item.Cantidad * item._producto.Precio;
-                }
-                <div class="col-md-2 col-2 align-self-center">
-                    <h5 class="precioTotalProducto">@total</h5>
-                </div>
-                <div class="col-md-1 col-1 align-self-center">
-                    <a href="#" class="eliminar-carrito btn btn-outline-danger" data-carrito-id="@item.Id"><strong>Eliminar</strong></a>
-                </div>
-
-            </div>
+            </div></div>
         }
-        <hr />
-        <div class="d-flex justify-content-between">
-            <a class="btn btn-primary" id="GuardarCambios" href="#">Guardar cambios</a>
-            <h3>Precio total: <span id="precioTotalCarrito"></span></h3>
         </div>
+        <hr />
+        <h3 class="my-4">Precio total: <span id="precioTotalCarrito"></span></h3>
+        <a class="btn btn-primary" id="GuardarCambios" href="#">Guardar cambios</a>
     </div>
 }
 

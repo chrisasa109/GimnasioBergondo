@@ -10,11 +10,11 @@
     </div>
     <div class="card-body">
         <h5 class="card-title">@Model.Actividad.Descripcion</h5>
-        <form asp-action="ActualizarNota" method="post">
+        <form asp-controller="UsuarioActividad" asp-action="ActualizarNota" method="post">
             <div class="card-text">
-                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" asp-for="Id" />
                 <div class="form-floating">
-                    <textarea asp-for="Notas" name="notas" id="notaActividad" class="form-control"></textarea>
+                    <textarea asp-for="Notas" name="Notas" id="notaActividad" class="form-control"></textarea>
                     <label for="notaActividad">Nota</label>
                     <span asp-validation-for="Notas" class="text-danger"></span>
                 </div>

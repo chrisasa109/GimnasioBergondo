@@ -28,7 +28,8 @@
                     var hora = TimeOnly.FromDateTime(item.Actividad.FechaHora);
                 }
                 <td>@hora</td>
-                <td><a class="btn btn-outline-dark" id="LinkListaUsuariosActividad" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-eye-fill"></i></a></td>
+                <td><a class="btn btn-outline-dark LinkListaUsuariosActividad" data-idActividad="@item.ActividadId" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-eye-fill"></i></a></td>
+
             </tr>
         }
     </tbody>
@@ -53,9 +54,9 @@
                             <li>Espacio disponible: <span id="espacioDisponibleActividad"></span></li>
                         </ul>
                     </div>
+                    
                 </div>
-                <!--Aquí sacar la lista de clientes apuntados-->
-                
+                <div id="listaUsuarios"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -64,3 +65,4 @@
     </div>
 </div>
 <script src="~/js/DataTableJS.js"></script>
+<script src="~/js/ObtenerListado.js"></script>

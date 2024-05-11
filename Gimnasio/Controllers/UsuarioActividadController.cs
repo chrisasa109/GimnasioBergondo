@@ -3,9 +3,11 @@ using Gimnasio.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text.Json;
 
 namespace Gimnasio.Controllers
 {
@@ -110,6 +112,17 @@ namespace Gimnasio.Controllers
             }
             return View(lista);
         }
-        
+
+        [HttpPost]
+        public ActionResult ListaUsuarios(int idActividad)
+        {
+            List<UsuarioActividad> listaUA = _context.UsuarioActividad.Where(a => a.ActividadId == idActividad).ToList();
+            List<int> idsUsuarios = listaUA.Select(ua => ua.UsuarioId).ToList();
+            List<Usuario> usuarios = _context.Usuario.Where(u => idsUsuarios.Contains(u.Id)).ToList();
+            return PartialView("~/Views/Shared/_ListaUsuariosActividad.cshtml", usuarios);
+        }
+
+
+
     }
 }

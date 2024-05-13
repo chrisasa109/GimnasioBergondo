@@ -45,15 +45,23 @@ namespace Gimnasio.Controllers
             try
             {
                 int idUsuario = ObtenerDatosPorCookies().Id;
-                UsuarioActividad UsAc = new()
+                UsuarioActividad? existe = _context.UsuarioActividad.FirstOrDefault(a => a.UsuarioId == idUsuario && a.ActividadId == modelo.ActividadId);
+                if (existe is null)
                 {
-                    ActividadId = modelo.ActividadId,
-                    Notas = modelo.Notas,
-                    UsuarioId = idUsuario
-                };
-
-                await _context.UsuarioActividad.AddAsync(UsAc);
-                await _context.SaveChangesAsync();
+                    UsuarioActividad UsAc = new()
+                    {
+                        ActividadId = modelo.ActividadId,
+                        Notas = modelo.Notas,
+                        UsuarioId = idUsuario
+                    };
+                    await _context.UsuarioActividad.AddAsync(UsAc);
+                    await _context.SaveChangesAsync();
+                    TempData["apuntadoExitosamente"] = "Te has apuntado a la actividad de manera exitosa.";
+                }
+                else
+                {
+                    TempData["actividadApuntado"] = "Ya estás apuntado/a a la actividad.";
+                }
                 return Ok();
             }
             catch (Exception ex)
@@ -76,6 +84,7 @@ namespace Gimnasio.Controllers
             var fila = await _context.UsuarioActividad.FirstAsync(a => a.Id == eliminar);
             _context.UsuarioActividad.Remove(fila);
             await _context.SaveChangesAsync();
+            TempData["eliminadaCorrectamente"] = "Te has desapuntado de la actividad correctamente";
             return RedirectToAction("Index", "UsuarioActividad");
         }
 
@@ -104,25 +113,27 @@ namespace Gimnasio.Controllers
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         public ActionResult Listado()
         {
-            List<UsuarioActividad> lista = _context.UsuarioActividad.ToList();
-            foreach (UsuarioActividad item in lista)
+            var listaids = _context.UsuarioActividad.GroupBy(a => a.ActividadId).Select(b => b.Key).ToList();
+            List<UsuarioActividad> lista = [];
+            foreach (int item in listaids)
             {
-                item.Actividad = _context.Actividad.FirstOrDefault(a => a.Id == item.ActividadId);
-                item._usuario = _context.Usuario.FirstOrDefault(u => u.Id == item.UsuarioId);
+                UsuarioActividad ua = _context.UsuarioActividad.First(a => a.ActividadId == item);
+                ua.Actividad = _context.Actividad.FirstOrDefault(a => a.Id == ua.ActividadId);
+                ua._usuario = _context.Usuario.FirstOrDefault(a => a.Id == ua.UsuarioId);
+                lista.Add(ua);
             }
             return View(lista);
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         public ActionResult ListaUsuarios(int idActividad)
         {
             List<UsuarioActividad> listaUA = _context.UsuarioActividad.Where(a => a.ActividadId == idActividad).ToList();
+            listaUA = listaUA.Distinct().ToList();
             List<int> idsUsuarios = listaUA.Select(ua => ua.UsuarioId).ToList();
             List<Usuario> usuarios = _context.Usuario.Where(u => idsUsuarios.Contains(u.Id)).ToList();
             return PartialView("~/Views/Shared/_ListaUsuariosActividad.cshtml", usuarios);
         }
-
-
-
     }
 }

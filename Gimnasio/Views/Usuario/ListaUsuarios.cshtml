@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Gimnasio.Models.Usuario>
+
+@{
+    ViewData["Title"] = "ListaUsuarios";
+}
+
+<h1 class="my-3 text-center">Lista de Usuarios</h1>
+
+<table class="table align-middle" id="formatDataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DNI)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apellidos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaNacimiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Poblacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rol)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.DNI)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Apellidos)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Direccion)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Poblacion)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Telefono)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td class="align-middle">
+                    @{
+                        string rol = item.Rol.ToString().Substring(0, 1).ToUpper() + item.Rol.ToString().Substring(1).ToLower();
+                    }
+                    @rol
+                </td>
+                <td>
+                    @if (User.IsInRole("ADMINISTRADOR"))
+                    {
+                        <a href="#" class="btn btn-outline-dark fw-bold m-1 btn-adjudicar-rol" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-idUsuario="@item.Id"><i class="bi bi-incognito"></i></a>
+                    }
+
+                    <a href="#" class="btn btn-outline-primary fw-bold m-1"><i class="bi bi-pencil-square"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (User.IsInRole("ADMINISTRADOR"))
+{
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Asignación de rol</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Selecciona rol para el usuario:</p>
+                    <select class="form-select" id="rolSeleccionado">
+                        <option value="" selected disabled>Selecciona una opción...</option>
+                        <option value="CLIENTE">Cliente</option>
+                        <option value="TRABAJADOR">Trabajador</option>
+                        <option value="ADMINISTRADOR">Administrador</option>
+                    </select>
+                    <span class="text-danger fs-6" id="errorSelect"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary text-white" id="btn-guardar-rol" data-bs-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/ListaUsuarios.js"></script>
+}
+
+<script src="~/js/DataTableJS.js"></script>

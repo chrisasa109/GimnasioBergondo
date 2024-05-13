@@ -1,9 +1,11 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace Gimnasio.Controllers
 {
@@ -123,7 +125,40 @@ namespace Gimnasio.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-        
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
+        public IActionResult ListaUsuarios()
+        {
+            List<Usuario> listaUsuarios = [];
+            if (User.IsInRole("ADMINISTRADOR"))
+            {
+                listaUsuarios = _context.Usuario.ToList();
+            }
+            else
+            {
+                listaUsuarios = _context.Usuario.Where(u => u.Rol == Usuario.Role.CLIENTE).ToList();
+            }
+            IEnumerable<Usuario> EnumerableUsuario = listaUsuarios.AsEnumerable();
+            return View(EnumerableUsuario);
+        }
+
+        public class AsignacionRolFront
+        {
+            public required int idUsuario {  get; set; }
+            public required string rolFronted {  get; set; }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> AsignarRol([FromBody] AsignacionRolFront recepcion)
+        {
+            Usuario userMod = _context.Usuario.Find(recepcion.idUsuario);
+            if(Enum.TryParse(recepcion.rolFronted, true, out Usuario.Role rolFormateado))
+            {
+                userMod.Rol = rolFormateado;
+                _context.SaveChangesAsync();
+                return Ok();
+            }
+            return BadRequest();
+        }
         private Usuario ObtenerDatosPorCookies()
         {
             int.TryParse(User.FindFirst("Id")?.Value, out int userId);

@@ -5,24 +5,26 @@
 }
 
 <h1 class="text-center my-3">Mis actividades</h1>
-
-@if (TempData["exitoCambios"] != null)
-{
-    <div class="row justify-content-center">
-        <div class="alert alert-success alert-dismissible fade show col-md-7 text-center">
-            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
-            <strong class="fs-5">@TempData["exitoCambios"]</strong>
-        </div>
-    </div>
+@functions {
+    void RenderAlert(string message, string alertType)
+    {
+        if (!string.IsNullOrEmpty(message))
+        {
+            <div class="row justify-content-center">
+                <div class="alert alert-@alertType alert-dismissible fade show col-md-7 text-center">
+                    <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+                    <strong class="fs-5">@message</strong>
+                </div>
+            </div>
+        }
+    }
 }
-@if (TempData["errorCambios"] != null)
-{
-    <div class="row justify-content-center">
-        <div class="alert alert-danger alert-dismissible fade show col-md-7 text-center">
-            <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
-            <strong class="fs-5">@TempData["errorCambios"]</strong>
-        </div>
-    </div>
+@{
+    RenderAlert(TempData["exitoCambios"] as string, "success");
+    RenderAlert(TempData["errorCambios"] as string, "danger");
+    RenderAlert(TempData["actividadApuntado"] as string, "warning");
+    RenderAlert(TempData["apuntadoExitosamente"] as string, "success");
+    RenderAlert(TempData["eliminadaCorrectamente"] as string, "success");
 }
 
 <div class="row justify-content-center">

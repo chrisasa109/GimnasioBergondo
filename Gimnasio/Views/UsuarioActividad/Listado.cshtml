@@ -18,7 +18,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="filaTabla">
                 <td>@Html.DisplayFor(m => item.Actividad.Descripcion)</td>
                 @{
                     var fecha = DateOnly.FromDateTime(item.Actividad.FechaHora);
@@ -28,7 +28,7 @@
                     var hora = TimeOnly.FromDateTime(item.Actividad.FechaHora);
                 }
                 <td>@hora</td>
-                <td><a class="btn btn-outline-dark LinkListaUsuariosActividad" data-idActividad="@item.ActividadId" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-eye-fill"></i></a></td>
+                <td class="text-center"><a class="btn btn-outline-info LinkListaUsuariosActividad" data-idActividad="@item.ActividadId" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-eye-fill"></i></a></td>
 
             </tr>
         }
@@ -49,12 +49,10 @@
                         </strong>
                         <ul>
                             <li>Descripción: <span id="descripcionActividad"></span></li>
-                            <li>Fecha y hora: <span id="fechaHoraActividad"></span></li>
-                            <li>Capacidad máxima: <span id="capacidadMaximaActividad"></span></li>
-                            <li>Espacio disponible: <span id="espacioDisponibleActividad"></span></li>
+                            <li>Fecha: <span id="fechaActividad"></span></li>
+                            <li>Hora: <span id="horaActividad"></span></li>
                         </ul>
                     </div>
-                    
                 </div>
                 <div id="listaUsuarios"></div>
             </div>

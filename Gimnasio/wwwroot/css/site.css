@@ -109,20 +109,28 @@ body {
     bottom: -2px;
     left: 0;
     width: 100%;
-    height: 2px; /* Altura inicial del subrayado */
-    background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0);
     transition: background-color 0.3s ease, height 0.3s ease;
 }
 
 .nav-item a.nav-link:hover::before {
-    background-color: rgba(255, 255, 255, 0.5); /* Fondo blanco semitransparente al pasar el ratón */
-    height: 3px; /* Altura aumentada del subrayado al pasar el ratón */
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 3px;
 }
 
 .nav-item a.nav-link:hover {
-    color: rgba(255, 255, 255, 0.8); /* Color de texto blanco más claro al pasar el ratón */
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .subr:hover::before{
     background-color: green;
+}
+.dropdown-menu .dropdown-item {
+    color: white; 
+}
+
+.dropdown-menu .dropdown-item:hover {
+    color: black !important; 
+    background-color: white !important;
 }

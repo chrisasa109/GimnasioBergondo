@@ -34,9 +34,18 @@
                             }
                             <td class="text-center">@tiempo</td>
                             <td class="text-center">
+                            @if (User.Identity.IsAuthenticated)
+                            {
                                 <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-outline-primary btn-nuevaAct" data-IdActividad="@item.Id">
                                     <i class="bi bi-person-fill-add fs-5"></i>
                                 </a>
+                            }
+                            else
+                            {
+                            <a class="btn btn-outline-primary" asp-controller="Login">
+                                <i class="bi bi-person-fill-add fs-5"></i>
+                            </a>
+                            }
                             </td>
                         </tr>
                     }
@@ -67,6 +76,6 @@
             </div>
         </div>
     </div>
-
+</div>
 <script src="~/js/DataTableJS.js"></script>
 <script src="~/js/AgregarActividad.js"></script>

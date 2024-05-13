@@ -31,11 +31,10 @@
                     if (response.ok) {
                         window.location.href = 'UsuarioActividad';
                     } else {
-                        throw new Error('Hubo un problema al agregar el producto al carrito. Código de estado: ' + response.status);
+                        throw new Error('Hubo un problema al apuntarse a la actividad. Código de estado: ' + response.status);
                     }
                 } catch (error) {
                     console.error(error);
-                    alert('Hubo un problema al procesar la solicitud.');
                 }
             } else {
                 alert("No te has podido apuntar a la tarea. El comentario no puede superar los 500 caracteres.");

@@ -4,8 +4,8 @@
 }
 <h2 class="text-center my-3">Contrato: @Html.DisplayFor(m => m._tarifa.Nombre)</h2>
 
-<div class="row justify-content-md-center my-4">
-    <div class="col-md-4">
+<div class="row justify-content-md-center my-4 border border-3 border-dark bg-white m-0 mb-lg-3">
+    <div class="col-md-4 m-3">
         <h4 class="text-center">Datos de facturación</h4>
         <dl class="row">
             <dt class="col-sm-4">
@@ -58,7 +58,7 @@
             </dd>
         </dl>
     </div>
-    <div class="col-md-5">
+    <div class="col-md-5 m-md-3">
         <form asp-action="Contratar">
             <h4 class="text-center">Detalles contractuales</h4>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

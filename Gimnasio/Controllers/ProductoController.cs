@@ -72,5 +72,36 @@ namespace Gimnasio.Controllers
         {
             return View(_context.Producto.ToList());
         }
+        [HttpGet]
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
+        public IActionResult Editar(int idProducto)
+        {
+            Producto prod = _context.Producto.FirstOrDefault(o => o.Id == idProducto);
+            return PartialView("~/Views/Shared/_EditarProducto.cshtml", prod);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([Bind("Id,Nombre, Precio,Stock")] Producto prod)
+        {
+            try
+            {
+                Producto almacenado = await _context.Producto.FirstOrDefaultAsync(p => p.Id == prod.Id);
+                if (almacenado == null)
+                {
+                    return NotFound();
+                }
+                almacenado.Nombre = prod.Nombre;
+                almacenado.Precio = prod.Precio;
+                almacenado.Stock = prod.Stock;
+                _context.Producto.Update(almacenado);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Detalles", "Producto");
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(500, "Error al actualizar el producto.");
+            }
+
+        }
     }
 }

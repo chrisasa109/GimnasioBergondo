@@ -2,7 +2,6 @@
 using Gimnasio.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gimnasio.Controllers
 {
@@ -25,7 +24,7 @@ namespace Gimnasio.Controllers
         {
             return View();
         }
-        
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Descripcion,Duracion,CapacidadMaxima,FechaHora")] Actividad actividadFront)
         {

@@ -20,29 +20,13 @@ html {
     position: relative;
     min-height: 100%;
 }
-
 body {
+    font-family:Centaur;
     margin-bottom: 60px;
 }
 
 .offcanvas {
     background-color: black;
-}
-
-#FormularioUsuario > div > label {
-    font-size: 18px;
-}
-
-#FormularioInicioSesion > div > div > label {
-    font-size: 18px;
-}
-
-#FormularioNuevoProducto > div > label {
-    font-size: 18px;
-}
-
-#FormularioNuevoProducto > div > div > label {
-    font-size: 18px;
 }
 
 .drop-container {
@@ -133,4 +117,14 @@ body {
 .dropdown-menu .dropdown-item:hover {
     color: black !important; 
     background-color: white !important;
+}
+
+
+.imagen-listado-productos:hover {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+}
+
+.imagen-listado-productos {
+    overflow: hidden;
 }

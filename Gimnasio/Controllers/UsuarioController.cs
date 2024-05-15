@@ -41,17 +41,31 @@ namespace Gimnasio.Controllers
             }
             return View();
         }
-
+        [Authorize]
         [HttpGet]
-        public IActionResult Modificacion()
+        public IActionResult Modificacion(int? id)
         {
-            Usuario user = ObtenerDatosPorCookies();
+            if (id == null)
+            {
+                int? userIdFromCookie = ObtenerDatosPorCookies().Id;
+                id = userIdFromCookie;
+            }
+            else if (User.IsInRole("CLIENTE"))
+            {
+                return Forbid(); 
+            }
+            Usuario user = _context.Usuario.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
             return View(user);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Modificacion([Bind("Id,Nombre,DNI,Apellidos,FechaNacimiento,Direccion,Poblacion,Telefono,Email,FotoFronted")] Usuario usuario)
+        public async Task<IActionResult> Modificar([Bind("Id,Nombre,DNI,Apellidos,FechaNacimiento,Direccion,Poblacion,Telefono,Email,FotoFronted")] Usuario usuario)
         {
             var usuarioExistente = await _context.Usuario.FindAsync(usuario.Id);
 
@@ -86,19 +100,26 @@ namespace Gimnasio.Controllers
             await _context.SaveChangesAsync();
 
             TempData["cambioCorrecto"] = "Los cambios se han guardado correctamente";
-            return RedirectToAction("Detalles", "Usuario");
+            return RedirectToAction("Detalles", "Usuario", new { id = usuarioExistente.Id });
         }
 
         [HttpGet]
-        public IActionResult Detalles()
+        [Authorize]
+        public IActionResult Detalles(int? id)
         {
-            Usuario user = ObtenerDatosPorCookies();
+            if (id == null || User.IsInRole("CLIENTE"))
+            {
+                int? userIdFromCookie = ObtenerDatosPorCookies().Id;
+                id = userIdFromCookie;
+            }
+            Usuario user = _context.Usuario.First(u => u.Id == id);
             return View(user);
         }
-
+        [Authorize]
         public async Task<IActionResult> Eliminar(int? id)
         {
-            if (id == null)
+
+            if (id == null || User.IsInRole("CLIENTE"))
             {
                 int? userIdFromCookie = ObtenerDatosPorCookies().Id;
                 id = userIdFromCookie;
@@ -110,6 +131,7 @@ namespace Gimnasio.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> EliminarUsuario(int? id)
         {
             if (id == null)
@@ -148,6 +170,7 @@ namespace Gimnasio.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         public async Task<IActionResult> AsignarRol([FromBody] AsignacionRolFront recepcion)
         {
             Usuario userMod = _context.Usuario.Find(recepcion.idUsuario);
@@ -155,6 +178,7 @@ namespace Gimnasio.Controllers
             {
                 userMod.Rol = rolFormateado;
                 _context.SaveChangesAsync();
+                TempData["cambioRol"] = "El rol de " + userMod.Nombre + userMod.Apellidos + " se ha cambiado correctamente.";
                 return Ok();
             }
             return BadRequest();

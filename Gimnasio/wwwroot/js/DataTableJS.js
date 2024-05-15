@@ -1,6 +1,6 @@
 ﻿//Los links de referencia van en el layout
 window.addEventListener("DOMContentLoaded", () => {
-    new DataTable('#formatDataTable', {
+    var dt = new DataTable('#formatDataTable', {
         responsive: true,
         rowReorder: {
             selector: 'td:nth-child(2)'

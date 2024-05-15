@@ -78,8 +78,8 @@
                     </dd>
                 </dl>
                 <div class="my-3">
-                    <a asp-controller="Usuario" asp-action="Modificacion" class="btn btn-info mr-2">Modificar cuenta</a>
-                    <a asp-controller="Usuario" asp-action="Eliminar" class="btn btn-danger">Eliminar cuenta</a>
+                    <a asp-controller="Usuario" asp-action="Modificacion" asp-route-id="@Model.Id" class="btn btn-info mr-2">Modificar cuenta</a>
+                    <a asp-controller="Usuario" asp-action="Eliminar" asp-route-id="@Model.Id" class="btn btn-danger">Eliminar cuenta</a>
                 </div>
             </div>
         </div>

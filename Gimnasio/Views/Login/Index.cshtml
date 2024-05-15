@@ -36,24 +36,26 @@
 
 <h1 class="my-3 text-center">Inicio de sesión</h1>
 
-<form method="post" asp-controller="Login" asp-action="IniciarSesion" id="FormularioInicioSesion">
-    <div class="row justify-content-center my-2">
-        <div class="col-md-4">
-            <label asp-for="Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" placeholder="Correo electrónico" />
-            <span asp-validation-for="Email" class="text-danger"></span>
+<form method="post" asp-controller="Login" asp-action="IniciarSesion" id="FormularioInicioSesion" class="row justify-content-center m-2">
+    <div class="shadow-lg col-sm-9 col-lg-7 col-xl-5 border border-2 border-dark px-3 py-2 bg-white">
+        <div class="row my-2">
+            <div class="col">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="Correo electrónico" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="row justify-content-center my-2">
-        <div class="col-md-4">
-            <label asp-for="Password" class="control-label"></label>
-            <input asp-for="Password" class="form-control" placeholder="Contraseña" />
-            <span asp-validation-for="Password" class="text-danger"></span>
+        <div class="row justify-content-center my-2">
+            <div class="col">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" placeholder="Contraseña" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="text-center mt-3">
-        <input type="submit" value="Inciar sesión" class="btn btn-success" asp-action="IniciarSesion" />
-        <p class="mt-3">Aún no tienes cuenta? <a asp-controller="Usuario" asp-action="Registro">Regístrate</a></p>
+        <div class="text-center mt-3">
+            <input type="submit" value="Iniciar sesión" class="btn btn-success" asp-action="IniciarSesion" />
+            <p class="mt-2">Aún no tienes cuenta? <a asp-controller="Usuario" asp-action="Registro">Regístrate</a></p>
+        </div>
     </div>
 </form>
 

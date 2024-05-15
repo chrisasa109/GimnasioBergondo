@@ -5,28 +5,47 @@
 }
 
 
-<h1 class="text-center">Detalles de los productos</h1>
-<table class="table table-striped" id="formatDataTable">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Stock</th>
-            <th>Precio</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Nombre</td>
-                <td>@item.Stock</td>
-                <td>@item.Precio.ToString("0.00")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h1 class="text-center my-3">Detalles de los productos</h1>
+<div class="row justify-content-center">
+    <div class="col-md-9 col-lg-8 col-xl-7">
+        <table class="table table-striped" id="formatDataTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Stock</th>
+                    <th>Precio</th>
+                    <th data-dt-order="disable"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Stock</td>
+                        <td>@item.Precio.ToString("0.00")</td>
+                        <td class="align-middle"><a href="#" data-idProducto="@item.Id" class="btn btn-outline-dark fw-bold btn-editar-producto" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-pencil-fill"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Editar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="formularioEditarProducto"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/js/DataTableJS.js"></script>
+<script src="~/js/EditarProducto.js"></script>

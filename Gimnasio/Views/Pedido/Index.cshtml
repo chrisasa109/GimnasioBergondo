@@ -26,10 +26,11 @@
 }
 else
 {
-    <table class="table table-striped d-sm-table">
+    <table class="table table-striped d-sm-table" id="formatDataTable">
         <thead>
             <tr>
                 <th>Codigo</th>
+                <th>Cliente</th>
                 <th>Fecha</th>
                 <th>Nº productos</th>
                 <th>Precio total</th>
@@ -41,6 +42,7 @@ else
             {
                 <tr>
                     <td>@item.Id</td>
+                    <td>@item._usuario.Nombre @item._usuario.Apellidos</td>
                     <td>@DateOnly.FromDateTime(item.Fecha)</td>
                     <td>@item.DetallesPedido.Count</td>
                     <td>@item.PrecioTotal.ToString("0.00")</td>
@@ -50,3 +52,4 @@ else
         </tbody>
     </table>
 }
+<script src="~/js/DataTableJS.js"></script>

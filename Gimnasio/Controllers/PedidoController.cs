@@ -54,5 +54,24 @@ namespace Gimnasio.Controllers
                 return View(pedido);
             }
         }
+        [HttpGet]
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
+        public IActionResult IndexGestion()
+        {
+            List<Pedido> lista = _context.Pedido.OrderByDescending(x => x.Id).Include(p => p.DetallesPedido).ToList();
+            foreach (Pedido item in lista)
+            {
+                double precio = 0;
+                foreach (DetallePedido item1 in item.DetallesPedido)
+                {
+                    item1._producto = _context.Producto.FirstOrDefault(x => x.Id == item1.ProductoId);
+                    precio += item1._producto.Precio * item1.Cantidad;
+
+                }
+                item._usuario = _context.Usuario.FirstOrDefault(u => u.Id == item.UsuarioID);
+                item.PrecioTotal = precio;
+            }
+            return View("~/Views/Pedido/Index.cshtml", lista);
+        }
     }
 }

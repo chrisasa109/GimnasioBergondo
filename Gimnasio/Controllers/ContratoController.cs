@@ -89,5 +89,11 @@ namespace Gimnasio.Controllers
 
             return RedirectToAction("Detalles", "Contrato");
         }
+        [HttpPost]
+        public ActionResult ComprobarContrato(int IdUsuario)
+        {
+            Contrato contract = _context.Contrato.FirstOrDefault(c => c.UsuarioId == IdUsuario && DateOnly.FromDateTime(DateTime.Now) < c.FechaFin);
+            return PartialView("~/Views/Shared/_UsuarioContratoConsulta.cshtml", contract);
+        }
     }
 }

@@ -12,9 +12,9 @@ else
     <h1 class="my-3 text-center">Registrarse como nuevo usuario</h1>
 }
 
-
-<div class="row justify-content-center">
-    <div class="col-md-6">
+<div class="m-4">
+<div class="row justify-content-center ">
+        <div class="col-xl-8 col-lg-9 border border-2 border-dark p-4 bg-white shadow-lg">
         <form asp-action="Registro" method="post" class="row g-3 align-items-center" id="FormularioUsuario" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
@@ -69,7 +69,7 @@ else
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <div col-md-12>
-                    <label asp-for="FotoFronted" style="font-size: 18px;">Foto de perfil</label>
+                    <label asp-for="FotoFronted">Foto de perfil</label>
                     <label asp-for="FotoFronted" class="control-label drop-container" id="dropcontainer">
                         <span class="drop-title">Arrastrar imagen aquí</span> o
                         <input type="file" asp-for="FotoFronted" class="form-control" id="images" />
@@ -90,6 +90,7 @@ else
             </div>
         }
     </div>
+</div>
 </div>
 
 <script src="~/js/RegistroForm.js"></script>

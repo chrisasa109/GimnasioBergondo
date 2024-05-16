@@ -15,8 +15,11 @@
     <link rel="stylesheet" href="~/Gimnasio.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 </head>
-<body class="fondo-web" style="font-family: 'Quicksand', sans-serif;">
+<body class="fondo-web" style="font-family: 'Quicksand', sans-serif; margin-bottom: 300px;">
     <header>
         <nav class="navbar navbar-expand-md fondo-headfoot fixed-top py-2">
             <div class="container-fluid">
@@ -98,27 +101,38 @@
         </main>
     </div>
 
-    <!--
-        Footer: 
-        - Copyright 
-        - Política de privacidad 
-        - Mapa del sitio
-        - Logo 
-        - Iconos redes sociales
-
-        La idea:
-        Todo centrado. 
-        Primera linea: una linea <hr> con todas las redes sociales
-        Debajo el logo
-        Debajo lo del copy con el nombre de la empresa
-        Por último 3 links en una misma línea: privacidad, mapa y FAQs
-    -->
-
     <footer class="border-top footer text-muted fondo-headfoot">
-        <div class="container text-center">
-            <span class="text-white">&copy; 2024 - Gimnasio Bergondo - <a asp-controller="Home" asp-action="Privacy" class="link-light">Ver privacidad</a> - <a class="link-light" asp-controller="Home" asp-action="FAQs">FAQs</a></span>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col col-md-3 col-xl-4 text-light"><hr /></div>
+                <div class="my-1 col col-md-6 col-xl-4 text-center">
+                    <span class="fs-1 text-white">
+                        <i class="bi bi-instagram mx-1 redes-sociales-efecto"></i>
+                        <i class="bi bi-twitter-x mx-1 redes-sociales-efecto"></i>
+                        <i class="bi bi-facebook mx-1 redes-sociales-efecto"></i>
+                        <i class="bi bi-whatsapp mx-1 redes-sociales-efecto"></i>
+                        <i class="bi bi-youtube mx-1 redes-sociales-efecto"></i>
+                        <i class="bi bi-threads mx-1 redes-sociales-efecto"></i>
+                    </span>
+                </div>
+                <div class="col col-md-3 col-xl-4 text-light"><hr/></div>
+            </div>
+            <div class="text-center my-1">
+                <img src="~/images/logo-white.svg" alt="Logo del Gimnasio Bergondo" height="90">
+            </div>
+            <div class="text-center">
+                <span class="text-white">&copy; 2024 - Gimnasio Bergondo</span>
+            </div>
+            <div class="text-center mb-1">
+                <span class="text-white">
+                    <a asp-controller="Home" asp-action="Privacy" class="link-light">Ver privacidad</a> -
+                    <a asp-controller="Home" asp-action="FAQs" class="link-light">FAQs</a> -
+                    <a asp-controller="Home" asp-action="Mapa" class="link-light">Mapa</a>
+                </span>
+            </div>
         </div>
     </footer>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>

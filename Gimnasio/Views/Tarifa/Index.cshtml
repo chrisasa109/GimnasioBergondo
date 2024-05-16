@@ -17,18 +17,25 @@
 
 <h1 class="text-center my-3">Tarifas</h1>
 
+<div class="my-4 p-3">
+    <p>¡Descubre nuestras opciones de membresía y tarifas diseñadas para adaptarse a tus necesidades de fitness! En el Gimnasio Bergondo, ofrecemos una variedad de planes de membresía flexibles para que puedas alcanzar tus objetivos de salud y bienestar de manera conveniente y asequible.</p>
+
+    <p>Nuestras tarifas están diseñadas para brindarte acceso completo a nuestras instalaciones de vanguardia, clases dirigidas por profesionales, entrenamiento personalizado y programas exclusivos. Ya sea que estés buscando un compromiso personal o familiar, tenemos opciones que se ajustan a tu estilo de vida.</p>
+
+    <p>Explora nuestras tarifas a continuación y elige el plan que mejor se adapte a ti. Si tienes preguntas adicionales o deseas más información sobre nuestras membresías, no dudes en contactarnos. Estamos aquí para ayudarte en tu camino hacia una vida más saludable y activa.</p>
+</div>
 <div class="container text-center">
     @foreach (var item in Model)
     {
         <div class="row justify-content-center my-4">
             <div class="col-xl-8">
-                <div class="card border-dark border-3">
+                <div class="card border-dark border-3 shadow-lg">
                     <div class="card-body">
-                        <h4 class="card-title">@Html.DisplayFor(m => item.Nombre)</h4>
+                        <h2 class="card-title">@Html.DisplayFor(m => item.Nombre)</h2>
                         <h3 class="card-subtitle my-2">@Html.DisplayFor(m => item.Precio)</h3>
                         <p class="card-text">@Html.DisplayFor(m => item.Descripcion)</p>
                         <div class="text-center">
-                            <a class="btn btn-success text-center contratar-btn fw-bold border-dark border-1"
+                            <a class="btn btn-success text-center contratar-btn fw-bold"
                                href="@Url.Action("Index", "Contrato", new { tarifaId = item.Id })">Contratar</a>
                         </div>
                     </div>

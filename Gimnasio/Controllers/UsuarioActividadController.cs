@@ -48,15 +48,23 @@ namespace Gimnasio.Controllers
                 UsuarioActividad? existe = _context.UsuarioActividad.FirstOrDefault(a => a.UsuarioId == idUsuario && a.ActividadId == modelo.ActividadId);
                 if (existe is null)
                 {
-                    UsuarioActividad UsAc = new()
+                    if(_context.Contrato.Any(e => e.UsuarioId == ObtenerDatosPorCookies().Id && DateOnly.FromDateTime(DateTime.Now) < e.FechaFin))
                     {
-                        ActividadId = modelo.ActividadId,
-                        Notas = modelo.Notas,
-                        UsuarioId = idUsuario
-                    };
-                    await _context.UsuarioActividad.AddAsync(UsAc);
-                    await _context.SaveChangesAsync();
-                    TempData["apuntadoExitosamente"] = "Te has apuntado a la actividad de manera exitosa.";
+                        UsuarioActividad UsAc = new()
+                        {
+                            ActividadId = modelo.ActividadId,
+                            Notas = modelo.Notas,
+                            UsuarioId = idUsuario
+                        };
+                        await _context.UsuarioActividad.AddAsync(UsAc);
+                        await _context.SaveChangesAsync();
+                        TempData["apuntadoExitosamente"] = "Te has apuntado a la actividad de manera exitosa.";
+                    }
+                    else
+                    {
+                        TempData["NoContrato"] = "No tienes ninguna tarifa contratada para poder apuntarte a actividades";
+                    }
+                    
                 }
                 else
                 {

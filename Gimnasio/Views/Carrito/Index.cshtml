@@ -7,6 +7,12 @@
 
 <h1 class="text-center my-3">Mi carrito</h1>
 
+<div class="my-3 p-3">
+    <p>¡Bienvenido a tu carrito de la compra! Aquí encontrarás todos los productos que has seleccionado para comprar en nuestra tienda en línea. Revisa los artículos en tu carrito y asegúrate de que todo esté en orden antes de proceder al pago.</p>
+    <p>En esta página, puedes actualizar las cantidades y eliminar productos de la cesta. Una vez que estés listo, guarda los cambios y continúa hacia la página de pago para completar tu compra de manera segura y rápida.</p>
+    <p>Si necesitas ayuda o tienes alguna pregunta sobre tu pedido, no dudes en ponerte en contacto con nuestro equipo de atención al cliente. Estamos aquí para garantizar una experiencia de compra sin complicaciones y satisfactoria para ti.</p>
+    <p>¡Gracias por elegirnos y disfruta tu experiencia de compra en nuestro sitio!</p>
+</div>
 @functions {
     void RenderAlert(string message, string alertType)
     {
@@ -38,7 +44,7 @@
 }
 else
 {
-    <div class="border border-2 border-dark p-4 bg-white mb-4">
+    <div class="border border-2 border-dark p-4 bg-white mb-4 shadow-lg">
         <div class="d-flex justify-content-between">
             <a class="btn btn-secondary" asp-controller="Producto" asp-action="Index">Seguir comprando</a>
             <a href="#" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">REALIZAR PEDIDO</a>

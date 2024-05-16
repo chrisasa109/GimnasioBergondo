@@ -16,7 +16,9 @@
     </div>
 }
 
-<h1 class="text-center my-3">Mis pedidos</h1>
+<h1 class="text-center my-3">Pedidos</h1>
+
+
 @if (Model.Count < 1)
 {
     <div class="border border-2 p-4 bg-white">
@@ -26,23 +28,19 @@
 }
 else
 {
-    <table class="table table-striped d-sm-table" id="formatDataTable">
+    <table class="table table-striped d-sm-table col-xl-7 col-md-8" id="formatDataTable">
         <thead>
             <tr>
-                <th>Codigo</th>
-                <th>Cliente</th>
                 <th>Fecha</th>
                 <th>Nº productos</th>
                 <th>Precio total</th>
-                <th></th>
+                <th data-dt-order="disable"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (Pedido item in Model)
             {
                 <tr>
-                    <td>@item.Id</td>
-                    <td>@item._usuario.Nombre @item._usuario.Apellidos</td>
                     <td>@DateOnly.FromDateTime(item.Fecha)</td>
                     <td>@item.DetallesPedido.Count</td>
                     <td>@item.PrecioTotal.ToString("0.00")</td>

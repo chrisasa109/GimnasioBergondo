@@ -4,6 +4,11 @@
 }
 
 <h2 class="text-center my-3">Datos personales</h2>
+
+<div class="p-3 my-3">
+    <p>Aquí encontrarás toda la información relacionada con tus datos personales. Nos preocupamos por tu privacidad y seguridad, por lo que esta sección te permite acceder y gestionar tus datos de manera transparente y conveniente.</p>
+    <p>Puedes revisar y actualizar tu información personal e incluso eliminar tu cuenta. Estamos comprometidos a mantener la confidencialidad de tus datos y asegurarnos de que tengas el control sobre tu experiencia en nuestro gimnasio.</p>
+</div>
 @if (TempData["cambioCorrecto"] != null)
 {
     <div class="row justify-content-center my-3">
@@ -14,7 +19,7 @@
     </div>
 }
 <div class="row justify-content-center mb-4">
-    <div class="col-md-10 col-11 bg-white p-4">
+    <div class="col-md-10 col-11 bg-white p-4 shadow">
         <div class="row">
             <div class="col-5 align-content-center text-center">
                 @if (Model.Foto == null)

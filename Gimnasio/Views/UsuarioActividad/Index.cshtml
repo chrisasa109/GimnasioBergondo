@@ -5,6 +5,13 @@
 }
 
 <h1 class="text-center my-3">Mis actividades</h1>
+
+<div class="my-3 p-3">
+    <p>¡Bienvenido/a a tu espacio personalizado de actividades! Aquí encontrarás un resumen de todas las clases y eventos a los que estás inscrito/a en nuestro gimnasio. Esta página te permite mantener un seguimiento de tu agenda de entrenamiento y asegurarte de no perderte ninguna sesión.</p>
+    <p>Si deseas realizar cambios en tus reservas o tienes alguna pregunta sobre alguna actividad, no dudes en contactar con nuestro equipo de recepción. Estamos aquí para ayudarte a aprovechar al máximo tu membresía y alcanzar tus metas fitness.</p>
+    <p>No olvides que puedes apuntarte a nuevas actividades <a asp-controller="Actividad" asp-action="Index">aquí</a></p>
+</div>
+
 @functions {
     void RenderAlert(string message, string alertType)
     {
@@ -20,6 +27,7 @@
     }
 }
 @{
+    RenderAlert(TempData["NoContrato"] as string, "danger");
     RenderAlert(TempData["exitoCambios"] as string, "success");
     RenderAlert(TempData["errorCambios"] as string, "danger");
     RenderAlert(TempData["actividadApuntado"] as string, "warning");
@@ -69,6 +77,7 @@
         </div>
     }
 </div>
+
 @section scripts {
     <script src="~/js/DataTableJS.js"></script>
 }

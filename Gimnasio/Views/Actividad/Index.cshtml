@@ -4,36 +4,43 @@
 }
 
 <h1 class="text-center my-3">Listado de actividades</h1>
-    <div class="row justify-content-center mb-3">
-        <div class="col-lg-8 ">
-            <table class="table table-striped table-bordered" id="formatDataTable">
-                <thead>
+
+<div class="my-3 p-3">
+    <p>¡Bienvenido a la sección de actividades de Gimnasio Bergondo! Explora una amplia variedad de opciones diseñadas para ayudarte a alcanzar tus metas de fitness y bienestar. Nuestro gimnasio ofrece programas y clases dirigidas por instructores expertos, diseñados para personas de todos los niveles de condición física.</p>
+    <p>Desde entrenamientos cardiovasculares hasta sesiones de fuerza y flexibilidad, tenemos algo para todos. Ya sea que estés buscando mejorar tu resistencia, tonificar tus músculos o simplemente disfrutar de un entrenamiento divertido, estamos aquí para guiarte en cada paso del camino.</p>
+    <p>Consulta nuestra lista de actividades a continuación y encuentra la opción que mejor se adapte a tu estilo de vida y objetivos personales. ¡Prepárate para poner en marcha tu camino hacia una vida más activa y saludable con nosotros!</p>
+</div>
+
+<div class="row justify-content-center mb-3">
+    <div class="col-lg-8 ">
+        <table class="table table-striped table-bordered" id="formatDataTable">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th><i class="bi bi-clock-fill"></i></th>
+                    <th data-dt-order="disable"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th>Nombre</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th><i class="bi bi-clock-fill"></i></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(m => item.Descripcion)</td>
-                            @{
-                                var fecha = DateOnly.FromDateTime(item.FechaHora);
-                            }
-                            <td>@fecha</td>
-                            @{
-                                var hora = TimeOnly.FromDateTime(item.FechaHora);
-                            }
-                            <td>@hora</td>
-                            @{
-                                var tiempo = item.Duracion.Hour * 60 + item.Duracion.Minute;
-                            }
-                            <td class="text-center">@tiempo</td>
-                            <td class="text-center">
+                        <td>@Html.DisplayFor(m => item.Descripcion)</td>
+                        @{
+                            var fecha = DateOnly.FromDateTime(item.FechaHora);
+                        }
+                        <td>@fecha</td>
+                        @{
+                            var hora = TimeOnly.FromDateTime(item.FechaHora);
+                        }
+                        <td>@hora</td>
+                        @{
+                            var tiempo = item.Duracion.Hour * 60 + item.Duracion.Minute;
+                        }
+                        <td class="text-center">@tiempo</td>
+                        <td class="text-center">
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-outline-primary btn-nuevaAct" data-IdActividad="@item.Id">
@@ -42,18 +49,20 @@
                             }
                             else
                             {
-                            <a class="btn btn-outline-primary" asp-controller="Login">
-                                <i class="bi bi-person-fill-add fs-5"></i>
-                            </a>
+                                <a class="btn btn-outline-primary" asp-controller="Login">
+                                    <i class="bi bi-person-fill-add fs-5"></i>
+                                </a>
                             }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-
+</div>
+<div class="row my-3 justify-content-center">
+    <div id="calendar" class="col-8"></div>
+</div>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -79,3 +88,4 @@
 </div>
 <script src="~/js/DataTableJS.js"></script>
 <script src="~/js/AgregarActividad.js"></script>
+<script src="~/js/Calendario.js"></script>

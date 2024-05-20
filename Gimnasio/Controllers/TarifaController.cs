@@ -12,7 +12,7 @@ namespace Gimnasio.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tarifa.ToListAsync());
+            return View(await _context.Tarifa.OrderBy(a => a.Precio).ToListAsync());
         }
     }
 }

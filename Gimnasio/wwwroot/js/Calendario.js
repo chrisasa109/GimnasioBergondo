@@ -11,15 +11,28 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
+                slotMinTime: '08:00:00',
+                slotMaxTime: '21:00:00',
                 events: data,
-                //Evento para mostrar la información en un alert(probando eventos)
+                
                 eventClick: function (info) {
-                    
                     var title = info.event.title;
-                    var start = info.event.start;
-                    var end = info.event.end;
+                    var start = FullCalendar.formatDate(info.event.start, {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    var end = FullCalendar.formatDate(info.event.end, {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
 
-                    alert('Detalles del Evento:\n\nTítulo: ' + title + '\nInicio: ' + start + '\nFin: ' + end);
+                    alert('Detalles de la actividad:\n\nTítulo: ' + title + '\nInicio: ' + start + '\nFin: ' + end);
                 }
             });
             calendar.render();

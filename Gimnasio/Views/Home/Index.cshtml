@@ -1,3 +1,135 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
+<div class="py-2">
+    <h1>Bienvenido/a a <strong>Gimnasio Bergondo</strong></h1>
+    <p>En nuestro local nos apasiona ayudarte a alcanzar tus metas de bienestar y fitness en un entorno motivador y de apoyo. Nuestras modernas instalaciones están diseñadas para ofrecerte la mejor experiencia posible, independientemente de tu nivel de condición física.</p>
+    <p>Desde zonas de entrenamiento funcional y máquinas de última generación hasta espacios dedicados para clases grupales y entrenamiento personal, tenemos todo lo que necesitas para mantenerte activo y saludable. Nuestro equipo de profesionales está siempre dispuesto a brindarte el apoyo y la orientación que necesitas para maximizar tus entrenamientos.</p>
+</div>
+
+<div class="pt-2">
+    <h2>Nuestras instalaciones</h2>
+    <div class="row justify-content-center mt-4">
+        <div class="col-xxl-8">
+            <div id="carouselHomeInstalaciones" class="carousel slide bg-light" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselHomeInstalaciones" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselHomeInstalaciones" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselHomeInstalaciones" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active bg-black" data-bs-interval="3000" style="height:500px">
+                        <img src="~/images/carousel-home/imagen-1.jpg" class="d-block" alt="Imagen del carousel de fotos de las instalaciones del gimnasio">
+                    </div>
+                    <div class="carousel-item bg-info" data-bs-interval="3000" style="height:500px">
+                        <img src="~/images/carousel-home/imagen-2.jpg" class="d-block" alt="Imagen del carousel de fotos de las instalaciones del gimnasio">
+                    </div>
+                    <div class="carousel-item bg-danger" data-bs-interval="3000" style="height:500px">
+                        <img src="~/images/carousel-home/imagen-3.jpg" class="d-block" alt="Imagen del carousel de fotos de las instalaciones del gimnasio">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselHomeInstalaciones" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselHomeInstalaciones" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card my-4 shadow-lg text-center mx-auto" style="width: 16rem;">
+    <div class="card-body">
+        <h2>CONTRATO</h2>
+        <h3>desde 29,99€</h3>
+        <a asp-controller="Tarifa" asp-action="Index" class="btn btn-warning"><strong>INSCRIBIRSE</strong></a>
+    </div>
+</div>
+
+<h2 class="my-2">Actividades</h2>
+<p>Explora algunas de las <a asp-controller="Actividad" asp-action="Index">actividades</a> que tenemos en nuestro local.</p>
+@{
+    List<String> listaActividades = [
+    "Carreras",
+    "Zumba",
+    "Yoga",
+    "Pilates",
+    "Natación",
+    "Bicicleta",
+    "Boxeo",
+    "Spinning",
+    "Elasticidad",
+    "Kickboxing"
+    ];
+}
+<div class="bg-light my-3 p-sm-3 p-xs-1">
+    <div class="container">
+        <div class="row row-cols-md-4 row-cols-2 justify-content-center">
+            @foreach (string actividad in listaActividades)
+            {
+                <div class="col py-3">
+                    <div class="card bg-primary text-white text-center">
+                        <div class="card-body p-3">
+                            <h6 class="h6 card-title m-0">@actividad</h6>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<h2 class="my-2">Valoraciones</h2>
+<div class="p-3 bg-light ">
+    <h6>Equipamiento y Mantenimiento</h6>
+    <div class="progress my-2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="93" style="width:93%">93%</div>
+    </div>
+    <h6>Personal y Entrenadores</h6>
+    <div class="progress my-2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="95" style="width:95%">95%</div>
+    </div>
+    <h6>Ambiente y Comunidad</h6>
+    <div class="progress my-2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="96" style="width:96%">96%</div>
+    </div>
+    <h6>Servicios y Comodidades Adicionales</h6>
+    <div class="progress my-2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="98" style="width:98%">98%</div>
+    </div>
+    <div class="card my-3">
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>El gimnasio tiene un equipamiento excelente y siempre está limpio y bien mantenido. ¡Es un placer entrenar aquí!</p>
+                <footer class="blockquote-footer">Juan Pérez en <cite title="Reseñas de Clientes">Reseñas de Gimnasio Bergondo</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+    <div class="card my-3">
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>Los entrenadores son muy profesionales y siempre están dispuestos a ayudarte. Gracias a ellos, he alcanzado mis metas de fitness.</p>
+                <footer class="blockquote-footer">María Gómez en <cite title="Reseñas de Clientes">Reseñas de Clientes en Gimnasio Bergondo</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+    <div class="card my-3">
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>El ambiente es increíble y la comunidad es muy acogedora. Siempre me siento motivado para venir a entrenar.</p>
+                <footer class="blockquote-footer">Carlos Rodríguez en <cite title="Reseñas de Clientes">Reseñas de Clientes en Gimnasio Bergondo</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+    <div class="card mt-3 mb-1">
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>Las comodidades adicionales como la sauna y la piscina hacen que mi experiencia sea aún mejor. ¡Me encanta este gimnasio!</p>
+                <footer class="blockquote-footer">Ana Martínez en <cite title="Reseñas de Clientes">Reseñas de Clientes en Gimnasio Bergondo</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+</div>

@@ -21,6 +21,7 @@ namespace Gimnasio.Controllers
             {
                 ModeloCalendario fila = new ModeloCalendario
                 {
+                    id = item.Id,
                     title = item.Descripcion.ToString(),
                     start = item.FechaHora.ToString("yyyy-MM-ddTHH:mm:ss"),
                     end = (item.FechaHora.AddMinutes(item.Duracion.Hour * 60 + item.Duracion.Minute)).ToString("yyyy-MM-ddTHH:mm:ss")
@@ -44,6 +45,7 @@ namespace Gimnasio.Controllers
 
         public class ModeloCalendario
         {
+            public int id { get; set; }
             public string title { get; set; }
             public string start { get; set; }
             public string end { get; set; }

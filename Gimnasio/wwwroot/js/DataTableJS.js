@@ -5,6 +5,7 @@ window.addEventListener("DOMContentLoaded", () => {
         rowReorder: {
             selector: 'td:nth-child(2)'
         },
+        scrollX: true,
         language: {
             "decimal": "",
             "emptyTable": "No hay información",

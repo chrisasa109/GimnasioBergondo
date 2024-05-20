@@ -5,35 +5,38 @@
 }
 
 <h1 class="text-center my-3">Información de actividades</h1>
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <table class="table table-striped table-bordered" id="formatDataTable" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Actividad</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th data-dt-order="disable"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="filaTabla">
+                        <td>@Html.DisplayFor(m => item.Actividad.Descripcion)</td>
+                        @{
+                            var fecha = DateOnly.FromDateTime(item.Actividad.FechaHora);
+                        }
+                        <td>@fecha</td>
+                        @{
+                            var hora = TimeOnly.FromDateTime(item.Actividad.FechaHora);
+                        }
+                        <td>@hora</td>
+                        <td class="text-center"><a class="btn btn-outline-info LinkListaUsuariosActividad" data-idActividad="@item.ActividadId" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-eye-fill"></i></a></td>
 
-<table class="table table-striped table-bordered" id="formatDataTable">
-    <thead>
-        <tr>
-            <th>Actividad</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th data-dt-order="disable"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr class="filaTabla">
-                <td>@Html.DisplayFor(m => item.Actividad.Descripcion)</td>
-                @{
-                    var fecha = DateOnly.FromDateTime(item.Actividad.FechaHora);
+                    </tr>
                 }
-                <td>@fecha</td>
-                @{
-                    var hora = TimeOnly.FromDateTime(item.Actividad.FechaHora);
-                }
-                <td>@hora</td>
-                <td class="text-center"><a class="btn btn-outline-info LinkListaUsuariosActividad" data-idActividad="@item.ActividadId" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-eye-fill"></i></a></td>
-
-            </tr>
-        }
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
+</div>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

@@ -145,3 +145,12 @@ body {
     width: 100%;
     position: absolute;
 }
+.carousel-item {
+    height: 400px;
+}
+
+.carousel-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}

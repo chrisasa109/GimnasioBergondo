@@ -3,7 +3,7 @@
     ViewData["Title"] = "Actividades";
 }
 
-<h1 class="text-center my-3">Listado de actividades</h1>
+<h1 class="text-center my-3">Actividades</h1>
 
 <div class="my-3 p-3">
     <p>¡Bienvenido a la sección de actividades de Gimnasio Bergondo! Explora una amplia variedad de opciones diseñadas para ayudarte a alcanzar tus metas de fitness y bienestar. Nuestro gimnasio ofrece programas y clases dirigidas por instructores expertos, diseñados para personas de todos los niveles de condición física.</p>
@@ -11,9 +11,15 @@
     <p>Consulta nuestra lista de actividades a continuación y encuentra la opción que mejor se adapte a tu estilo de vida y objetivos personales. ¡Prepárate para poner en marcha tu camino hacia una vida más activa y saludable con nosotros!</p>
 </div>
 
+<div class="row my-3 justify-content-center">
+    <h3 class="text-center">Calendario de actividades</h3>
+    <div id="calendar" class="col-xxl-8 col-xl-9 col-lg-10 col-12"></div>
+</div>
+
 <div class="row justify-content-center mb-3">
-    <div class="col-lg-8 ">
-        <table class="table table-striped table-bordered" id="formatDataTable">
+    <h3 class="text-center">Tabla de actividades</h3>
+    <div class="col-lg-8">
+        <table class="table table-striped table-bordered" id="formatDataTable" style="width: 100%;">
             <thead>
                 <tr>
                     <th>Nombre</th>
@@ -60,9 +66,7 @@
         </table>
     </div>
 </div>
-<div class="row my-3 justify-content-center">
-    <div id="calendar" class="col-8"></div>
-</div>
+
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

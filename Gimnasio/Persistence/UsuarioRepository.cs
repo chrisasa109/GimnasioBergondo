@@ -4,20 +4,58 @@ using Gimnasio.Transporte;
 using Gimnasio.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Gimnasio.Service;
 
 namespace Gimnasio.Persistence
 {
     public class UsuarioRepository : IUsuarioRepository
     {
         private readonly ApplicationDbContext _context;
-        public UsuarioRepository(ApplicationDbContext context)
+        private readonly SessionService _usuarioService;
+        public UsuarioRepository(ApplicationDbContext context, SessionService iUsuarioService)
         {
             _context = context;
+            _usuarioService = iUsuarioService;
         }
-        public async Task<UsuarioDTO> ConsultarUsuario(int id)
+
+        private int AsignarID(int? id)
         {
+            if (id == null || _usuarioService.EsCliente())
+            {
+                return _usuarioService.ObtenerUsuario().Id;
+            }
+            return (int)id;
+        }
+
+        public async Task<bool> CambiarRol(int idUsuario, string rolFronted)
+        {
+            try
+            {
+                Usuario? usuario = await(from t in _context.Usuario
+                                         where t.Id == idUsuario
+                                         select t).FirstOrDefaultAsync();
+                if (Enum.TryParse(rolFronted, true, out Usuario.Role rolFormateado))
+                {
+                    usuario.Rol = rolFormateado;
+                    _context.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<UsuarioDTO> ConsultarUsuario(int? id)
+        {
+            int idDef = AsignarID(id);
             UsuarioDTO? usuario = await (from t in _context.Usuario
-                                         where t.Id == id
+                                         where t.Id == idDef
                                          select new UsuarioDTO
                                          {
                                              Id = t.Id,
@@ -32,6 +70,31 @@ namespace Gimnasio.Persistence
                                              Foto = t.Foto
                                          }).FirstOrDefaultAsync();
             return usuario;
+        }
+
+        public async Task<bool> EliminarUsuario(int? v)
+        {
+            int id = AsignarID(v);
+            try
+            {
+                Usuario? usuario = await(from t in _context.Usuario
+                                        where t.Id == id
+                                        select t).FirstOrDefaultAsync();
+                if(usuario == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    _context.Usuario.Remove(usuario);
+                    _context.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<bool> ModificarUsuario(UsuarioDTO usuario)
@@ -50,7 +113,7 @@ namespace Gimnasio.Persistence
                 user.Poblacion = usuario.Poblacion;
                 user.Telefono = usuario.Telefono;
                 user.Email = usuario.Email;
-                if(user.Foto != null && user.Foto.Length>0)
+                if(usuario.Foto != null && usuario.Foto.Length>0)
                 {
                     user.Foto = usuario.Foto;
                 }
@@ -62,6 +125,33 @@ namespace Gimnasio.Persistence
                 return false;
             }
         }
+
+        public async Task<List<UsuarioDTO>> ObtenerListaUsuarios()
+        {
+            var query = _context.Usuario.AsQueryable();
+
+            if (!_usuarioService.EsAdministrador())
+            {
+                query = query.Where(t => t.Rol == Usuario.Role.CLIENTE);
+            }
+
+            List<UsuarioDTO> lista = await query.Select(t => new UsuarioDTO
+            {
+                Id = t.Id,
+                Nombre = t.Nombre,
+                Apellidos = t.Apellidos,
+                DNI = t.DNI,
+                FechaNacimiento = t.FechaNacimiento,
+                Direccion = t.Direccion,
+                Poblacion = t.Poblacion,
+                Telefono = t.Telefono,
+                Rol = (UsuarioDTO.Role)t.Rol,
+                Email = t.Email,
+            }).ToListAsync();
+
+            return lista;
+        }
+
 
         public async Task<bool> RegistrarUsuario(UsuarioDTO usuarioFront)
         {

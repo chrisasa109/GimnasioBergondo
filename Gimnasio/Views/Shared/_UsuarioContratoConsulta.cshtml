@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model Contrato
+@model Gimnasio.Transporte.ContratoDTO
 @if (Model == null)
 {
     <div class="alert alert-warning" role="alert">
@@ -14,7 +14,11 @@ else
         <ul>
             <li>Fecha de inicio: @Model.FechaInicio</li>
             <li>Fecha de fin: @Model.FechaFin</li>
-            <li>Método de pago: @Model.FormaPago</li>
+            @{
+                string formaPago = Model.FormaPago.ToString();
+                string resultado = formaPago != null ? char.ToUpper(formaPago[0]) + formaPago.Substring(1).ToLower() : "";
+            }
+            <li>Método de pago: @resultado</li>
         </ul>
     </div>
 }

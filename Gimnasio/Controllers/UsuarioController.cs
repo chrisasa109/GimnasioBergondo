@@ -1,37 +1,28 @@
-﻿using Gimnasio.Dates;
-using Gimnasio.Dominio.IServices;
-using Gimnasio.Models;
-using Gimnasio.Service;
+﻿using Gimnasio.Dominio.IServices;
 using Gimnasio.Transporte;
 using Gimnasio.Transporte.Usuario;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gimnasio.Controllers
 {
     public class UsuarioController : Controller
     {
         private readonly IUsuarioService _IUsuarioService;
-        private readonly ApplicationDbContext _context;
-        private readonly SessionService _usuarioService;
-        public UsuarioController(ApplicationDbContext context, SessionService usuarioService, IUsuarioService iUsuarioService)
+        public UsuarioController(IUsuarioService iUsuarioService)
         {
-            _context = context;
-            _usuarioService = usuarioService;
             _IUsuarioService = iUsuarioService;
         }
 
         [HttpGet]
-        public IActionResult Registro()
+        public ActionResult Registro()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registro(IFormCollection collection, IFormFile? file)
+        public async Task<IActionResult> Registro(IFormCollection collection)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +71,7 @@ namespace Gimnasio.Controllers
             }
             if (int.TryParse(collection["Id"], out var id))
             {
-                if(id != null) {  usuario.Id = id; }
+                if (id != null) { usuario.Id = id; }
             }
             return usuario;
         }
@@ -90,14 +81,14 @@ namespace Gimnasio.Controllers
         [HttpGet]
         public async Task<ActionResult> Modificacion(int? id)
         {
-            UsuarioDTO usuario = await _IUsuarioService.ConsultarUsuario(AsignarID(id));
+            UsuarioDTO usuario = await _IUsuarioService.ConsultarUsuario(id);
             return View(usuario);
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Modificar(IFormCollection collection)
+        public async Task<ActionResult> Modificar(IFormCollection collection)
         {
             try
             {
@@ -106,97 +97,44 @@ namespace Gimnasio.Controllers
                 TempData["cambioCorrecto"] = "Los cambios se han guardado correctamente";
                 return RedirectToAction("Detalles", "Usuario", new { id = usuario.Id });
             }
-            catch { }
-            return View("Modificacion", "Usuario");
-           /* var usuarioExistente = await _context.Usuario.FindAsync(usuario.Id);
-
-            if (usuarioExistente == null)
+            catch
             {
-                return NotFound();
+                return View("Modificacion", "Usuario");
             }
-            if (usuario.FotoFronted != null && usuario.FotoFronted.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await usuario.FotoFronted.CopyToAsync(memoryStream);
-                    usuario.Foto = memoryStream.ToArray();
-                    usuarioExistente.Foto = usuario.Foto;
-                }
-            }
-            // Excluir estos dos campos de ser actualizados
-            usuarioExistente.Rol = usuarioExistente.Rol;
-            usuarioExistente.Password = usuarioExistente.Password;
-
-            usuarioExistente.Nombre = usuario.Nombre;
-            usuarioExistente.DNI = usuario.DNI;
-            usuarioExistente.Apellidos = usuario.Apellidos;
-            usuarioExistente.FechaNacimiento = usuario.FechaNacimiento;
-            usuarioExistente.Direccion = usuario.Direccion;
-            usuarioExistente.Poblacion = usuario.Poblacion;
-            usuarioExistente.Telefono = usuario.Telefono;
-            usuarioExistente.Email = usuario.Email;
-
-
-            _context.Update(usuarioExistente);
-            await _context.SaveChangesAsync();
-
-            TempData["cambioCorrecto"] = "Los cambios se han guardado correctamente";
-            return RedirectToAction("Detalles", "Usuario", new { id = usuarioExistente.Id });
-           */
         }
 
         [HttpGet]
         [Authorize]
         public async Task<ActionResult> Detalles(int? id)
         {
-            UsuarioDTO usuario = await _IUsuarioService.ConsultarUsuario(AsignarID(id));
+            UsuarioDTO usuario = await _IUsuarioService.ConsultarUsuario(id);
             return View(usuario);
         }
         [Authorize]
         public async Task<IActionResult> Eliminar(int? id)
         {
-            UsuarioDTO usuario = await _IUsuarioService.ConsultarUsuario(AsignarID(id));
+            UsuarioDTO usuario = await _IUsuarioService.ConsultarUsuario(id);
             return View(usuario);
         }
-        private int AsignarID(int? id)
-        {
-            if (id == null || User.IsInRole("CLIENTE"))
-            {
-                return _usuarioService.ObtenerUsuario().Id;
-            }
-            return (int)id;
-        }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> EliminarUsuario(int? id)
         {
-            if (id == null)
+            bool resultado = await _IUsuarioService.EliminarUsuario(id);
+            if (resultado)
             {
-                id = _usuarioService.ObtenerUsuario().Id;
-            }
-            Usuario? us = await _context.Usuario.FindAsync(id);
-            if (us != null)
-            {
-                _context.Usuario.Remove(us);
-                await _context.SaveChangesAsync();
                 return RedirectToAction("Salir", "Login");
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Eliminar", "Usuario");
         }
+
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
-        public IActionResult ListaUsuarios()
+        public async Task<ActionResult> ListaUsuarios()
         {
-            List<Usuario> listaUsuarios = [];
-            if (User.IsInRole("ADMINISTRADOR"))
-            {
-                listaUsuarios = _context.Usuario.ToList();
-            }
-            else
-            {
-                listaUsuarios = _context.Usuario.Where(u => u.Rol == Usuario.Role.CLIENTE).ToList();
-            }
-            IEnumerable<Usuario> EnumerableUsuario = listaUsuarios.AsEnumerable();
+            List<UsuarioDTO> listaUsuarios = await _IUsuarioService.ObtenerListaUsuarios();
+            IEnumerable<UsuarioDTO> EnumerableUsuario = listaUsuarios.AsEnumerable();
             return View(EnumerableUsuario);
         }
 
@@ -204,12 +142,10 @@ namespace Gimnasio.Controllers
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         public async Task<IActionResult> AsignarRol([FromBody] AsignacionRolFront recepcion)
         {
-            Usuario userMod = _context.Usuario.Find(recepcion.idUsuario);
-            if (Enum.TryParse(recepcion.rolFronted, true, out Usuario.Role rolFormateado))
+            bool resultado = await _IUsuarioService.CambioRol(recepcion.idUsuario, recepcion.rolFronted);
+            if (resultado)
             {
-                userMod.Rol = rolFormateado;
-                _context.SaveChangesAsync();
-                TempData["cambioRol"] = "El rol de " + userMod.Nombre + userMod.Apellidos + " se ha cambiado correctamente.";
+                TempData["cambioRol"] = "El rol se ha cambiado correctamente.";
                 return Ok();
             }
             return BadRequest();

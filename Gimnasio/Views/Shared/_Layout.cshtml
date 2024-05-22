@@ -81,8 +81,8 @@
                                         <li><div class="dropdown-divider text-white"></div></li>
                                         <li><a class="dropdown-item text-white" asp-controller="UsuarioActividad" asp-action="Index"><i class="bi bi-person-arms-up fs-5 mr-3"></i>Mis actividades</a></li>
                                         <li><div class="dropdown-divider text-white"></div></li>
-                                        <li><a class="dropdown-item text-white subr" asp-controller="Usuario" asp-action="Detalles"><i class="bi bi-person-fill fs-5 mr-3"></i>Ver perfil</a></li>
-                                        <li><a class="dropdown-item text-white" asp-controller="Usuario" asp-action="Modificacion"><i class="bi bi-person-fill-gear fs-5 mr-3"></i>Modificar datos</a></li>
+                                        <li><a class="dropdown-item text-white subr" asp-controller="Usuario" asp-action="Detalles" asp-route-id="@User.FindFirst("Id")?.Value"><i class="bi bi-person-fill fs-5 mr-3"></i>Ver perfil</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="Usuario" asp-action="Modificacion" asp-route-id="@User.FindFirst("Id")?.Value"><i class="bi bi-person-fill-gear fs-5 mr-3"></i>Modificar datos</a></li>
                                         <li><a class="dropdown-item" id="linkCerrarSesion" asp-controller="Login" asp-action="Salir"><i class="bi bi-person-fill-dash fs-5 mr-3"></i>Cerrar sesión</a></li>
                                     </ul>
                                 </li>

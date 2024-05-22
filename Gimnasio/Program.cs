@@ -21,6 +21,9 @@ builder.Services.AddScoped<ITarifaService, TarifaService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
+//Registrar Contrato
+builder.Services.AddScoped<IContratoRepository, ContratoRepository>();
+builder.Services.AddScoped<IContratoService, ContratoService>();
 
 //Configurar la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>

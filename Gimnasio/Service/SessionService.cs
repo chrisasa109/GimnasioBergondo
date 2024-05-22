@@ -24,5 +24,20 @@ namespace Gimnasio.Service
             }
             return null;
         }
+
+        public bool EsAdministrador()
+        {
+            return _httpContextAccessor.HttpContext.User.IsInRole("ADMINISTRADOR");
+        }
+
+        public bool EsTrabajador()
+        {
+            return _httpContextAccessor.HttpContext.User.IsInRole("TRABAJADOR");
+        }
+
+        public bool EsCliente()
+        {
+            return _httpContextAccessor.HttpContext.User.IsInRole("CLIENTE");
+        }
     }
 }

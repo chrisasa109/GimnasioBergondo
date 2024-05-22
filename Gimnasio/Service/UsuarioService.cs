@@ -1,28 +1,29 @@
-﻿using Gimnasio.Dates;
-using Gimnasio.Models;
+﻿using Gimnasio.Dominio.IRepository;
+using Gimnasio.Dominio.IServices;
+using Gimnasio.Transporte;
 
 namespace Gimnasio.Service
 {
-    public class UsuarioService
+    public class UsuarioService : IUsuarioService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public UsuarioService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        private readonly IUsuarioRepository _IUsuarioRepository;
+        public UsuarioService(IUsuarioRepository UsuarioRepository)
         {
-            _context = context;
-            _httpContextAccessor = httpContextAccessor;
+            _IUsuarioRepository = UsuarioRepository;
+        }
+        public async Task<UsuarioDTO> ConsultarUsuario(int id)
+        {
+            return await _IUsuarioRepository.ConsultarUsuario(id);
         }
 
-        public Usuario? ObtenerUsuario()
+        public async Task<bool> ModificarUsuario(UsuarioDTO usuario)
         {
-            var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst("Id")?.Value;
-            if (int.TryParse(userIdClaim, out int userId))
-            {
-                var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
-                return usuario;
-            }
-            return null;
+            return await _IUsuarioRepository.ModificarUsuario(usuario);
+        }
+
+        public async Task<bool> RegistrarUsuario(UsuarioDTO usuarioFront)
+        {
+            return await _IUsuarioRepository.RegistrarUsuario(usuarioFront);
         }
     }
 }

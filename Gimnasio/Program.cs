@@ -1,4 +1,7 @@
 using Gimnasio.Dates;
+using Gimnasio.Dominio.IRepository;
+using Gimnasio.Dominio.IServices;
+using Gimnasio.Persistence;
 using Gimnasio.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Para que funcione la clase UsuarioService del directorio Service
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<SessionService>();
+
+//Registrar Tarifa
+builder.Services.AddScoped<ITarifaRepository, TarifaRepository>();
+builder.Services.AddScoped<ITarifaService, TarifaService>();
+
+//Registrar Usuario
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
 
 //Configurar la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>

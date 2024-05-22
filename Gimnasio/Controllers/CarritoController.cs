@@ -12,8 +12,8 @@ namespace Gimnasio.Controllers
     public class CarritoController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UsuarioService _usuarioService;
-        public CarritoController(ApplicationDbContext context, UsuarioService usuarioService)
+        private readonly SessionService _usuarioService;
+        public CarritoController(ApplicationDbContext context, SessionService usuarioService)
         {
             _context = context;
             _usuarioService = usuarioService;

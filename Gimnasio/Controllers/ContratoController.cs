@@ -10,8 +10,8 @@ namespace Gimnasio.Controllers
     public class ContratoController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UsuarioService _usuarioService;
-        public ContratoController(ApplicationDbContext context, UsuarioService usuarioService) 
+        private readonly SessionService _usuarioService;
+        public ContratoController(ApplicationDbContext context, SessionService usuarioService) 
         { 
             _context = context; 
             _usuarioService = usuarioService;

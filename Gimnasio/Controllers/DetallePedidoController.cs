@@ -11,8 +11,8 @@ namespace Gimnasio.Controllers
     public class DetallePedidoController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UsuarioService _usuarioService;
-        public DetallePedidoController(ApplicationDbContext context, UsuarioService usuarioService)
+        private readonly SessionService _usuarioService;
+        public DetallePedidoController(ApplicationDbContext context, SessionService usuarioService)
         {
             _context = context;
             _usuarioService = usuarioService;

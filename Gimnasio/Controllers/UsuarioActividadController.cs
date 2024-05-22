@@ -12,8 +12,8 @@ namespace Gimnasio.Controllers
     public class UsuarioActividadController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UsuarioService _usuarioService;
-        public UsuarioActividadController(ApplicationDbContext context, UsuarioService usuarioService)
+        private readonly SessionService _usuarioService;
+        public UsuarioActividadController(ApplicationDbContext context, SessionService usuarioService)
         {
             _context = context;
             _usuarioService = usuarioService;

@@ -1,4 +1,5 @@
 ﻿using Gimnasio.Dates;
+using Gimnasio.Dominio.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,13 +7,18 @@ namespace Gimnasio.Controllers
 {
     public class TarifaController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public TarifaController(ApplicationDbContext context) { _context = context; }
+        private readonly ITarifaService _ITarifaService;
+        public TarifaController(ITarifaService iTarifaService)
+        {
+            _ITarifaService = iTarifaService;
+        }
+
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult> Index()
         {
-            return View(await _context.Tarifa.OrderBy(a => a.Precio).ToListAsync());
+            var tarifas = await _ITarifaService.ConsultaTarifas();
+            return View(tarifas);   
         }
     }
 }

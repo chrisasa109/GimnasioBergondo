@@ -7,7 +7,7 @@ El proyecto llevado a cabo tiene el objetivo de crear una página web para la ge
 * SQL: Gestor de base de datos.
 * JavaScript: Tecnlogía de frontend.
 ## Base de datos
-[DiagramaBBDD](diagrama.png)
+![DiagramaBBDD]([diagrama.png](https://github.com/chrisasa109/GimnasioBergondo/blob/a95ee27e43d6e47558fc8978c9525058f0923942/diagrama.png))
 ## Casos de uso
 _Pendiente_
 ## Despliegue de la aplicación

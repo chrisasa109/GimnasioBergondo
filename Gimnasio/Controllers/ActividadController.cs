@@ -1,5 +1,6 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Gimnasio.Transporte.Actividad;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -43,14 +44,6 @@ namespace Gimnasio.Controllers
             return View(actividades);
         }
 
-        public class ModeloCalendario
-        {
-            public int id { get; set; }
-            public string title { get; set; }
-            public string start { get; set; }
-            public string end { get; set; }
-        }
-
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         [HttpGet]
         public IActionResult Create()
@@ -69,6 +62,5 @@ namespace Gimnasio.Controllers
             }
             return View();
         }
-
     }
 }

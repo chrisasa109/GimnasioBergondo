@@ -16,7 +16,6 @@ namespace Gimnasio.Models
         
         [ForeignKey("Usuario")]
         public int UsuarioId { get; set; }
-        [NotMapped]
         public virtual Usuario? _usuario {  get; set; }
         
         [ForeignKey("Actividad")]

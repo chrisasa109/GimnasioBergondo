@@ -1,8 +1,8 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Gimnasio.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using static Gimnasio.Models.Pedido;
 
 namespace Gimnasio.Controllers
@@ -10,13 +10,12 @@ namespace Gimnasio.Controllers
     [Authorize]
     public class DetallePedidoController : Controller
     {
-        public DetallePedidoController(ApplicationDbContext context) { _context = context; }
         private readonly ApplicationDbContext _context;
-        private Usuario ObtenerDatosPorCookies()
+        private readonly UsuarioService _usuarioService;
+        public DetallePedidoController(ApplicationDbContext context, UsuarioService usuarioService)
         {
-            _ = int.TryParse(User.FindFirst("Id")?.Value, out int userId);
-            var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
-            return usuario;
+            _context = context;
+            _usuarioService = usuarioService;
         }
 
         public async Task<IActionResult> ProcesarPedido([FromBody] string formaPago)
@@ -26,7 +25,7 @@ namespace Gimnasio.Controllers
             {
                 if (Enum.TryParse(formaPago, true, out Metodo metodoPago))
                 {
-                    var usuarioId = ObtenerDatosPorCookies().Id;
+                    var usuarioId = _usuarioService.ObtenerUsuario().Id;
 
                     var nuevoPedido = new Pedido
                     {
@@ -77,7 +76,7 @@ namespace Gimnasio.Controllers
 
         public IActionResult Index()
         {
-            List<Pedido> pedidos = _context.Pedido.Where(p => p.UsuarioID == ObtenerDatosPorCookies().Id).ToList();
+            List<Pedido> pedidos = _context.Pedido.Where(p => p.UsuarioID == _usuarioService.ObtenerUsuario().Id).ToList();
             List<DetallePedido> listaDetallePedido = [];
             if (pedidos.Count != 0)
             {

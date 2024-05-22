@@ -1,5 +1,6 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Gimnasio.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,27 +10,25 @@ namespace Gimnasio.Controllers
     public class ContratoController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public ContratoController(ApplicationDbContext context) { _context = context; }
-
-        private Usuario ObtenerDatosPorCookies()
-        {
-            int.TryParse(User.FindFirst("Id")?.Value, out int userId);
-            var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
-            return usuario;
+        private readonly UsuarioService _usuarioService;
+        public ContratoController(ApplicationDbContext context, UsuarioService usuarioService) 
+        { 
+            _context = context; 
+            _usuarioService = usuarioService;
         }
 
         [HttpGet]
         public IActionResult Index(int tarifaId)
         {
-            if (_context.Contrato.Any(e => e.UsuarioId == ObtenerDatosPorCookies().Id && DateOnly.FromDateTime(DateTime.Now) < e.FechaFin))
+            if (_context.Contrato.Any(e => e.UsuarioId == _usuarioService.ObtenerUsuario().Id && DateOnly.FromDateTime(DateTime.Now) < e.FechaFin))
             {
                 TempData["ContratoVigente"] = "Ya tienes un contrato vigente";
                 return RedirectToAction("Detalles", "Contrato");
             }
             var contrato = new Contrato
             {
-                UsuarioId = ObtenerDatosPorCookies().Id,
-                _usuario = ObtenerDatosPorCookies(),
+                UsuarioId = _usuarioService.ObtenerUsuario().Id,
+                _usuario = _usuarioService.ObtenerUsuario(),
                 FechaInicio = DateOnly.FromDateTime(DateTime.Now),
                 FechaFin = DateOnly.FromDateTime(DateTime.Now).AddMonths(1),
                 TarifaID = tarifaId,
@@ -62,7 +61,7 @@ namespace Gimnasio.Controllers
         [HttpGet]
         public IActionResult Detalles()
         {
-            var contrato = _context.Contrato.FirstOrDefault(c => c.UsuarioId == ObtenerDatosPorCookies().Id && DateOnly.FromDateTime(DateTime.Now) < c.FechaFin);
+            var contrato = _context.Contrato.FirstOrDefault(c => c.UsuarioId == _usuarioService.ObtenerUsuario().Id && DateOnly.FromDateTime(DateTime.Now) < c.FechaFin);
             if (contrato == null)
             {
                 TempData["ContratoNoVigente"] = "No tienes contrato vigente. Contrata uno!";
@@ -75,7 +74,7 @@ namespace Gimnasio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GuardarCambios([Bind("Comentarios")] Contrato nuevo)
         {
-            var contrato = _context.Contrato.FirstOrDefault(c => c.UsuarioId == ObtenerDatosPorCookies().Id);
+            var contrato = _context.Contrato.FirstOrDefault(c => c.UsuarioId == _usuarioService.ObtenerUsuario().Id);
             if (contrato != null)
             {
                 contrato.Comentarios = nuevo.Comentarios;

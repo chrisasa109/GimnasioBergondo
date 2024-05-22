@@ -197,8 +197,8 @@ namespace Gimnasio.Migrations
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -295,6 +295,8 @@ namespace Gimnasio.Migrations
 
                     b.HasIndex("ActividadId");
 
+                    b.HasIndex("UsuarioId");
+
                     b.ToTable("UsuarioActividad");
                 });
 
@@ -331,7 +333,7 @@ namespace Gimnasio.Migrations
             modelBuilder.Entity("Gimnasio.Models.DetallePedido", b =>
                 {
                     b.HasOne("Gimnasio.Models.Pedido", "_pedido")
-                        .WithMany()
+                        .WithMany("DetallesPedido")
                         .HasForeignKey("PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -366,7 +368,20 @@ namespace Gimnasio.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Gimnasio.Models.Usuario", "_usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Actividad");
+
+                    b.Navigation("_usuario");
+                });
+
+            modelBuilder.Entity("Gimnasio.Models.Pedido", b =>
+                {
+                    b.Navigation("DetallesPedido");
                 });
 #pragma warning restore 612, 618
         }

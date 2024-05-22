@@ -1,27 +1,26 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Gimnasio.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Gimnasio.Controllers
 {
     [Authorize]
     public class PedidoController : Controller
     {
-        public PedidoController(ApplicationDbContext context) { _context = context; }
         private readonly ApplicationDbContext _context;
-        private Usuario ObtenerDatosPorCookies()
+        private readonly UsuarioService _usuarioService;
+        public PedidoController(ApplicationDbContext context, UsuarioService usuarioService)
         {
-            _ = int.TryParse(User.FindFirst("Id")?.Value, out int userId);
-            var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
-            return usuario;
+            _context = context;
+            _usuarioService = usuarioService;
         }
         [HttpGet]
         public IActionResult Index()
         {
-            List<Pedido> lista = _context.Pedido.OrderByDescending(x=>x.Id).Where(p => p.UsuarioID == ObtenerDatosPorCookies().Id).Include(p => p.DetallesPedido).ToList();
+            List<Pedido> lista = _context.Pedido.OrderByDescending(x=>x.Id).Where(p => p.UsuarioID == _usuarioService.ObtenerUsuario().Id).Include(p => p.DetallesPedido).ToList();
             foreach (Pedido item in lista)
             {
                 double precio = 0;

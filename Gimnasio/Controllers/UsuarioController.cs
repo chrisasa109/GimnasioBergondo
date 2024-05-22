@@ -1,19 +1,23 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Gimnasio.Service;
+using Gimnasio.Transporte.Usuario;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace Gimnasio.Controllers
 {
     public class UsuarioController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public UsuarioController(ApplicationDbContext context) {  _context = context; }
+        private readonly UsuarioService _usuarioService;
+        public UsuarioController(ApplicationDbContext context, UsuarioService usuarioService)
+        {
+            _context = context;
+            _usuarioService = usuarioService;
+        }
 
         [HttpGet]
         public IActionResult Registro()
@@ -47,7 +51,7 @@ namespace Gimnasio.Controllers
         {
             if (id == null)
             {
-                int? userIdFromCookie = ObtenerDatosPorCookies().Id;
+                int? userIdFromCookie = _usuarioService.ObtenerUsuario().Id;
                 id = userIdFromCookie;
             }
             else if (User.IsInRole("CLIENTE"))
@@ -109,7 +113,7 @@ namespace Gimnasio.Controllers
         {
             if (id == null || User.IsInRole("CLIENTE"))
             {
-                int? userIdFromCookie = ObtenerDatosPorCookies().Id;
+                int? userIdFromCookie = _usuarioService.ObtenerUsuario().Id;
                 id = userIdFromCookie;
             }
             Usuario user = _context.Usuario.First(u => u.Id == id);
@@ -121,7 +125,7 @@ namespace Gimnasio.Controllers
 
             if (id == null || User.IsInRole("CLIENTE"))
             {
-                int? userIdFromCookie = ObtenerDatosPorCookies().Id;
+                int? userIdFromCookie = _usuarioService.ObtenerUsuario().Id;
                 id = userIdFromCookie;
             }
             Usuario? usuario = await _context.Usuario.FirstOrDefaultAsync(m => m.Id == id);
@@ -136,7 +140,7 @@ namespace Gimnasio.Controllers
         {
             if (id == null)
             {
-                id = ObtenerDatosPorCookies().Id;
+                id = _usuarioService.ObtenerUsuario().Id;
             }
             Usuario? us = await _context.Usuario.FindAsync(id);
             if(us != null)
@@ -163,12 +167,6 @@ namespace Gimnasio.Controllers
             return View(EnumerableUsuario);
         }
 
-        public class AsignacionRolFront
-        {
-            public required int idUsuario {  get; set; }
-            public required string rolFronted {  get; set; }
-        }
-
         [HttpPut]
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         public async Task<IActionResult> AsignarRol([FromBody] AsignacionRolFront recepcion)
@@ -183,12 +181,5 @@ namespace Gimnasio.Controllers
             }
             return BadRequest();
         }
-        private Usuario ObtenerDatosPorCookies()
-        {
-            int.TryParse(User.FindFirst("Id")?.Value, out int userId);
-            var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
-            return usuario;
-        }
-
     }
 }

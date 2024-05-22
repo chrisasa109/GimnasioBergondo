@@ -1,5 +1,7 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Gimnasio.Service;
+using Gimnasio.Transporte.Carrito;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,17 +12,11 @@ namespace Gimnasio.Controllers
     public class CarritoController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public CarritoController(ApplicationDbContext context) { _context = context; }
-        private Usuario ObtenerDatosPorCookies()
+        private readonly UsuarioService _usuarioService;
+        public CarritoController(ApplicationDbContext context, UsuarioService usuarioService)
         {
-            _ = int.TryParse(User.FindFirst("Id")?.Value, out int userId);
-            var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
-            return usuario;
-        }
-        public class ProductoCarrito
-        {
-            public int idProducto { get; set; }
-            public int Cantidad { get; set; }
+            _context = context;
+            _usuarioService = usuarioService;
         }
 
         [HttpPost]
@@ -28,7 +24,7 @@ namespace Gimnasio.Controllers
         {
             try
             {
-                int idUsuario = ObtenerDatosPorCookies().Id;
+                int idUsuario = _usuarioService.ObtenerUsuario().Id;
                 Carrito? carritoExiste = _context.Carrito.FirstOrDefault(c => c.UsuarioId == idUsuario && c.ProductoId == carro.idProducto);
                 if (carritoExiste != null)
                 {
@@ -57,7 +53,7 @@ namespace Gimnasio.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<Carrito> carrito = [.. _context.Carrito.Where(c => c.UsuarioId == ObtenerDatosPorCookies().Id)
+            List<Carrito> carrito = [.. _context.Carrito.Where(c => c.UsuarioId == _usuarioService.ObtenerUsuario().Id)
                 .Include(a => a._producto)];
             return View(carrito);
         }
@@ -75,12 +71,6 @@ namespace Gimnasio.Controllers
             }
             TempData["eliminarProducto"] = "El producto no se ha podido eliminar del carrito.";
             return Json(new { success = false });
-        }
-
-        public class EnvioCambios
-        {
-            public required List<int> IdsCarrito { get; set; }
-            public required List<int> Cantidades { get; set; }
         }
 
         [HttpPost]

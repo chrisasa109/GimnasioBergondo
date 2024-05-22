@@ -1,13 +1,10 @@
 ﻿using Gimnasio.Dates;
 using Gimnasio.Models;
+using Gimnasio.Service;
+using Gimnasio.Transporte.UsuarioActividad;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using System.Configuration;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text.Json;
 
 namespace Gimnasio.Controllers
 {
@@ -15,28 +12,20 @@ namespace Gimnasio.Controllers
     public class UsuarioActividadController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public UsuarioActividadController(ApplicationDbContext context) { _context = context; }
-        private Usuario ObtenerDatosPorCookies()
+        private readonly UsuarioService _usuarioService;
+        public UsuarioActividadController(ApplicationDbContext context, UsuarioService usuarioService)
         {
-            int.TryParse(User.FindFirst("Id")?.Value, out int userId);
-            var usuario = _context.Usuario.FirstOrDefault(x => x.Id == userId);
-            return usuario;
+            _context = context;
+            _usuarioService = usuarioService;
         }
 
         public ActionResult Index(int? id)
         {
-            int idUsuario = id ?? ObtenerDatosPorCookies().Id;
+            int idUsuario = id ?? _usuarioService.ObtenerUsuario().Id;
             //Si salta error de conversión es porque el id de actividad por algún motivo lo lee como string
             var UserAct = _context.UsuarioActividad.Where(x => x.UsuarioId == idUsuario).Include(a => a.Actividad).ToList();
 
             return View(UserAct);
-        }
-
-        public class ModeloUserAct
-        {
-            public int ActividadId { get; set; }
-            [AllowNull]
-            public string? Notas { get; set; }
         }
 
         [HttpPost]
@@ -44,11 +33,11 @@ namespace Gimnasio.Controllers
         {
             try
             {
-                int idUsuario = ObtenerDatosPorCookies().Id;
+                int idUsuario = _usuarioService.ObtenerUsuario().Id;
                 UsuarioActividad? existe = _context.UsuarioActividad.FirstOrDefault(a => a.UsuarioId == idUsuario && a.ActividadId == modelo.ActividadId);
                 if (existe is null)
                 {
-                    if(_context.Contrato.Any(e => e.UsuarioId == ObtenerDatosPorCookies().Id && DateOnly.FromDateTime(DateTime.Now) < e.FechaFin))
+                    if(_context.Contrato.Any(e => e.UsuarioId == _usuarioService.ObtenerUsuario().Id && DateOnly.FromDateTime(DateTime.Now) < e.FechaFin))
                     {
                         UsuarioActividad UsAc = new()
                         {

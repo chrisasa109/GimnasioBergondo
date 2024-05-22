@@ -1,9 +1,14 @@
 using Gimnasio.Dates;
+using Gimnasio.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Para que funcione la clase UsuarioService del directorio Service
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UsuarioService>();
 
 //Configurar la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>

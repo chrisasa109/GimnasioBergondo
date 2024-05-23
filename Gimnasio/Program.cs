@@ -4,7 +4,6 @@ using Gimnasio.Dominio.IServices;
 using Gimnasio.Persistence;
 using Gimnasio.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +23,18 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 //Registrar Contrato
 builder.Services.AddScoped<IContratoRepository, ContratoRepository>();
 builder.Services.AddScoped<IContratoService, ContratoService>();
+
+//Registrar Login
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+
+//Registrar Producto
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+builder.Services.AddScoped<IProductoService, ProductoService>();
+
+//Registrar Carrito
+builder.Services.AddScoped<ICarritoRepository, CarritoRepository>();
+builder.Services.AddScoped<ICarritoService, CarritoService>();
 
 //Configurar la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>

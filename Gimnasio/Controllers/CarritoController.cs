@@ -1,10 +1,11 @@
 ﻿using Gimnasio.Dates;
+using Gimnasio.Dominio.IServices;
 using Gimnasio.Models;
 using Gimnasio.Service;
+using Gimnasio.Transporte;
 using Gimnasio.Transporte.Carrito;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gimnasio.Controllers
 {
@@ -12,36 +13,27 @@ namespace Gimnasio.Controllers
     public class CarritoController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly SessionService _usuarioService;
-        public CarritoController(ApplicationDbContext context, SessionService usuarioService)
+        private ICarritoService _ICarritoService;
+        public CarritoController(ICarritoService carritoService, ApplicationDbContext context)
         {
             _context = context;
-            _usuarioService = usuarioService;
+            _ICarritoService = carritoService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Agregar([FromBody] ProductoCarrito carro)
+        public async Task<ActionResult> Agregar([FromBody] ProductoCarrito carro)
         {
             try
             {
-                int idUsuario = _usuarioService.ObtenerUsuario().Id;
-                Carrito? carritoExiste = _context.Carrito.FirstOrDefault(c => c.UsuarioId == idUsuario && c.ProductoId == carro.idProducto);
-                if (carritoExiste != null)
+                bool carroDTO = await _ICarritoService.AgregarCarro(carro);
+                if (carroDTO)
                 {
-                    carritoExiste.Cantidad += 1;
+                    TempData["agregadoCorrectamente"] = "El producto se ha agregado correctamente al carrito.";
                 }
                 else
                 {
-                    Carrito carrito = new()
-                    {
-                        UsuarioId = idUsuario,
-                        ProductoId = carro.idProducto,
-                        Cantidad = carro.Cantidad
-                    };
-                    await _context.Carrito.AddAsync(carrito);
+                    TempData["malAgregado"] = "El producto no se ha podido agregar correctamente al carrito";
                 }
-                await _context.SaveChangesAsync();
-                TempData["agregadoCorrectamente"] = "El producto se ha agregado correctamente al carrito.";
                 return Ok();
             }
             catch (Exception ex)
@@ -51,26 +43,26 @@ namespace Gimnasio.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            List<Carrito> carrito = [.. _context.Carrito.Where(c => c.UsuarioId == _usuarioService.ObtenerUsuario().Id)
-                .Include(a => a._producto)];
+            List<CarritoDTO> carrito = await _ICarritoService.ObtenerCarritoUsuario();
             return View(carrito);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Eliminar(int id)
+        public async Task<ActionResult> Eliminar(int id)
         {
-            Carrito? fila = _context.Carrito.FirstOrDefault(f => f.Id == id);
-            if (fila != null)
+            bool resultado = await _ICarritoService.EliminarProductoCarrito(id);
+            if (resultado)
             {
-                _context.Carrito.Remove(fila);
-                await _context.SaveChangesAsync();
                 TempData["eliminarProducto"] = "El producto se ha eliminado del carrito correctamente.";
                 return Json(new { success = true });
             }
-            TempData["eliminarProducto"] = "El producto no se ha podido eliminar del carrito.";
-            return Json(new { success = false });
+            else
+            {
+                TempData["eliminarProducto"] = "El producto no se ha podido eliminar del carrito.";
+                return Json(new { success = false });
+            }
         }
 
         [HttpPost]

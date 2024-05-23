@@ -1,9 +1,31 @@
-﻿@model List<Gimnasio.Models.Producto>
+﻿@model List<Gimnasio.Transporte.ProductoDTO>
 
 @{
     ViewData["Title"] = "Detalles de productos";
 }
 
+@functions {
+    void RenderAlert(string message, string alertType)
+    {
+        if (!string.IsNullOrEmpty(message))
+        {
+            <div class="row justify-content-center">
+                <div class="alert alert-@alertType alert-dismissible fade show col-md-7 text-center">
+                    <button type="button" class="btn-close fs-7" data-bs-dismiss="alert"></button>
+                    <strong class="fs-5">@message</strong>
+                </div>
+            </div>
+        }
+    }
+}
+
+@{
+    RenderAlert(TempData["NoEncontrado"] as string, "danger");
+    RenderAlert(TempData["Actualizado"] as string, "success");
+    RenderAlert(TempData["NoActualizado"] as string, "danger");
+    RenderAlert(TempData["ProductoBienCreado"] as string, "success");
+    RenderAlert(TempData["ProductoMalCreado"] as string, "danger");
+}
 
 <h1 class="text-center my-3">Detalles de los productos</h1>
 <div class="row justify-content-center">

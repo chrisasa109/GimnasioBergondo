@@ -1,5 +1,7 @@
 ﻿using Gimnasio.Dates;
+using Gimnasio.Dominio.IServices;
 using Gimnasio.Models;
+using Gimnasio.Transporte;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,93 +10,80 @@ namespace Gimnasio.Controllers
 {
     public class ProductoController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public ProductoController(ApplicationDbContext context) { _context = context; }
+        private readonly IProductoService _IProductoService;
+        public ProductoController(IProductoService productoService)
+        {
+            _IProductoService = productoService;
+        }
 
         [HttpGet]
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
-        public IActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
+
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         [HttpPost]
-        public async Task<IActionResult> Create(string nombre, double precio, int stock, IFormFile foto)
+        public async Task<ActionResult> Create(string nombre, double precio, int stock, IFormFile foto)
         {
             if (ModelState.IsValid)
             {
-                var producto = new Producto
+                ProductoDTO producto = await _IProductoService.CrearProductoDTO(nombre, precio, stock, foto);
+                bool resultado = await _IProductoService.AgregarProducto(producto);
+                if (resultado)
                 {
-                    Nombre = nombre,
-                    Precio = precio,
-                    Stock = stock
-                };
-
-                if (foto != null && foto.Length > 0)
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await foto.CopyToAsync(memoryStream);
-                        producto.Foto = memoryStream.ToArray();
-                    }
+                    TempData["ProductoBienCreado"] = "El producto se ha creado correctamente";
                 }
-
-                _context.Producto.Add(producto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                else
+                {
+                    TempData["ProductoMalCreado"] = "No se ha podido crear el producto";
+                }
+                return RedirectToAction("Detalles", "Producto");
             }
             return View();
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var productos = _context.Producto.Where(p => p.Stock > 0).ToList();
+            List<ProductoDTO> productos = await _IProductoService.ObtenerTodosProductosDisponibles();
             return View(productos);
         }
         [HttpGet]
-        public IActionResult MostrarImagen(int id)
+        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
+        public async Task<ActionResult> Detalles()
         {
-            var producto = _context.Producto.FirstOrDefault(p => p.Id == id);
-            if (producto != null && producto.Foto != null)
-            {
-                return File(producto.Foto, "image/jpeg");
-            }
-            else
-            {
-                // Manejar el caso en que la imagen no se encuentra
-                return NotFound();
-            }
+            List<ProductoDTO> productos = await _IProductoService.ObtenerTodosProductos();
+            return View(productos);
         }
         [HttpGet]
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
-        public IActionResult Detalles()
+        public async Task<ActionResult> Editar(int idProducto)
         {
-            return View(_context.Producto.ToList());
-        }
-        [HttpGet]
-        [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
-        public IActionResult Editar(int idProducto)
-        {
-            Producto prod = _context.Producto.FirstOrDefault(o => o.Id == idProducto);
+            ProductoDTO prod = await _IProductoService.ObtenerProducto(idProducto);
             return PartialView("~/Views/Shared/_EditarProducto.cshtml", prod);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Nombre, Precio,Stock")] Producto prod)
+        public async Task<ActionResult> Edit([Bind("Id,Nombre, Precio,Stock")] ProductoDTO prod)
         {
             try
             {
-                Producto almacenado = await _context.Producto.FirstOrDefaultAsync(p => p.Id == prod.Id);
+                ProductoDTO almacenado = await _IProductoService.ObtenerProducto(prod.Id);
                 if (almacenado == null)
                 {
-                    return NotFound();
+                    TempData["NoEncontrado"] = "No se ha podido encontrar el producto.";
                 }
-                almacenado.Nombre = prod.Nombre;
-                almacenado.Precio = prod.Precio;
-                almacenado.Stock = prod.Stock;
-                _context.Producto.Update(almacenado);
-                await _context.SaveChangesAsync();
+                bool actualizado = await _IProductoService.ActualizarProducto(prod);
+                if (actualizado)
+                {
+                    TempData["Actualizado"] = "El producto se ha actualizado correctamente.";
+                }
+                else
+                {
+                    TempData["NoActualizado"] = "No se ha podido actualizar el producto";
+                }
                 return RedirectToAction("Detalles", "Producto");
             }
             catch (DbUpdateException)

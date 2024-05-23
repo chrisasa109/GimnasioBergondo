@@ -4,6 +4,8 @@ namespace Gimnasio.Dominio.IServices
 {
     public interface ILoginService
     {
-        Task<bool> IniciarSesion(LoginDTO login);
+        void CerrarSesion(HttpContext httpContext);
+        Task<bool> ExisteUsuario(LoginDTO login);
+        Task<bool> IniciarSesion(LoginDTO login, HttpContext httpContext);
     }
 }

@@ -9,6 +9,7 @@
         link.addEventListener('click', function (e) {
             e.preventDefault();
             const carritoId = this.getAttribute('data-carrito-id');
+            console.log(carritoId)
             eliminarElementoDelCarrito(carritoId);
         });
     });
@@ -94,7 +95,7 @@ function calcularPrecioTotalCarrito() {
     document.getElementById('precioTotalCarrito').innerText = `${precioTotalCarrito.toFixed(2).replace('.', ',')} €`;
 }
 
-function eliminarElementoDelCarrito(carritoId) {
+async function eliminarElementoDelCarrito(carritoId) {
     fetch(`/Carrito/Eliminar/${carritoId}`, {
         method: 'DELETE'
     })

@@ -36,6 +36,22 @@ builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<ICarritoRepository, CarritoRepository>();
 builder.Services.AddScoped<ICarritoService, CarritoService>();
 
+//Registrar Pedido
+builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<IPedidoService, PedidoService>();
+
+//Registrar DetallePedido
+builder.Services.AddScoped<IDetallePedidoRepository, DetallePedidoRepository>();
+builder.Services.AddScoped<IDetallePedidoService, DetallePedidoService>();
+
+//Registrar Actividad
+builder.Services.AddScoped<IActividadRepository, ActividadRepository>();
+builder.Services.AddScoped<IActividadService, ActividadService>();
+
+//Registrar UsuarioActividad
+builder.Services.AddScoped<IUsuarioActividadRepository, UsuarioActividadRepository>();
+builder.Services.AddScoped<IUsuarioActividadService, UsuarioActividadService>();
+
 //Configurar la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
     opciones.UseSqlServer(builder.Configuration.GetConnectionString("Conexion")));

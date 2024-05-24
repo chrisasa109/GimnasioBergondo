@@ -7,13 +7,33 @@ namespace Gimnasio.Service
 {
     public class CarritoService : ICarritoService
     {
-        private ICarritoRepository _ICarritoRepository;
-        private SessionService _SessionService;
+        private readonly ICarritoRepository _ICarritoRepository;
+        private readonly SessionService _SessionService;
         public CarritoService(ICarritoRepository icarritoRepository, SessionService sessionService)
         {
             _ICarritoRepository = icarritoRepository;
             _SessionService = sessionService;
 
+        }
+
+        public async Task<bool> ActualizarCarrito(EnvioCambios modelo)
+        {
+            for (int i = 0; i < modelo.IdsCarrito.Count; i++)
+            {
+                int carritoId = modelo.IdsCarrito[i];
+                int cantidad = modelo.Cantidades[i];
+                CarritoDTO encontrado = await _ICarritoRepository.ObtenerFila(carritoId);
+                if (encontrado != null)
+                {
+                    bool actualizado = await _ICarritoRepository.ActualizarCarrito(encontrado, cantidad);
+                    if (!actualizado) { return false; }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public async Task<bool> AgregarCarro(ProductoCarrito carro)
@@ -35,14 +55,14 @@ namespace Gimnasio.Service
         public async Task<bool> EliminarProductoCarrito(int id)
         {
             CarritoDTO fila = await _ICarritoRepository.ObtenerFila(id);
-            if(fila == null)
+            if (fila == null)
             {
                 return false;
             }
             else
             {
                 bool result = await _ICarritoRepository.EliminarFila(fila);
-                if(result)
+                if (result)
                 {
                     return true;
                 }
@@ -56,6 +76,6 @@ namespace Gimnasio.Service
 
         }
 
-        
+
     }
 }

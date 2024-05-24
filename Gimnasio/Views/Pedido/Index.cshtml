@@ -1,4 +1,4 @@
-﻿@model List<Gimnasio.Models.Pedido>
+﻿@model List<Gimnasio.Transporte.PedidoDTO>
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -29,28 +29,28 @@
 else
 {
     <div class="row justify-content-center">
-    <div class="col-xl-7 col-md-8">
-    <table class="table table-striped" id="formatDataTable" style="width: 100%;">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Nº productos</th>
-                <th>Precio total</th>
-                <th data-dt-order="disable"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Pedido item in Model)
-            {
-                <tr>
-                    <td>@DateOnly.FromDateTime(item.Fecha)</td>
-                    <td>@item.DetallesPedido.Count</td>
-                    <td>@item.PrecioTotal.ToString("0.00")</td>
-                    <td><a class="btn btn-info" asp-controller="Pedido" asp-action="Detalles" asp-route-IdPedido="@item.Id"><i class="bi bi-eye-fill fs-6"></i></a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        <div class="col-xl-7 col-md-8">
+            <table class="table table-striped" id="formatDataTable" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Nº productos</th>
+                        <th>Precio total</th>
+                        <th data-dt-order="disable"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@DateOnly.FromDateTime(item.Fecha)</td>
+                            <td>@item.DetallesPedido.Count</td>
+                            <td>@item.PrecioTotal.ToString("0.00")</td>
+                            <td><a class="btn btn-info" asp-controller="Pedido" asp-action="Detalles" asp-route-IdPedido="@item.Id"><i class="bi bi-eye-fill fs-6"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 }

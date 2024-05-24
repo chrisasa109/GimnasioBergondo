@@ -17,6 +17,25 @@ namespace Gimnasio.Persistence
             _IProductoRepository = productoRepository;
         }
 
+        public async Task<bool> ActualizarCarrito(CarritoDTO encontrado, int cantidad)
+        {
+            try
+            {
+                Carrito? carrito = await _context.Carrito.FirstOrDefaultAsync(c => c.Id == encontrado.Id);
+                if (cantidad != null)
+                {
+                    carrito.Cantidad = cantidad;
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> AgregarCantidad(CarritoDTO? carrito, ProductoCarrito carro)
         {
             try
@@ -81,7 +100,7 @@ namespace Gimnasio.Persistence
             {
                 return false;
             }
-            
+
         }
 
         public async Task<List<CarritoDTO>> ObtenerCarritoUsuario(int id)

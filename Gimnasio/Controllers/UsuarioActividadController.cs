@@ -1,6 +1,8 @@
 ﻿using Gimnasio.Dates;
+using Gimnasio.Dominio.IServices;
 using Gimnasio.Models;
 using Gimnasio.Service;
+using Gimnasio.Transporte;
 using Gimnasio.Transporte.UsuarioActividad;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,19 +15,18 @@ namespace Gimnasio.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly SessionService _usuarioService;
-        public UsuarioActividadController(ApplicationDbContext context, SessionService usuarioService)
+        private readonly IUsuarioActividadService _IUsuarioActividadService;
+        public UsuarioActividadController(ApplicationDbContext context, SessionService usuarioService, IUsuarioActividadService usuarioActividadService)
         {
             _context = context;
             _usuarioService = usuarioService;
+            _IUsuarioActividadService = usuarioActividadService;
         }
 
-        public ActionResult Index(int? id)
-        {
-            int idUsuario = id ?? _usuarioService.ObtenerUsuario().Id;
-            //Si salta error de conversión es porque el id de actividad por algún motivo lo lee como string
-            var UserAct = _context.UsuarioActividad.Where(x => x.UsuarioId == idUsuario).Include(a => a.Actividad).ToList();
-
-            return View(UserAct);
+        public async Task<ActionResult> Index(int? id)
+        {;
+            List<UsuarioActividadDTO>lista = await _IUsuarioActividadService.ObtenerActividadesDelUsuarioPorId(id);
+            return View(lista);
         }
 
         [HttpPost]

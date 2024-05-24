@@ -1,5 +1,6 @@
 ﻿using Gimnasio.Dates;
-using Gimnasio.Models;
+using Gimnasio.Dominio.IServices;
+using Gimnasio.Transporte;
 using Gimnasio.Transporte.Actividad;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +11,20 @@ namespace Gimnasio.Controllers
     public class ActividadController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IActividadService _IActividadService;
 
-        public ActividadController(ApplicationDbContext context) { _context = context; }
+        public ActividadController(ApplicationDbContext context, IActividadService actividadService) 
+        { 
+            _context = context; 
+            _IActividadService = actividadService;
+        }
 
         [HttpGet]
-        public ActionResult IndexCalendar()
+        public async Task<ActionResult> IndexCalendar()
         {
-            var actividades = _context.Actividad.Where(x => x.CapacidadMaxima > 0).ToList();
+            List<ActividadDTO> actividades = await _IActividadService.ObtenerTodasActividadesDisponibles();
             List<ModeloCalendario> calendario = new List<ModeloCalendario>();
-            foreach (Actividad item in actividades)
+            foreach (ActividadDTO item in actividades)
             {
                 ModeloCalendario fila = new ModeloCalendario
                 {
@@ -38,26 +44,25 @@ namespace Gimnasio.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var actividades = _context.Actividad.Where(x => x.CapacidadMaxima > 0).ToList();
+            List<ActividadDTO> actividades = await _IActividadService.ObtenerTodasActividadesDisponibles();
             return View(actividades);
         }
 
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         [HttpGet]
-        public IActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Descripcion,Duracion,CapacidadMaxima,FechaHora")] Actividad actividadFront)
+        public async Task<ActionResult> Create([Bind("Descripcion,Duracion,CapacidadMaxima,FechaHora")] ActividadDTO actividadFront)
         {
             if (ModelState.IsValid)
             {
-                await _context.Actividad.AddAsync(actividadFront);
-                await _context.SaveChangesAsync();
+                bool creacion = await _IActividadService.AgregarActividad(actividadFront);
                 return RedirectToAction("Index", "Actividad");
             }
             return View();

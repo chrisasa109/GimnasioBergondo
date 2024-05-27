@@ -9,7 +9,7 @@ El proyecto llevado a cabo tiene el objetivo de crear una página web para la ge
 * JavaScript: Tecnlogía de frontend.
 
 ## Base de datos
-![esquemaBD](https://github.com/chrisasa109/GimnasioBergondo/blob/226d1ba6c3636d62933a877da0855d01e8510f0f/diagrama.png)
+![esquemaBD](https://github.com/chrisasa109/GimnasioBergondo/blob/4ddca06ce2afa0d1ad465d6ed918ae0d053b6aca/images-readme/diagrama.png)
 
 ## Casos de uso
 _Pendiente_

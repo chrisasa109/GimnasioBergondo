@@ -5,6 +5,7 @@ using Gimnasio.Persistence;
 using Gimnasio.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         option.LoginPath = "/Login/Index";
         option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         option.AccessDeniedPath = "/Home/Privacy";
+        option.SlidingExpiration = true;
     });
 
 // Add services to the container.
@@ -70,7 +72,6 @@ builder.Services.AddControllersWithViews();
 
 //Configurar sesión
 builder.Services.AddDistributedMemoryCache();
-
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(60);
@@ -95,6 +96,7 @@ app.UseAuthorization();
 
 app.UseSession();
 
+//Indicar la página principal de la aplicación
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

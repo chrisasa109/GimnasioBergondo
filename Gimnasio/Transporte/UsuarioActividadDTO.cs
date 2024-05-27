@@ -8,10 +8,10 @@ namespace Gimnasio.Transporte
         public int Id { get; set; }
 
         public int UsuarioId { get; set; }
-        public virtual UsuarioDTO _usuario { get; set; }
+        public virtual UsuarioDTO? _usuario { get; set; }
 
         public int ActividadId { get; set; }
-        public virtual ActividadDTO Actividad { get; set; }
+        public virtual ActividadDTO? Actividad { get; set; }
 
         [Display(Name = "Notas")]
         [DataType(DataType.MultilineText)]

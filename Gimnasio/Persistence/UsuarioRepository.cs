@@ -152,7 +152,6 @@ namespace Gimnasio.Persistence
             return lista;
         }
 
-
         public async Task<bool> RegistrarUsuario(UsuarioDTO usuarioFront)
         {
             try
@@ -181,5 +180,12 @@ namespace Gimnasio.Persistence
             }
         }
 
+        public async Task<UsuarioDTO?> ConsultarUsuarioActividad(int usuarioId)
+        {
+            UsuarioDTO? user = await (from t in  _context.Usuario
+                                      where t.Id == usuarioId
+                                      select new UsuarioDTO { Nombre = t.Nombre, Apellidos= t.Apellidos}).FirstAsync();
+            return user;
+        }
     }
 }

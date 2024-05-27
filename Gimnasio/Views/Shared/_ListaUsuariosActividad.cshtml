@@ -1,9 +1,10 @@
-﻿@model List<Gimnasio.Models.Usuario>
+﻿@model List<Gimnasio.Transporte.UsuarioActividadDTO>
 
 <h6>Participantes</h6>
 <ul>
-@foreach(Usuario alumno in Model)
-{
-    <li>@alumno.Nombre @alumno.Apellidos</li>
+@foreach(var alumno in Model)
+    {
+    
+    <li>@alumno._usuario.Nombre @alumno._usuario.Apellidos</li>
 }
 </ul>

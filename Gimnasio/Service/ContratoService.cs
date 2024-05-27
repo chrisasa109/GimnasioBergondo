@@ -7,9 +7,11 @@ namespace Gimnasio.Service
     public class ContratoService : IContratoService
     {
         private readonly IContratoRepository _IContratoRepository;
-        public ContratoService(IContratoRepository contratoRepository)
+        private readonly SessionService _SessionService;
+        public ContratoService(IContratoRepository contratoRepository, SessionService sessionService)
         {
             _IContratoRepository = contratoRepository;
+            _SessionService = sessionService;
         }
 
         public ContratoDTO ComprobarContrato(int idUsuario)
@@ -17,9 +19,10 @@ namespace Gimnasio.Service
             return _IContratoRepository.ComprobarContrato(idUsuario);
         }
 
-        public Task<bool> ContratoActivado(int usuarioId)
+        public Task<bool> ContratoActivado(int? usuarioId)
         {
-            return _IContratoRepository.ContratoActivado(usuarioId);
+            usuarioId ??= _SessionService.ObtenerUsuario().Id;
+            return _IContratoRepository.ContratoActivado((int)usuarioId);
         }
 
         public async Task<ContratoDTO> ContratoPrevio(int tarifaId)

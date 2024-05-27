@@ -1,60 +1,53 @@
-﻿using Gimnasio.Dates;
-using Gimnasio.Dominio.IServices;
-using Gimnasio.Models;
-using Gimnasio.Service;
+﻿using Gimnasio.Dominio.IServices;
 using Gimnasio.Transporte;
 using Gimnasio.Transporte.UsuarioActividad;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gimnasio.Controllers
 {
     [Authorize]
     public class UsuarioActividadController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly SessionService _usuarioService;
         private readonly IUsuarioActividadService _IUsuarioActividadService;
-        public UsuarioActividadController(ApplicationDbContext context, SessionService usuarioService, IUsuarioActividadService usuarioActividadService)
+        private readonly IContratoService _IContratoService;
+        public UsuarioActividadController(IUsuarioActividadService usuarioActividadService, IContratoService contratoService)
         {
-            _context = context;
-            _usuarioService = usuarioService;
             _IUsuarioActividadService = usuarioActividadService;
+            _IContratoService = contratoService;
         }
 
         public async Task<ActionResult> Index(int? id)
-        {;
-            List<UsuarioActividadDTO>lista = await _IUsuarioActividadService.ObtenerActividadesDelUsuarioPorId(id);
+        {
+            List<UsuarioActividadDTO> lista = await _IUsuarioActividadService.ObtenerActividadesDelUsuarioPorId(id);
             return View(lista);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Agregar([FromBody] ModeloUserAct modelo)
+        public async Task<ActionResult> Agregar([FromBody] ModeloUserAct modelo)
         {
             try
             {
-                int idUsuario = _usuarioService.ObtenerUsuario().Id;
-                UsuarioActividad? existe = _context.UsuarioActividad.FirstOrDefault(a => a.UsuarioId == idUsuario && a.ActividadId == modelo.ActividadId);
-                if (existe is null)
+                bool existe = await _IUsuarioActividadService.ComprobarUsuarioApuntadoActividad(modelo.ActividadId);
+                if (existe is false)
                 {
-                    if(_context.Contrato.Any(e => e.UsuarioId == _usuarioService.ObtenerUsuario().Id && DateOnly.FromDateTime(DateTime.Now) < e.FechaFin))
+                    bool contrato = await _IContratoService.ContratoActivado(null);
+                    if (contrato)
                     {
-                        UsuarioActividad UsAc = new()
+                        bool apuntado = await _IUsuarioActividadService.ApuntarUsuarioActividad(modelo);
+                        if (apuntado)
                         {
-                            ActividadId = modelo.ActividadId,
-                            Notas = modelo.Notas,
-                            UsuarioId = idUsuario
-                        };
-                        await _context.UsuarioActividad.AddAsync(UsAc);
-                        await _context.SaveChangesAsync();
-                        TempData["apuntadoExitosamente"] = "Te has apuntado a la actividad de manera exitosa.";
+                            TempData["apuntadoExitosamente"] = "Te has apuntado a la actividad de manera exitosa.";
+                        }
+                        else
+                        {
+                            TempData["NoApuntado"] = "No te has podido apuntar a la actividad.";
+                        }
                     }
                     else
                     {
                         TempData["NoContrato"] = "No tienes ninguna tarifa contratada para poder apuntarte a actividades";
                     }
-                    
                 }
                 else
                 {
@@ -69,68 +62,59 @@ namespace Gimnasio.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detalles(int Id)
+        public async Task<ActionResult> Detalles(int Id)
         {
-            UsuarioActividad actividad = _context.UsuarioActividad.FirstOrDefault(a => a.Id == Id);
-            actividad.Actividad = _context.Actividad.FirstOrDefault(a => a.Id == actividad.ActividadId);
+            UsuarioActividadDTO actividad = await _IUsuarioActividadService.ObtenerDetalleActividad(Id);
             return View(actividad);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int eliminar)
+        public async Task<ActionResult> Delete(int eliminar)
         {
-            var fila = await _context.UsuarioActividad.FirstAsync(a => a.Id == eliminar);
-            _context.UsuarioActividad.Remove(fila);
-            await _context.SaveChangesAsync();
-            TempData["eliminadaCorrectamente"] = "Te has desapuntado de la actividad correctamente";
+            bool eliminado = await _IUsuarioActividadService.EliminarUsuarioActividad(eliminar);
+            if (eliminado)
+            {
+                TempData["eliminadaCorrectamente"] = "Te has desapuntado de la actividad correctamente.";
+            }
+            else
+            {
+                TempData["NoEliminada"] = "No te has podido desapuntar de la actividad.";
+            }
+
             return RedirectToAction("Index", "UsuarioActividad");
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActualizarNota([Bind("Id,Notas")] UsuarioActividad UsAc)
+        public async Task<ActionResult> ActualizarNota([Bind("Id,Notas")] UsuarioActividadDTO UsAc)
         {
             if (ModelState.IsValid)
             {
-                var fila = _context.UsuarioActividad.FirstOrDefault(a => a.Id == UsAc.Id);
-                if (fila != null)
+                bool CambiosGuardados = await _IUsuarioActividadService.GuardarCambios(UsAc);
+                if (CambiosGuardados)
                 {
-                    fila.Notas = UsAc.Notas;
-                    await _context.SaveChangesAsync();
                     TempData["exitoCambios"] = "Los cambios se han guardado correctamente.";
                 }
                 else
                 {
                     TempData["errorCambios"] = "Los cambios no se han podido guardar.";
                 }
-
             }
             return RedirectToAction("Index", "UsuarioActividad");
         }
-        
+
         [HttpGet]
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
-        public ActionResult Listado()
+        public async Task<ActionResult> Listado()
         {
-            var listaids = _context.UsuarioActividad.GroupBy(a => a.ActividadId).Select(b => b.Key).ToList();
-            List<UsuarioActividad> lista = [];
-            foreach (int item in listaids)
-            {
-                UsuarioActividad ua = _context.UsuarioActividad.First(a => a.ActividadId == item);
-                ua.Actividad = _context.Actividad.FirstOrDefault(a => a.Id == ua.ActividadId);
-                ua._usuario = _context.Usuario.FirstOrDefault(a => a.Id == ua.UsuarioId);
-                lista.Add(ua);
-            }
+            List<UsuarioActividadDTO> lista = await _IUsuarioActividadService.ObtenerListaActividades();
             return View(lista);
         }
 
         [HttpPost]
         [Authorize(Roles = "ADMINISTRADOR,TRABAJADOR")]
-        public ActionResult ListaUsuarios(int idActividad)
+        public async Task<ActionResult> ListaUsuarios(int idActividad)
         {
-            List<UsuarioActividad> listaUA = _context.UsuarioActividad.Where(a => a.ActividadId == idActividad).ToList();
-            listaUA = listaUA.Distinct().ToList();
-            List<int> idsUsuarios = listaUA.Select(ua => ua.UsuarioId).ToList();
-            List<Usuario> usuarios = _context.Usuario.Where(u => idsUsuarios.Contains(u.Id)).ToList();
+            List<UsuarioActividadDTO> usuarios = await _IUsuarioActividadService.ObtenerUsuariosDeActividad(idActividad);
             return PartialView("~/Views/Shared/_ListaUsuariosActividad.cshtml", usuarios);
         }
     }

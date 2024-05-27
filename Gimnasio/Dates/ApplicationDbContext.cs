@@ -1,5 +1,6 @@
 ﻿using Gimnasio.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 /*
  * Para generar las tablas de la base de datos:
@@ -39,12 +40,23 @@ namespace Gimnasio.Dates
             modelBuilder.Entity<UsuarioActividad>().HasKey(c => new { c.Id, c.ActividadId, c.UsuarioId });
             modelBuilder.Entity<DetallePedido>().HasKey(c => new { c.Id, c.PedidoId, c.ProductoId });
             modelBuilder.Entity<Usuario>().HasIndex(p => new { p.Email }).IsUnique();
+
             modelBuilder.Entity<Carrito>().Property(c => c.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Contrato>().Property(c => c.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<UsuarioActividad>().Property(c => c.Id).ValueGeneratedOnAdd(); 
             modelBuilder.Entity<DetallePedido>().Property(c => c.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Actividad>().Property(b => b.Id).UseIdentityColumn(seed: 10, increment: 10);
+            modelBuilder.Entity<Carrito>().Property(b => b.Id).UseIdentityColumn(seed: 10, increment: 10);
+            modelBuilder.Entity<Contrato>().Property(b => b.Id).UseIdentityColumn(seed: 10, increment: 10);
+            modelBuilder.Entity<DetallePedido>().Property(b => b.Id).UseIdentityColumn(seed: 10, increment: 10);
+            modelBuilder.Entity<Pedido>().Property(b => b.Id).UseIdentityColumn(seed: 10, increment: 10);
+            modelBuilder.Entity<Producto>().Property(b => b.Id).UseIdentityColumn(seed: 10, increment: 10);
+            modelBuilder.Entity<Tarifa>().Property(b => b.Id).UseIdentityColumn(seed: 10, increment: 10);
+            modelBuilder.Entity<Usuario>().Property(b => b.Id).UseIdentityColumn(seed: 10, increment: 10);
+            modelBuilder.Entity<UsuarioActividad>().Property(b => b.Id).UseIdentityColumn(seed: 10, increment: 10);
+
             base.OnModelCreating(modelBuilder);
         }
-        /*Para que no dea fallo el autoincrement: IDENTITY(1,1)*/
     }
 }

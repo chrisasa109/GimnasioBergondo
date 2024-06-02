@@ -37,4 +37,14 @@ El proyecto llevado a cabo tiene el objetivo de crear una página web para la ge
 - Además, tienen la opción de poder cambiar el rol de usuarios. Es decir, puede cambiar el rol de un trabajador a un cliente, y viceversa.
 
 ## Despliegue de la aplicación
-_Pendiente_
+Descargar Visual Studio (con las herramientas Desarrollo de ASP.NET y web y Almacenamiento y procesamiento de datos) además de SQL Server.
+Para incorporar los datos predeterminados en SQL Server:
+- Crear el servidor local:
+```sh
+sqllocaldb create "server_gimnasio"
+```
+- Ejecutar el archivo sql:
+```sh
+sqlcmd -S (localdb)\server_gimnasio -i archivo.sql
+```
+_El contenido de archivo.sql debe de ser la ruta del archivo SQL que está contenido en el directorio sql._

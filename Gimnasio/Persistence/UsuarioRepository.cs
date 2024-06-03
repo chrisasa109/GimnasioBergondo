@@ -31,13 +31,19 @@ namespace Gimnasio.Persistence
         {
             try
             {
-                Usuario? usuario = await(from t in _context.Usuario
-                                         where t.Id == idUsuario
-                                         select t).FirstOrDefaultAsync();
+                Usuario? usuario = await (from t in _context.Usuario
+                                          where t.Id == idUsuario
+                                          select t).FirstOrDefaultAsync();
+
+                if (usuario == null)
+                {
+                    return false;
+                }
+
                 if (Enum.TryParse(rolFronted, true, out Usuario.Role rolFormateado))
                 {
                     usuario.Rol = rolFormateado;
-                    _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     return true;
                 }
                 else
@@ -45,11 +51,12 @@ namespace Gimnasio.Persistence
                     return false;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return false; 
             }
         }
+
 
         public async Task<UsuarioDTO> ConsultarUsuario(int? id)
         {

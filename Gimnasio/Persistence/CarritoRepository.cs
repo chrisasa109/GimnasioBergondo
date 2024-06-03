@@ -53,6 +53,11 @@ namespace Gimnasio.Persistence
 
         public async Task<bool> AgregarTupla(ProductoCarrito? carro, int idUsuario)
         {
+            if (carro == null)
+            {
+                return false;
+            }
+
             try
             {
                 _context.Carrito.Add(new Carrito
@@ -61,14 +66,16 @@ namespace Gimnasio.Persistence
                     UsuarioId = idUsuario,
                     Cantidad = carro.Cantidad
                 });
-                _context.SaveChangesAsync();
+
+                await _context.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
         }
+
 
         public async Task<CarritoDTO?> BuscarTupla(ProductoCarrito carro, int id)
         {

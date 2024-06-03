@@ -37,9 +37,9 @@ namespace Gimnasio.Dates
         {
             modelBuilder.Entity<Carrito>().HasKey(c => new { c.Id, c.UsuarioId });
             modelBuilder.Entity<Contrato>().HasKey(c => new { c.Id, c.UsuarioId });
-            modelBuilder.Entity<UsuarioActividad>().HasKey(c => new { c.Id, c.ActividadId, c.UsuarioId });
-            modelBuilder.Entity<DetallePedido>().HasKey(c => new { c.Id, c.PedidoId, c.ProductoId });
             modelBuilder.Entity<Usuario>().HasIndex(p => new { p.Email }).IsUnique();
+            modelBuilder.Entity<DetallePedido>().HasKey(c => new { c.Id, c.PedidoId, c.ProductoId });
+            modelBuilder.Entity<UsuarioActividad>().HasKey(c => new { c.Id, c.ActividadId, c.UsuarioId });
 
             modelBuilder.Entity<Carrito>().Property(c => c.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Contrato>().Property(c => c.Id).ValueGeneratedOnAdd();

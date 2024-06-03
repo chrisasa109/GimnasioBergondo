@@ -159,6 +159,10 @@
 
 <script src="~/js/GestionUsuarios.js"></script>
 <script src="~/js/DataTableJS.js"></script>
+@if (User.IsInRole("ADMINISTRADOR"))
+{
+    <script src="~/js/ListaUsuarios.js"></script>
+}
 <script>
     window.addEventListener("DOMContentLoaded", () => {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

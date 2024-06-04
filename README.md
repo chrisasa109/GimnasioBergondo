@@ -69,4 +69,4 @@ Después de realizar estos pasos, ya se podría ejecutar la aplicación con los 
     - Contraseña: Password10
 
 ## Demostración
-https://www.youtube.com/watch?v=1EKYjwJS1pY&t=18s
+https://www.youtube.com/watch?v=1EKYjwJS1pY

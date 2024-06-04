@@ -43,6 +43,11 @@ Para incorporar los datos predeterminados en SQL Server:
 ```sh
 sqllocaldb create "server_gimnasio"
 ```
+- En SQL Server Management, abrir un nuevo archivo de consulta y ejecutar la creación de la base de datos:
+```sh
+CREATE DATABASE Gimnasio;
+GO
+```
 - Ejecutar el archivo sql:
 ```sh
 sqlcmd -S (localdb)\server_gimnasio -i archivo.sql

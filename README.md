@@ -1,5 +1,6 @@
 # Gimnasio Bergondo 🏋️‍♀️
-El proyecto llevado a cabo tiene el objetivo de crear una página web para la gestión y la comercialización de productos de un gimnasio.
+
+El proyecto tiene como objetivo desarrollar una página web completa que permita la gestión eficiente y la comercialización de productos de un gimnasio. Esta plataforma online estará diseñada para facilitar la administración de inventarios, el procesamiento de pedidos y ofrecer una buena experiencia de compra a los clientes. Además, la página web integrará características adicionales como la gestión de suscripciones, la programación de clases, y la venta de servicios personalizados. Con esta herramienta, el gimnasio podrá optimizar sus operaciones diarias y mejorar su presencia en el mercado digital, atrayendo a más clientes y fidelizando a los existentes mediante una oferta variada y accesible desde cualquier dispositivo con conexión a internet.
 
 ## Tecnologías
 * .NET Core 8 MVC: El framework usado.
@@ -53,3 +54,16 @@ GO
 sqlcmd -S (localdb)\server_gimnasio -i archivo.sql
 ```
 _El contenido de archivo.sql debe de ser la ruta del archivo SQL que está contenido en el directorio sql._
+
+Después de realizar estos pasos, ya se podría ejecutar la aplicación con los datos predeterminados.
+
+### Inicio de sesión
+- Para iniciar sesión como administrador:
+    - Usuario: christian@email.com
+    - Contraseña: Password10
+- Para iniciar sesión como trabajador:
+    - Usuario: nerea@email.com
+    - Contraseña: Password10
+- Para iniciar sesión como cliente:
+    - Usuario: borja@email.com
+    - Contraseña: Password10
